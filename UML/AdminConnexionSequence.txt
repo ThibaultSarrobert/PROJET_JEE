@@ -1,0 +1,40 @@
+@startuml
+title UML Diagram Sequence\nUser interactions
+actor admin
+entity client
+entity server
+
+client->admin:print connexion window
+admin->client:Key-in his pseudonym
+admin->client:Key-in the server coordinate
+admin->client:Validation
+client->admin:print connexion window admin
+admin->client:Key-in admin password
+admin->client:Validation
+client->server:try connexion
+alt server is wrong
+	alt server return error
+		server->client:connexion error
+	else server is not responding
+		client->client:timeout
+	end
+	client->admin:print connexion window\n(return to step 1)
+else server is ok
+	server->client:acknowlege
+	client->server:request of new admin
+	alt pseudonym is already taken or password is false
+		server->client:Refuse admin registration	
+		client->admin:print connexion window\n(return to step 1)
+	else pseudonym is available
+		server->client:Confirmation registration
+		client->server:ask for current status
+		server->client:send the list of users
+		server->client:send the history of message
+		client->admin:print chat window
+		note left
+			User can now access
+			to Conversation Sequence
+		endnote
+	end
+end
+@enduml
