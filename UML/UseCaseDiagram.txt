@@ -1,0 +1,30 @@
+@startuml
+
+left to right direction
+
+title UML Digram\nUse Case
+
+actor User
+actor Main_Admin as Admin
+
+User <|-left- Admin
+
+rectangle System_Server{
+    (To log in)
+    (Sign out)
+    (Send message)
+    (Show thread history)
+    (Kick a user)
+    (Close the discussion)
+    (Disconnect the server)    
+}
+
+User - (To log in)
+User - (Sign out)
+User - (Send message)
+User - (Show thread history)
+Admin - (Kick a user)
+Admin - (Close the discussion)
+Admin - (Disconnect the server)
+
+@enduml
