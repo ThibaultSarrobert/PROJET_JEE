@@ -1,0 +1,48 @@
+@startuml
+class Client {
+	- m_state : State
+}
+
+class ConnexionHandler {
+	- m_sock : Socket
+	- void interpret(String)
+	- void receive(Byte[])
+}
+
+class ConnexionWindow {
+}
+
+class ChatClientWindow {
+}
+
+class ChatAdminWindow {
+}
+
+class ConnexionAdminWindow {
+}
+
+Client"1"*--ConnexionHandler
+Client"1"*--ChatClientWindow
+Client"1"*--ChatAdminWindow
+Client"1"*--ConnexionWindow
+Client"1"*--ConnexionAdminWindow
+ConnexionHandler--|>Runnable
+
+class Server {
+	- m_conversation : ArrayList<String>
+	- m_userList : ArrayList<String>
+	- m_adminList : ArrayList<String>
+	- void interpret(String)
+}
+
+class ClientHandler {
+	- m_state : State
+	- m_sock : Socket
+	- m_pseudonym : String
+	- m_isAdmin : boolean
+	- void interpret(String)
+}
+
+Server"1"*--"n"ClientHandler
+ClientHandler--|>Runnable
+@enduml
