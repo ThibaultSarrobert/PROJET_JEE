@@ -1,0 +1,12 @@
+@startuml
+title UML Diagram Sequence\nAdmin close server
+actor admin
+entity client
+entity server
+
+admin->client:click on "server closure"
+client->server:send close command via customized protocol
+server->server:close all communication thread
+server->server:save datas
+client->client:go back to login window
+@enduml

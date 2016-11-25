@@ -1,0 +1,14 @@
+@startuml
+title UML Diagram Sequence\nUser send a message
+actor user
+entity client
+entity server
+
+user->client:type message
+user->client:press enter
+client->client:verify message
+client->server:send message via customized protocol
+server->server:verify message and distribute it to all communication threads
+server->client:send message via customized protocol
+client->user:print message in conversation field
+@enduml

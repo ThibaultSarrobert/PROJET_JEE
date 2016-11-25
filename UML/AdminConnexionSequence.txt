@@ -1,5 +1,5 @@
 @startuml
-title UML Diagram Sequence\nUser interactions
+title UML Diagram Sequence\nAdmin connexion
 actor admin
 entity client
 entity server

@@ -1,0 +1,16 @@
+@startuml
+title UML Diagram Sequence\nAdmin kick user
+actor admin
+actor user
+entity client
+entity server
+
+admin->client:select user to kick
+admin->client:confirm kick
+client->server:send kick command via customized protocol
+server->server:verify right access
+server->server:close user connexion and retire user from list
+server->client:send updated user list
+client->user:print updated user list
+client->admin:print updated user list
+@enduml
