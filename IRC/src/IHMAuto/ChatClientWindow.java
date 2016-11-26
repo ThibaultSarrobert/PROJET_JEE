@@ -49,6 +49,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	private String statutLogo = "▶";
 	private String statut = "En Ligne";
 	private JTextField TextUtilisateur;
+	private DefaultListModel<JPanel> chat = new DefaultListModel<JPanel>();
 	private DefaultListModel<String> users = new DefaultListModel<String>();
 	private Color borderBlue = new Color(53,62,80);
 	private Color buttBlue = new Color(15,114,176);
@@ -161,6 +162,13 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		panneauChat.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, borderBlue));
 		panneauChat.setBackground(backField);
 		
+		JList<JPanel> chatJList = new JList<JPanel>(chat);
+		chatJList.setBackground(backField);
+		chatJList.setAlignmentY(Component.TOP_ALIGNMENT);
+		JScrollPane chatListScrollPane = new JScrollPane(chatJList);
+		chatListScrollPane.getVerticalScrollBar().setBackground(backField);
+		panneauChat.add(chatListScrollPane);
+		
 		// PANNEAU ZONE DE TEXT
 		JPanel panneauTextUtilisateur = new JPanel(); //Panneau pour que l'utilisateur tape son texte
 		panneauTextUtilisateur.setLayout(new BorderLayout(0, 0));
@@ -243,6 +251,9 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		gbcC.weightx = 0.8;
 		gbcC.weighty = 0.9;
 		panneauFinal.add(panneauChat,gbcC);
+		panneauChat.setLayout(new BorderLayout(0, 0));
+		
+		
 		GridBagConstraints gbcLi = new GridBagConstraints();
 		gbcLi.gridx=1;
 		gbcLi.gridy=0;
