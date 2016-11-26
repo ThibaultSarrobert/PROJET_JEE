@@ -16,6 +16,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -54,6 +55,8 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		setLocation(200,200); //Localisation sur l'ecran a l'ouverture
 		setSize(1000,500); //Taille de la fenetre
 		setResizable(false);//Ne peut être ajuster sur la taille
+		
+		
 		
 		
 		
@@ -241,14 +244,20 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		}
 		else if(APROPOS.equals(cmd))
 		{
-			JOptionPane.showMessageDialog(getParent(), "Version de l'IHM 1.0 \n "
-					+ "Chef de projet : Thibault SAROBERT\n"
-					+ "Architecte : Olivier ROMAN\n"
-					+ "Testeur/Valideur : Maxime MORREAU\n"
-					+ "Developeur : Pablo ORTEGA");
+			ImageIcon icon = new ImageIcon(ConnexionWindow.class.getResource("/logo_isen.png"));
+			JOptionPane.showMessageDialog(
+                    null,
+                    "Version de l'IHM 1.0 \n "
+        					+ "Chef de projet : Thibault SAROBERT\n"
+        					+ "Architecte : Olivier ROMAN\n"
+        					+ "Testeur/Valideur : Maxime MORREAU\n"
+        					+ "Developeur : Pablo ORTEGA",
+                    "A Propos", JOptionPane.INFORMATION_MESSAGE,
+                    icon);
 		}
 		else if(AIDE.equals(cmd))
 		{
+			
 			JOptionPane.showMessageDialog(getParent(), "Version de l'IHM 1.0 \n "
 					+ "Chef de projet : Thibault SAROBERT\n"
 					+ "Architecte : Olivier ROMAN\n"

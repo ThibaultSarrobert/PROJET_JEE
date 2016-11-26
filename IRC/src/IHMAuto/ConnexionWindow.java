@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 
 public class ConnexionWindow extends JFrame implements ActionListener, FocusListener{
@@ -42,6 +43,15 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 		setSize(400,120);
 		setResizable(false);
 		setVisible(true);
+		
+		@SuppressWarnings("unused")
+		UIManager UI=new UIManager();
+		UIManager.put("OptionPane.background", backField);
+		UIManager.put("OptionPane.messageForeground", Color.white);
+		UIManager.put("Button.background", buttBlue);
+		UIManager.put("Button.foreground", Color.white);
+		UIManager.put("Panel.background", backField);
+		
 		
 	//Contenu de la JFrame :
 	//Partie Pseudo
@@ -115,8 +125,9 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 		if(OK.equals(cmd))
 		{
 			String ID = IDField.getText();
-			if("".equals(ID)){
-				JOptionPane.showMessageDialog(this, "Veuillez entrer un ID", "Erreur",JOptionPane.ERROR_MESSAGE);
+			if("".equals(ID)){				
+
+				 JOptionPane.showMessageDialog(null,"Veuillez entrer un ID","Erreur",JOptionPane.ERROR_MESSAGE);
 			}
 			else{
 			this.setVisible(false);
@@ -126,13 +137,13 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 		}
 		else if(HELP.equals(cmd))
 		{
-			@SuppressWarnings("unused")
-			AideConnexionDialog AC = new AideConnexionDialog();
+			JOptionPane.showMessageDialog(null,"Votre pseudo doit étre compris entre 3 et  15 charactères\n "
+					+ "Si il n'est pas accepté : c'est qu'il est deja utilisé\n", "Aide",JOptionPane.ERROR_MESSAGE);
 		}
 		else{
 				String ID = IDField.getText();
 				if("".equals(ID)){
-					JOptionPane.showMessageDialog(this, "Veuillez entrer un ID", "Erreur",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Veuillez entrer un ID pour l'admin","Erreur",JOptionPane.INFORMATION_MESSAGE);
 				}
 				else{
 					
