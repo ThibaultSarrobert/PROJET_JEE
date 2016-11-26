@@ -148,8 +148,7 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 				else{
 					
 				this.setFocusableWindowState(false);
-				@SuppressWarnings("unused")
-				ConnexionAdminWindow A = new ConnexionAdminWindow();
+				//ConnexionAdminWindow A = new ConnexionAdminWindow();
 				}
 			}
 			}
