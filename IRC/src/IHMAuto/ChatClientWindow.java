@@ -14,6 +14,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -49,7 +50,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	private String statutLogo = "▶";
 	private String statut = "En Ligne";
 	private JTextField TextUtilisateur;
-	private DefaultListModel<JPanel> chat = new DefaultListModel<JPanel>();
+	private DefaultListModel<String> chat = new DefaultListModel<String>();
 	private DefaultListModel<String> users = new DefaultListModel<String>();
 	private Color borderBlue = new Color(53,62,80);
 	private Color buttBlue = new Color(15,114,176);
@@ -158,16 +159,27 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	
 		// Creation des panneaux
 		//PANNEAU ZONE DE CHAT
-		JPanel panneauChat = new JPanel(); //Panneau pour les messages du chat
+		JPanel panneauChat = new JPanel(new BorderLayout()); //Panneau pour les messages du chat
 		panneauChat.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, borderBlue));
 		panneauChat.setBackground(backField);
+		int H = new Date().getHours(); 
+		int M = new Date().getMinutes();
+		for(int i=0;i<30;i++)
+		chat.addElement(H+":"+M+" - "+pseudo+" : "+"Bienvenu");
 		
-		JList<JPanel> chatJList = new JList<JPanel>(chat);
-		chatJList.setBackground(backField);
-		chatJList.setAlignmentY(Component.TOP_ALIGNMENT);
-		JScrollPane chatListScrollPane = new JScrollPane(chatJList);
-		chatListScrollPane.getVerticalScrollBar().setBackground(backField);
-		panneauChat.add(chatListScrollPane);
+	
+		panneauChat.setLayout(new BorderLayout(0, 0));
+		
+		JScrollPane chatScrollPane = new JScrollPane();
+		panneauChat.add(chatScrollPane, BorderLayout.CENTER);
+		
+		JList<String> chatList = new JList<String>(chat);
+		chatScrollPane.setViewportView(chatList);
+		chatList.setBackground(backField);
+		chatList.setForeground(buttBlue);
+		chatScrollPane.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, borderBlue));
+		chatList.setAlignmentY(Component.TOP_ALIGNMENT);
+		chatScrollPane.getVerticalScrollBar().setBackground(backField);
 		
 		// PANNEAU ZONE DE TEXT
 		JPanel panneauTextUtilisateur = new JPanel(); //Panneau pour que l'utilisateur tape son texte
@@ -219,7 +231,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		gbcL.fill = GridBagConstraints.BOTH;
 		gbcL.gridx=0;
 		gbcL.weightx=0;
-		gbcL.weighty=0.814;
+		gbcL.weighty=0.86;
 		gbcL.gridy=0;
 		panneauListe.add(userListScrollPane,gbcL);
 		JButton butChat = new JButton("CHAT");
@@ -230,7 +242,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		GridBagConstraints gbcK = new GridBagConstraints();
 		gbcK.gridx=0;
 		gbcK.weightx=0;
-		gbcK.weighty=0.186;
+		gbcK.weighty=0.14;
 		gbcK.gridy=1;
 		butChat.setActionCommand(CHAT);
 		butChat.addActionListener(this);
@@ -251,7 +263,6 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		gbcC.weightx = 0.8;
 		gbcC.weighty = 0.9;
 		panneauFinal.add(panneauChat,gbcC);
-		panneauChat.setLayout(new BorderLayout(0, 0));
 		
 		
 		GridBagConstraints gbcLi = new GridBagConstraints();
