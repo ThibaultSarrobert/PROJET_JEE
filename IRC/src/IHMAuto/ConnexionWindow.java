@@ -150,12 +150,15 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 		else if(HELP.equals(cmd))
 		{
 			JOptionPane.showMessageDialog(null,"Votre pseudo doit étre compris entre 3 et  15 charactères\n "
-					+ "Si il n'est pas accepté : c'est qu'il est deja utilisé\n", "Aide",JOptionPane.ERROR_MESSAGE);
+					+ "Si il n'est pas accepté : c'est qu'il est deja utilisé\n", "Aide",JOptionPane.INFORMATION_MESSAGE);
 		}
 		else{
 				String ID = IDField.getText();
 				if("".equals(ID)){
-					JOptionPane.showMessageDialog(null, "Veuillez entrer un ID pour l'admin","Erreur",JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Veuillez entrer un ID pour l'admin","Erreur",JOptionPane.ERROR_MESSAGE);
+				}
+				else if(ID.length()<3||ID.length()>15){
+					JOptionPane.showMessageDialog(null,"Votre ID doit etre compris entre 3 et 15 charactères","Erreur",JOptionPane.ERROR_MESSAGE);
 				}
 				else{
 					

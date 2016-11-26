@@ -39,6 +39,7 @@ public class Server implements Runnable, ComListener {
 			ClientHandler h;
 			try {
 				h=new ClientHandler(m_sock.accept());
+				h.addListener(this);
 				m_clients.add(h);
 				new Thread(h).start();
 			} catch (IOException e) {
