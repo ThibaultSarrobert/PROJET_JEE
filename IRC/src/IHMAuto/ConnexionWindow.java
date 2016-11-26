@@ -10,6 +10,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -36,6 +37,7 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 	//Fin de l'initialisation de nos variables
 	
 	public ConnexionWindow() {
+		setIconImage(new ImageIcon(this.getClass().getResource("/logo_appli.jpg")).getImage());
 		Container contentPane = getContentPane();
 		setTitle(titreFenetre);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
