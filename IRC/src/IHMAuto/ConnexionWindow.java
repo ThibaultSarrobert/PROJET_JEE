@@ -55,7 +55,7 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 		
 	//Contenu de la JFrame :
 	//Partie Pseudo
-	IDField = new JTextField(10);
+	IDField = new JTextField(15);
 	IDField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, borderGrey)); //Bordure de couleur grise
 	IDField.setBackground(backField); // fond de couleur backField
 	IDField.setForeground(Color.white); // Texte de couleur blanche
@@ -129,7 +129,13 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 
 				 JOptionPane.showMessageDialog(null,"Veuillez entrer un ID","Erreur",JOptionPane.ERROR_MESSAGE);
 			}
+			
+			else if(ID.length()<3||ID.length()>15){
+				JOptionPane.showMessageDialog(null,"Votre ID doit etre compris entre 3 et 15 charactères","Erreur",JOptionPane.ERROR_MESSAGE);
+			}
 			else{
+				
+			
 			this.setVisible(false);
 			@SuppressWarnings("unused")
 			ChatClientWindow C = new ChatClientWindow(ID);
