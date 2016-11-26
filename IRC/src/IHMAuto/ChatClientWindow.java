@@ -91,52 +91,61 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		menuStatut = new JMenu("▼");
 		menuStatut.setForeground(Color.GREEN);
 		menuStatut.setFont(font2);
-				//Premier Item du menuStatut
-				JMenuItem itemEnLigne = new JMenuItem("En Ligne");//Item Deconnecter
-				menuStatut.add(itemEnLigne);//On l'ajoute a l'onglet menuOutils
-				itemEnLigne.setActionCommand(LIGNE);//On set la commande l'action DECO
-				itemEnLigne.addActionListener(this);//On ecoute cet item
-				//2nd Item du menuStatut
-				JMenuItem itemAbsent = new JMenuItem("Absent");//Item Deconnecter
-				menuStatut.add(itemAbsent);//On l'ajoute a l'onglet menuOutils
-				itemAbsent.setActionCommand(ABSENT);//On set la commande l'action DECO
-				itemAbsent.addActionListener(this);//On ecoute cet item	
-				//3eme Item du menuStatut
-				JMenuItem itemOccupe = new JMenuItem("Occupé");//Item Deconnecter
-				menuStatut.add(itemOccupe);//On l'ajoute a l'onglet menuOutils
-				itemOccupe.setActionCommand(OCCUPE);//On set la commande l'action DECO
-				itemOccupe.addActionListener(this);//On ecoute cet item	
+			//Premier Item du menuStatut
+			JMenuItem itemEnLigne = new JMenuItem("En Ligne");//Item Deconnecter
+			menuStatut.add(itemEnLigne);//On l'ajoute a l'onglet menuOutils
+			itemEnLigne.setActionCommand(LIGNE);//On set la commande l'action DECO
+			itemEnLigne.addActionListener(this);//On ecoute cet item
+			//SEPARATION
+			menuStatut.addSeparator();// separe d'un trait les deux items du menuStatut
+			//2nd Item du menuStatut
+			JMenuItem itemAbsent = new JMenuItem("Absent");//Item Deconnecter
+			menuStatut.add(itemAbsent);//On l'ajoute a l'onglet menuOutils
+			itemAbsent.setActionCommand(ABSENT);//On set la commande l'action DECO
+			itemAbsent.addActionListener(this);//On ecoute cet item	
+			//SEPARATION
+			menuStatut.addSeparator();// separe d'un trait les deux items du menuStatut
+			//3eme Item du menuStatut
+			JMenuItem itemOccupe = new JMenuItem("Occupé");//Item Deconnecter
+			menuStatut.add(itemOccupe);//On l'ajoute a l'onglet menuOutils
+			itemOccupe.setActionCommand(OCCUPE);//On set la commande l'action DECO
+			itemOccupe.addActionListener(this);//On ecoute cet item	
 		menuBar.add(menuStatut);
 		//Menu Outils
 		JMenu menuOutils = new JMenu("☼");//premiere onglet du menu
 		menuOutils.setForeground(buttBlue);//Texte de couleur buttBlue
 		menuOutils.setFont(font);//On met la font defini par font
 			//Premier Item du menu1
-		JMenuItem itemDeco = new JMenuItem("Se Deconnecter");//Item Deconnecter
-		menuOutils.add(itemDeco);//On l'ajoute a l'onglet menuOutils
-		itemDeco.setActionCommand(DECO);//On set la commande l'action DECO
-		itemDeco.addActionListener(this);//On ecoute cet item
-		//SEPARATION
-		menuOutils.addSeparator();// separe d'un trait les deux items du menuOutils
+			JMenuItem itemDeco = new JMenuItem("Se Deconnecter");//Item Deconnecter
+			menuOutils.add(itemDeco);//On l'ajoute a l'onglet menuOutils
+			itemDeco.setActionCommand(DECO);//On set la commande l'action DECO
+			itemDeco.addActionListener(this);//On ecoute cet item
+			//SEPARATION
+			menuOutils.addSeparator();// separe d'un trait les deux items du menuOutils
 			//Deuxieme item du menu
-		JMenuItem quitter = new JMenuItem("Quitter");//Item quitter
-		menuOutils.add(quitter);//On ajoute a l'onglet menuOutils
-		quitter.setActionCommand(QUITTER);//On set la commande l'action QUITTER
-		quitter.addActionListener(this);//On ecoute cet item
-		menuBar.add(menuOutils);
+			JMenuItem quitter = new JMenuItem("Quitter");//Item quitter
+			menuOutils.add(quitter);//On ajoute a l'onglet menuOutils
+			quitter.setActionCommand(QUITTER);//On set la commande l'action QUITTER
+			quitter.addActionListener(this);//On ecoute cet item
+			menuBar.add(menuOutils);
 		//Menu ?
 		JMenu menuHelp = new JMenu("?");
 		menuHelp.setFont(font);
 		menuHelp.setForeground(buttBlue);
-		JMenuItem aide = new JMenuItem("Aide");
-		menuHelp.add(aide);
-		aide.setActionCommand(AIDE);
-		aide.addActionListener(this);
-		JMenuItem apropos = new JMenuItem("A Propos");
-		menuHelp.add(apropos);
-		apropos.setActionCommand(APROPOS);
-		apropos.addActionListener(this);
-		menuBar.add(menuHelp);
+			//Premier item aide
+			JMenuItem aide = new JMenuItem("Aide");
+			menuHelp.add(aide);
+			//SEPARATION
+			menuHelp.addSeparator();// separe d'un trait les deux items du menuStatut
+			aide.setActionCommand(AIDE);
+			aide.addActionListener(this);
+			//2nd item apropos
+			JMenuItem apropos = new JMenuItem("A Propos");
+			menuHelp.add(apropos);
+			apropos.setActionCommand(APROPOS);
+			apropos.addActionListener(this);
+			menuBar.add(menuHelp);
+		//Menubar border
 		menuBar.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, borderBlue));
 		contentPane.add(menuBar,BorderLayout.NORTH);//On ajoute la bar du menu dans le contentPane
 			
@@ -341,7 +350,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode()==KeyEvent.VK_ENTER){
 			TextUtilisateur.setText("");
-        	System.out.println("j'ai appuy� sur entr�e");
+        	System.out.println("j'ai appuyé sur entrée");
             //sendMessage();
         }
 	}
