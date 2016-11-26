@@ -29,11 +29,9 @@ public class Server implements Runnable, ComListener {
 	@Override
 	public void run() {
 		try {
-<<<<<<< HEAD
-			m_sock=new ServerSocket(5555);
-=======
+
 			m_sock=new ServerSocket(m_port);
->>>>>>> origin/master
+
 		} catch (IOException e) {
 			m_quit = true;
 		}

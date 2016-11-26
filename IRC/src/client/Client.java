@@ -13,20 +13,11 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 	
 	public Client(){
 		m_com = new CommunicationHandler();
-<<<<<<< HEAD
-		m_com.configure("127.0.0.1", 5555);
-		new Thread(m_com).start();;
-	}
-	
-	public void addStateListener(StateListener listener){
-		m_com.addStateListener(listener);
-=======
 		m_com.addComListener(this);
 		m_com.addStateListener(this);
 		m_connectWindow = new ConnexionWindow();
 		m_connectWindow.addInfoListener(this);
 		new Thread(m_com).start();
->>>>>>> origin/master
 	}
 	
 	protected void finalize(){
