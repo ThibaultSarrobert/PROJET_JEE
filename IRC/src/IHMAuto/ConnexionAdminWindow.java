@@ -10,6 +10,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -30,6 +31,7 @@ public class ConnexionAdminWindow extends JFrame implements ActionListener{
 	private Color borderGrey = new Color(53,62,80);
 	
 	public ConnexionAdminWindow(){
+		setIconImage(new ImageIcon(this.getClass().getResource("/logo_appli.jpg")).getImage());
 		//Initialisation de la JFRAME avec ses reglages - options
 		setTitle(titreFenetre);
 		Container contentPane = getContentPane();
@@ -100,9 +102,9 @@ public void actionPerformed(ActionEvent e)
 
 		if (OK.equals(cmd)) 
 		{
-			this.setVisible(false);
-			@SuppressWarnings("unused")
-			ChatAdminWindow CA = new ChatAdminWindow();
+			//this.setVisible(false);
+			//@SuppressWarnings("unused")
+			//ChatAdminWindow CA = new ChatAdminWindow();
 		}
 		else if(EXIT.equals(cmd))
 		{

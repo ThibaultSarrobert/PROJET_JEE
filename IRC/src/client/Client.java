@@ -5,7 +5,7 @@ public class Client{
 	
 	public Client(){
 		m_com = new CommunicationHandler();
-		m_com.configure("127.0.0.1", 4444);
+		m_com.configure("127.0.0.1", 5555);
 		new Thread(m_com).start();;
 	}
 	

@@ -14,7 +14,7 @@ public class Server {
 	
 	public void listenSocket(){
 		try {
-			m_sock=new ServerSocket(4444);
+			m_sock=new ServerSocket(5555);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(-1);
