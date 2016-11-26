@@ -6,8 +6,11 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -19,15 +22,18 @@ public class ConnexionAdminWindow extends JFrame implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	private static String OK = "OK";
 	private static String EXIT = "EXIT";
+	private String titreFenetre = "Connexion en tant qu'admin";
 	private JPasswordField passwordField;
 	private Color backBlue = new Color(29,34,44);
 	private Color buttBlue = new Color(10,129,183);
 	private Color backField = new Color(20,25,34);
 	private Color borderBlue = new Color(53,62,80);
+	private Color borderGrey = new Color(53,62,80);
 	
 	public ConnexionAdminWindow(){
+		setIconImage(new ImageIcon(this.getClass().getResource("/logo_appli.jpg")).getImage());
 		//Initialisation de la JFRAME avec ses reglages - options
-		setTitle("Connexion en tant qu'admin");
+		setTitle(titreFenetre);
 		Container contentPane = getContentPane();
 		setBackground(backBlue);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -43,7 +49,7 @@ public class ConnexionAdminWindow extends JFrame implements ActionListener{
 	
 	passwordField = new JPasswordField(10);
 	passwordField.setActionCommand(OK);
-	passwordField.addActionListener(this);
+	passwordField.addFocusListener(listenerPassword);
 	passwordField.setBackground(backField);
 	passwordField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, borderBlue));
 	
@@ -96,13 +102,24 @@ public void actionPerformed(ActionEvent e)
 
 		if (OK.equals(cmd)) 
 		{
-			this.setVisible(false);
-			@SuppressWarnings("unused")
-			ChatAdminWindow CA = new ChatAdminWindow();
+			//this.setVisible(false);
+			//@SuppressWarnings("unused")
+			//ChatAdminWindow CA = new ChatAdminWindow();
 		}
 		else if(EXIT.equals(cmd))
 		{
 			this.setVisible(false);
 		}
 	}
+	
+FocusListener listenerPassword = new FocusListener() {
+	public void focusGained(FocusEvent e) {
+	   passwordField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, buttBlue));
+	}
+
+	public void focusLost(FocusEvent e) {
+	   passwordField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, borderGrey));
+	 }
+		
+	};
 }
