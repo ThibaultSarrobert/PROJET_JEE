@@ -47,10 +47,7 @@ public class CommunicationHandler implements Runnable {
 	}
 	
 	public void configure(String ipaddr, int port){
-		if(m_state==StateListener.State.CONNECTED)
-		{
-			this.disconnect();
-		}
+		this.disconnect();
 		this.changeState(StateListener.State.CONNECTING);
 		try {
 			this.m_sock=new Socket(ipaddr, port);
@@ -106,7 +103,6 @@ public class CommunicationHandler implements Runnable {
 				}
 			}
 		}
-		this.disconnect();
 	}
 	
 	protected void finalize(){

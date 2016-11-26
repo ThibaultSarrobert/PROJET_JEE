@@ -14,7 +14,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -42,7 +41,6 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	private static final String QUITTER = "QUITTER";
 	private static final String AIDE = "AIDE";
 	private static final String APROPOS = "APROPOS";
-	private ArrayList<ChatListener> m_listeners = new ArrayList<ChatListener>();
 	private static final String LIGNE = "LIGNE";
 	private static final String ABSENT = "ABSENT";
 	private static final String OCCUPE = "OCCUPE";
@@ -268,10 +266,9 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		
 		
 		contentPane.add(panneauFinal);
-	}
-	
-	public void addListener(ChatListener listener){
-		m_listeners.add(listener);
+		
+		
+		setVisible(true);
 	}
 
 	@Override
@@ -288,11 +285,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		else if(DECO.equals(cmd))
 		{
 			int retour = JOptionPane.showConfirmDialog(getParent(), "Etes vous sur de vouloir vous deconecter ?");
-			if(retour==0){
-				for(ChatListener l : m_listeners){
-					l.deconnectionAsked();
-				}
-			}
+			if(retour==0){setVisible(false);}
 			else if(retour==1){}
 			else{}
 		}
@@ -342,16 +335,6 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 			menuStatut.setForeground(Color.ORANGE);
 		}
 	}
-	
-	public void addMessage(String msg){
-		System.out.println(msg);
-	}
-	
-	private void sendMessage(String msg){
-		for(ChatListener l : m_listeners){
-			l.sendMessage(msg);
-		}
-	}
 
 	@Override
 	public void focusGained(FocusEvent e) {
@@ -368,8 +351,9 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode()==KeyEvent.VK_ENTER){
-			this.sendMessage(TextUtilisateur.getText());
 			TextUtilisateur.setText("");
+        	System.out.println("j'ai appuyé sur entrée");
+            //sendMessage();
         }
 	}
 

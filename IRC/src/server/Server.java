@@ -4,18 +4,32 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 
-import client.ComListener;
-
-public class Server implements Runnable, ComListener {
+public class Server {
 	private ServerSocket m_sock=null;
 	private ArrayList<ClientHandler> m_clients = null;
-	private boolean m_quit = false;
-	private int m_port;
 	
-	public Server(int port){
+	public Server(){
 		m_clients=new ArrayList<ClientHandler>();
-		m_quit = false;
-		m_port = port;
+	}
+	
+	public void listenSocket(){
+		try {
+			m_sock=new ServerSocket(5555);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
+		while(true){
+			ClientHandler h;
+			try {
+				h=new ClientHandler(m_sock.accept());
+				m_clients.add(h);
+				new Thread(h).start();
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.exit(-1);
+			}
+		}
 	}
 	
 	protected void finalize(){
@@ -23,45 +37,13 @@ public class Server implements Runnable, ComListener {
 			m_sock.close();
 		} catch (IOException e) {
 			System.out.println("Could not close socket");
-		}
-	}
-
-	@Override
-	public void run() {
-		try {
-<<<<<<< HEAD
-			m_sock=new ServerSocket(5555);
-=======
-			m_sock=new ServerSocket(m_port);
->>>>>>> origin/master
-		} catch (IOException e) {
-			m_quit = true;
-		}
-		while(!m_quit){
-			ClientHandler h;
-			try {
-				h=new ClientHandler(m_sock.accept());
-				m_clients.add(h);
-				new Thread(h).start();
-			} catch (IOException e) {
-				m_quit = true;
-			}
-		}
-		try {
-			m_sock.close();
-		} catch (IOException e) {
+			System.exit(-1);
 		}
 	}
 
 	public static void main(String[] args) {
-		Server s = new Server(4444);
-		s.run();
+		Server s = new Server();
+		s.listenSocket();
 	}
 
-	@Override
-	public void onTrameReceived(String trame) {
-		for(ClientHandler c : m_clients){
-			c.post(trame);
-		}
-	}
 }

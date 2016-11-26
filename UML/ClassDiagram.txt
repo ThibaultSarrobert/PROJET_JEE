@@ -21,12 +21,12 @@ class ChatAdminWindow {
 class ConnexionAdminWindow {
 }
 
-Runnable<|--ConnexionHandler
 Client"1"*--ConnexionHandler
+Client"1"*--ChatClientWindow
+Client"1"*--ChatAdminWindow
 Client"1"*--ConnexionWindow
-ConnexionWindow"1"*--ChatClientWindow
-ConnexionWindow"1"*--ConnexionAdminWindow
-ConnexionAdminWindow"1"*--ChatAdminWindow
+Client"1"*--ConnexionAdminWindow
+ConnexionHandler--|>Runnable
 
 class Server {
 	- m_conversation : ArrayList<String>
@@ -44,5 +44,5 @@ class ClientHandler {
 }
 
 Server"1"*--"n"ClientHandler
-Runnable<|--ClientHandler
+ClientHandler--|>Runnable
 @enduml
