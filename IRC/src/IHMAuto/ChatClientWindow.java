@@ -29,7 +29,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 
 import java.awt.Component;
 
@@ -41,18 +40,25 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	private static final String QUITTER = "QUITTER";
 	private static final String AIDE = "AIDE";
 	private static final String APROPOS = "APROPOS";
-	private String statut = "ABSENT";
+	private static final String LIGNE = "LIGNE";
+	private static final String ABSENT = "ABSENT";
+	private static final String OCCUPE = "OCCUPE";
+	JMenu menuStatut;
+	private String statutLogo = "▶";
+	private String statut = "En Ligne";
 	private JTextField TextUtilisateur;
 	private DefaultListModel<String> users = new DefaultListModel<String>();
 	private Color borderBlue = new Color(53,62,80);
 	private Color buttBlue = new Color(15,114,176);
 	private Color backField = new Color(20,25,34);
 	private Color backBlueLight = new Color(40,50,68);
-	Font font = new Font("Serial", Font.BOLD, 20);
+	Font font = new Font("Serial", Font.BOLD, 22);
 	Font font2 = new Font("Serial", Font.BOLD, 18);
 	
 	
 	public ChatClientWindow(String pseudo){
+		
+		
 		setTitle("Connecté en tant que Client - "+pseudo);
 		setBackground(Color.BLACK);
 		getContentPane().setBackground(Color.BLUE);
@@ -62,7 +68,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		setSize(1000,500); //Taille de la fenetre
 		setResizable(false);//Ne peut être ajuster sur la taille
 		
-		users.addElement(" "+pseudo+ " - "+statut);
+		users.addElement(statutLogo+" "+pseudo+ " - "+statut);
 		
 		Container contentPane = getContentPane();// COntainer qui contient le BorderLayout
 		
@@ -81,7 +87,26 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		menuBar.add(pseudoLabelBar);//On l'insere dans la barre 
 		//AJOUT DE LA GLUE
 		menuBar.add(Box.createHorizontalGlue());//On met de la glue pour que les menus soient a droite
-				
+		//Menu Statut
+		menuStatut = new JMenu("▼");
+		menuStatut.setForeground(Color.GREEN);
+		menuStatut.setFont(font2);
+				//Premier Item du menuStatut
+				JMenuItem itemEnLigne = new JMenuItem("En Ligne");//Item Deconnecter
+				menuStatut.add(itemEnLigne);//On l'ajoute a l'onglet menuOutils
+				itemEnLigne.setActionCommand(LIGNE);//On set la commande l'action DECO
+				itemEnLigne.addActionListener(this);//On ecoute cet item
+				//2nd Item du menuStatut
+				JMenuItem itemAbsent = new JMenuItem("Absent");//Item Deconnecter
+				menuStatut.add(itemAbsent);//On l'ajoute a l'onglet menuOutils
+				itemAbsent.setActionCommand(ABSENT);//On set la commande l'action DECO
+				itemAbsent.addActionListener(this);//On ecoute cet item	
+				//3eme Item du menuStatut
+				JMenuItem itemOccupe = new JMenuItem("Occupé");//Item Deconnecter
+				menuStatut.add(itemOccupe);//On l'ajoute a l'onglet menuOutils
+				itemOccupe.setActionCommand(OCCUPE);//On set la commande l'action DECO
+				itemOccupe.addActionListener(this);//On ecoute cet item	
+		menuBar.add(menuStatut);
 		//Menu Outils
 		JMenu menuOutils = new JMenu("☼");//premiere onglet du menu
 		menuOutils.setForeground(buttBlue);//Texte de couleur buttBlue
@@ -101,7 +126,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		menuBar.add(menuOutils);
 		//Menu ?
 		JMenu menuHelp = new JMenu("?");
-		menuHelp.setFont(font2);
+		menuHelp.setFont(font);
 		menuHelp.setForeground(buttBlue);
 		JMenuItem aide = new JMenuItem("Aide");
 		menuHelp.add(aide);
@@ -196,7 +221,9 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		
 	
 		//Ajout des panneaux dans le panneau final
-		panneauFinal.setLayout(new GridBagLayout());
+		GridBagLayout gbl_panneauFinal = new GridBagLayout();
+		gbl_panneauFinal.columnWeights = new double[]{0.0, 0.0};
+		panneauFinal.setLayout(gbl_panneauFinal);
 		GridBagConstraints gbcC = new GridBagConstraints();
 		gbcC.gridx=0;
 		gbcC.gridy=0;
@@ -286,6 +313,15 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 			        listeChat[0]);
 			
 				       
+		}
+		else if(LIGNE.equals(cmd)){
+			menuStatut.setForeground(Color.GREEN);
+		}
+		else if(OCCUPE.equals(cmd)){
+			menuStatut.setForeground(Color.RED);
+		}
+		else if(ABSENT.equals(cmd)){
+			menuStatut.setForeground(Color.ORANGE);
 		}
 	}
 
