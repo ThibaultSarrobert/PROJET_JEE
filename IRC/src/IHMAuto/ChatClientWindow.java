@@ -16,18 +16,22 @@ import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+
 import java.awt.Component;
-import javax.swing.SwingConstants;
 
 public class ChatClientWindow extends JFrame implements ActionListener, FocusListener,KeyListener {
 
@@ -37,7 +41,9 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	private static final String QUITTER = "QUITTER";
 	private static final String AIDE = "AIDE";
 	private static final String APROPOS = "APROPOS";
+	private String statut = "ABSENT";
 	private JTextField TextUtilisateur;
+	private DefaultListModel<String> users = new DefaultListModel<String>();
 	private Color borderBlue = new Color(53,62,80);
 	private Color buttBlue = new Color(15,114,176);
 	private Color backField = new Color(20,25,34);
@@ -56,9 +62,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		setSize(1000,500); //Taille de la fenetre
 		setResizable(false);//Ne peut être ajuster sur la taille
 		
-		
-		
-		
+		users.addElement(" "+pseudo+ " - "+statut);
 		
 		Container contentPane = getContentPane();// COntainer qui contient le BorderLayout
 		
@@ -156,18 +160,23 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		panneauListe.setLayout(gbl_panneauListe);
 		
 		//Panneau avec la liste des connectes
-		JLabel ListeC = new JLabel("Pseudo est ABSENT");
-		ListeC.setVerticalTextPosition(SwingConstants.TOP);
-		ListeC.setVerticalAlignment(SwingConstants.TOP);
-		ListeC.setHorizontalAlignment(SwingConstants.LEFT);
-		ListeC.setAlignmentY(Component.TOP_ALIGNMENT);
+		JList<String> usersJList = new JList<String>(users);
+		JScrollPane userListScrollPane = new JScrollPane(usersJList);
+		//usersJList.setVerticalTextPosition(SwingConstants.TOP);
+		//usersJList.setVerticalAlignment(SwingConstants.TOP);
+		//usersJList.setHorizontalAlignment(SwingConstants.LEFT);
+		usersJList.setBackground(backField);
+		usersJList.setForeground(buttBlue);
+		usersJList.setAlignmentY(Component.TOP_ALIGNMENT);
+		userListScrollPane.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, borderBlue));
+		userListScrollPane.getVerticalScrollBar().setBackground(backField);
 		GridBagConstraints gbcL = new GridBagConstraints();
-		gbcL.anchor = GridBagConstraints.WEST;
+		gbcL.fill = GridBagConstraints.BOTH;
 		gbcL.gridx=0;
 		gbcL.weightx=0;
-		gbcL.weighty=0.95;
+		gbcL.weighty=0.814;
 		gbcL.gridy=0;
-		panneauListe.add(ListeC,gbcL);
+		panneauListe.add(userListScrollPane,gbcL);
 		JButton butChat = new JButton("CHAT");
 		butChat.setForeground(Color.WHITE);
 		butChat.setBackground(buttBlue);
@@ -176,7 +185,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		GridBagConstraints gbcK = new GridBagConstraints();
 		gbcK.gridx=0;
 		gbcK.weightx=0;
-		gbcK.weighty=0.05;
+		gbcK.weighty=0.186;
 		gbcK.gridy=1;
 		butChat.setActionCommand(CHAT);
 		butChat.addActionListener(this);
@@ -266,15 +275,15 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		}
 		else if(CHAT.equals(cmd))
 		{
-			final String[] listeKick = { "Qui", "Michel", "Vero", "les PD" };
+			final String[] listeChat = { " ", "Michel", "Vero", "les PD" };
 			@SuppressWarnings("unused")
-			String quiKick = (String) JOptionPane.showInputDialog(this, 
+			String quiChat = (String) JOptionPane.showInputDialog(this, 
 			        "Avec qui voulez-vous lancer une conversation privée ?",
 			        "Chat Perso",
 			        JOptionPane.QUESTION_MESSAGE, 
 			        null, 
-			        listeKick, 
-			        listeKick[0]);
+			        listeChat, 
+			        listeChat[0]);
 			
 				       
 		}
