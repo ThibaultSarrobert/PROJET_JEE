@@ -14,75 +14,55 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
 public class ConnexionWindow extends JFrame implements ActionListener, FocusListener{
+	// Initialisation de nos variables 
 	private static final long serialVersionUID = 1L;
 	private static String OK = "OK";
 	private static String HELP = "AIDE";
 	private static String ADMIN = "ADMIN";
-	private JTextField serveurField;
+	private String titreFenetre = "Connexion";
 	private JTextField IDField;
-	private JTextField portField;
 	private Color backBlue = new Color(29,34,44);
 	private Color buttBlue = new Color(10,129,183);
 	private Color backField = new Color(20,25,34);
 	private Color borderGrey = new Color(53,62,80);
-	public JMenu menu1;
-	public JMenu menu2;
+	
+	//Fin de l'initialisation de nos variables
 	
 	public ConnexionWindow() {
 		Container contentPane = getContentPane();
-		setTitle("Connexion");
+		setTitle(titreFenetre);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(200,200);
-		setSize(700,120);
+		setSize(400,120);
 		setResizable(false);
 		setVisible(true);
 		
 	//Contenu de la JFrame :
 	//Partie Pseudo
 	IDField = new JTextField(10);
-	IDField.setToolTipText("");
-	IDField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, borderGrey));
-	IDField.setBackground(backField);
-	IDField.setForeground(new Color(255, 255, 255));
-	IDField.addFocusListener(listenerID);
-	JLabel labelID = new JLabel("Pseudo : ");
-	labelID.setLabelFor(IDField);
-	labelID.setForeground(Color.white);
-	//Partie Serveur IP
-	serveurField = new JTextField(10);
-	serveurField.setBackground(backField);
-	serveurField.setForeground(Color.white);
-	serveurField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, borderGrey));
-	serveurField.addFocusListener(listenerServ);
-	JLabel labelServ = new JLabel("IP du server : ");
-	labelServ.setLabelFor(serveurField);
-	labelServ.setForeground(Color.white);
-	//Partie Port
-	portField = new JTextField(5);
-	portField.setBackground(backField);
-	portField.setForeground(Color.white);
-	portField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, borderGrey));
-	portField.addFocusListener(listenerPort);
-	JLabel labelPort = new JLabel("Port : ");
-	labelPort.setLabelFor(portField);
-	labelPort.setForeground(Color.white);
+	IDField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, borderGrey)); //Bordure de couleur grise
+	IDField.setBackground(backField); // fond de couleur backField
+	IDField.setForeground(Color.white); // Texte de couleur blanche
+	IDField.addFocusListener(listenerID); //Focus listener pour gerer la brillance du Field lorsque l'on est dessus
+	JLabel labelID = new JLabel("Pseudo : "); //On met le mot pseudo
+	labelID.setLabelFor(IDField); //IDField et le label du labelID
+	labelID.setForeground(Color.white); //Le texte ecrit sera blanc
 
 	//Partie Bouton
 	//Bouton OK
-	JButton butOk = new JButton(OK);
-	butOk.setFocusPainted(false);
-	butOk.setBorderPainted(false);
-	butOk.setActionCommand(OK);
-	butOk.addActionListener(this);
-	butOk.setBackground(buttBlue);
-	butOk.setForeground(new Color(255, 255, 255));
-	
+	JButton butOk = new JButton(OK); //Bouton appele OK
+	butOk.setFocusPainted(false); //Pas de contour quand on passe dessus
+	butOk.setBorderPainted(false); //Pas de bord 
+	butOk.setActionCommand(OK); //Action pour ouvrir la fenetre Chat si les id sont bon 
+	butOk.addActionListener(this); // On ecoute ce bouton 
+	butOk.setBackground(buttBlue); //Couleur du bouton buttBlue
+	butOk.setForeground(Color.white); //Couleur du text blanc
 	//Bouton AIDE
 	JButton butAide = new JButton(HELP);
 	butAide.setFocusPainted(false);
@@ -94,54 +74,55 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 	//Bouton ADMIN
 	JButton butAdmin = new JButton(ADMIN);
 	butAdmin.setFocusPainted(false);
+	butAdmin.setBorderPainted(false);
 	butAdmin.setActionCommand(ADMIN);
 	butAdmin.addActionListener(this);
 	butAdmin.setBackground(buttBlue);
 	butAdmin.setForeground(Color.white);
-	butAdmin.setBorderPainted(false);
 	
 	
 	
-	//PANNEAU BOUTON
-	JComponent buttonPane = new JPanel();
-	buttonPane.setLayout(new GridLayout(3,1,0,3));
-	buttonPane.add(butOk);
-	buttonPane.add(butAide);
-	buttonPane.add(butAdmin);
 	//PANNEAU TEXTE
-	FlowLayout fl_textPane = new FlowLayout(FlowLayout.TRAILING);
-	fl_textPane.setHgap(20);
-	JPanel textPane = new JPanel(fl_textPane);
-	textPane.add(labelID);
-	textPane.add(IDField);
-	textPane.add(labelServ);
-	textPane.add(serveurField);
-	textPane.add(labelPort);
-	textPane.add(portField);
+	FlowLayout fl_textPane = new FlowLayout(FlowLayout.TRAILING); //Creation du FlowLayout
+	fl_textPane.setHgap(20); //Pour que le contenu prenne toute la place de la fenetre
+	JPanel textPane = new JPanel(fl_textPane); //Creation du panneau du texte
+	textPane.add(labelID); //On ajoute le label ID
+	textPane.add(IDField); //On ajoute le Field ID
+	//PANNEAU BOUTON
+	JComponent buttonPane = new JPanel(new GridLayout(3,1,0,3)); //Creation du panneau bouton en gridLayout
+	buttonPane.add(butOk); //On insere le button ok 
+	buttonPane.add(butAide); //" " aide
+	buttonPane.add(butAdmin);//" " admin
+	
 	
 	//Initi des couleurs de fond
 	textPane.setBackground(backBlue);
 	buttonPane.setBackground(backBlue);
 	
 	//PANNEAU FINAL
-	JPanel finalPane = new JPanel();
-	finalPane.setBackground(backBlue);
-	finalPane.add(textPane);
-	finalPane.add(buttonPane);
+	JPanel finalPane = new JPanel(); //Creation du panneau final
+	finalPane.setBackground(backBlue); //Couleur du fond backBlue
+	finalPane.add(textPane); //On ajoute le panneau texte
+	finalPane.add(buttonPane); //On ajoute le panneau bouton 
 	
-	
-	contentPane.add(finalPane);
-	setVisible(true);
+	contentPane.add(finalPane);//On ajoute le tout dans le contentPane
+	setVisible(true);//On le rend visible
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String cmd = e.getActionCommand();
 		if(OK.equals(cmd))
-		{	
+		{
+			String ID = IDField.getText();
+			if("".equals(ID)){
+				JOptionPane.showMessageDialog(this, "Veuillez entrer un ID", "Erreur",JOptionPane.ERROR_MESSAGE);
+			}
+			else{
 			this.setVisible(false);
 			@SuppressWarnings("unused")
-			ChatClientWindow C = new ChatClientWindow();
+			ChatClientWindow C = new ChatClientWindow(ID);
+			}
 		}
 		else if(HELP.equals(cmd))
 		{
@@ -149,42 +130,32 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 			AideConnexionDialog AC = new AideConnexionDialog();
 		}
 		else{
-			this.setVisible(false);
-			@SuppressWarnings("unused")
-			ConnexionAdminWindow A = new ConnexionAdminWindow();
+				String ID = IDField.getText();
+				if("".equals(ID)){
+					JOptionPane.showMessageDialog(this, "Veuillez entrer un ID", "Erreur",JOptionPane.ERROR_MESSAGE);
+				}
+				else{
+					
+				this.setFocusableWindowState(false);
+				@SuppressWarnings("unused")
+				ConnexionAdminWindow A = new ConnexionAdminWindow();
+				}
 			}
-		}
+			}
+		
 	
 FocusListener listenerID = new FocusListener() {
 	public void focusGained(FocusEvent e) {
 	   IDField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, buttBlue));
 	}
 
-	      public void focusLost(FocusEvent e) {
-	    	  IDField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, borderGrey));
-	      }
+	public void focusLost(FocusEvent e) {
+	   IDField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, borderGrey));
+	 }
 	
 };
-FocusListener listenerServ = new FocusListener() {
-    public void focusGained(FocusEvent e) {
-    	serveurField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, buttBlue));
-    }
 
-    public void focusLost(FocusEvent e) {
-    	serveurField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, borderGrey));
-    }
 
-};
-FocusListener listenerPort = new FocusListener() {
-    public void focusGained(FocusEvent e) {
-    	portField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, buttBlue));
-    }
-
-    public void focusLost(FocusEvent e) {
-    	portField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, borderGrey));
-    }
-
-};
 
 @Override
 public void focusGained(FocusEvent e) {

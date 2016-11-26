@@ -3,6 +3,7 @@ package IHMAuto;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -10,24 +11,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JList;
-import java.awt.Insets;
-import javax.swing.JLabel;
-import java.awt.Dimension;
+import java.awt.Component;
+import javax.swing.SwingConstants;
 
-public class ChatClientWindow extends JFrame implements ActionListener, FocusListener {
+public class ChatClientWindow extends JFrame implements ActionListener, FocusListener,KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	private static final String CHAT = "CHAT";
@@ -40,93 +41,130 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	private Color buttBlue = new Color(15,114,176);
 	private Color backField = new Color(20,25,34);
 	private Color backBlueLight = new Color(40,50,68);
-	public int deconection;
-	
-	private Font font = new Font("Serial", Font.BOLD, 20);
-	private Font font2 = new Font("Serial", Font.BOLD, 18);
+	Font font = new Font("Serial", Font.BOLD, 20);
+	Font font2 = new Font("Serial", Font.BOLD, 18);
 	
 	
-	public ChatClientWindow(){
-		setTitle("Connecté en tant que Client - pseudo");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocation(200,200);
-		setSize(1000,500);
-		setResizable(false);
+	public ChatClientWindow(String pseudo){
+		setTitle("Connecté en tant que Client - "+pseudo);
+		setBackground(Color.BLACK);
+		getContentPane().setBackground(Color.BLUE);
 		
-		// COntainer qui contient le BorderLayout
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//Action lorsque l'on ferme la fenetre
+		setLocation(200,200); //Localisation sur l'ecran a l'ouverture
+		setSize(1000,500); //Taille de la fenetre
+		setResizable(false);//Ne peut être ajuster sur la taille
 		
-		Container contentPane = getContentPane();
 		
-// Rï¿½alisation des onglets du menu
+		
+		Container contentPane = getContentPane();// COntainer qui contient le BorderLayout
+		
+		// Realisation des onglets du menu
+		//Creation d'une barre de menu
+		JMenuBar menuBar = new JMenuBar(); //Bar appele menuBar
+		menuBar.setBackground(backBlueLight);//Fond de couleur backBlueLight
+		//On creer un panel pour laisser un vide avant le texte "chat general"
+		JPanel panelVide1 = new JPanel();
+		panelVide1.setMaximumSize(new Dimension(600, 0));
+		menuBar.add(panelVide1);
+		//On creer un label pour le texte 
+		JLabel pseudoLabelBar = new JLabel("Chat General");//Label pour le texte dans la bar
+		pseudoLabelBar.setFont(font);//On met la font defini par font
+		pseudoLabelBar.setForeground(buttBlue);//On met le texte en couleur buttBlue
+		menuBar.add(pseudoLabelBar);//On l'insere dans la barre 
+		//AJOUT DE LA GLUE
+		menuBar.add(Box.createHorizontalGlue());//On met de la glue pour que les menus soient a droite
+				
 		//Menu Outils
-		JMenuBar m = new JMenuBar();
-		m.setBackground(backBlueLight);
-		//m.setBackground(backBlueLight);
-		JMenu menu1 = new JMenu("☼");
-		menu1.setForeground(buttBlue);
-		menu1.setFont(font);
-		JMenuItem deco = new JMenuItem("Se Deconnecter");
-		menu1.add(deco);
-		deco.setActionCommand(DECO);
-		deco.addActionListener(this);
-		// separe d'un trait
-		menu1.addSeparator();
-		JMenuItem quitter = new JMenuItem("Quitter");
-		menu1.add(quitter);
-		quitter.setActionCommand(QUITTER);
-		quitter.addActionListener(this);
-		
-		JPanel panel_4 = new JPanel();
-		panel_4.setMaximumSize(new Dimension(600, 0));
-		m.add(panel_4);
-		
-		JLabel pseudoBar = new JLabel("Chat General");
-		pseudoBar.setFont(font);
-		pseudoBar.setForeground(buttBlue);
-		m.add(pseudoBar);
-		m.add(Box.createHorizontalGlue());
-		m.add(menu1);
+		JMenu menuOutils = new JMenu("☼");//premiere onglet du menu
+		menuOutils.setForeground(buttBlue);//Texte de couleur buttBlue
+		menuOutils.setFont(font);//On met la font defini par font
+			//Premier Item du menu1
+		JMenuItem itemDeco = new JMenuItem("Se Deconnecter");//Item Deconnecter
+		menuOutils.add(itemDeco);//On l'ajoute a l'onglet menuOutils
+		itemDeco.setActionCommand(DECO);//On set la commande l'action DECO
+		itemDeco.addActionListener(this);//On ecoute cet item
+		//SEPARATION
+		menuOutils.addSeparator();// separe d'un trait les deux items du menuOutils
+			//Deuxieme item du menu
+		JMenuItem quitter = new JMenuItem("Quitter");//Item quitter
+		menuOutils.add(quitter);//On ajoute a l'onglet menuOutils
+		quitter.setActionCommand(QUITTER);//On set la commande l'action QUITTER
+		quitter.addActionListener(this);//On ecoute cet item
+		menuBar.add(menuOutils);
 		//Menu ?
-		JMenu menu2 = new JMenu("?");
-		menu2.setFont(font2);
-		menu2.setForeground(buttBlue);
+		JMenu menuHelp = new JMenu("?");
+		menuHelp.setFont(font2);
+		menuHelp.setForeground(buttBlue);
 		JMenuItem aide = new JMenuItem("Aide");
-		menu2.add(aide);
+		menuHelp.add(aide);
 		aide.setActionCommand(AIDE);
 		aide.addActionListener(this);
 		JMenuItem apropos = new JMenuItem("A Propos");
-		menu2.add(apropos);
+		menuHelp.add(apropos);
 		apropos.setActionCommand(APROPOS);
 		apropos.addActionListener(this);
-		m.add(menu2);
-		contentPane.add(m,BorderLayout.NORTH);
-		//setJMenuBar(m);
+		menuBar.add(menuHelp);
+		menuBar.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, borderBlue));
+		contentPane.add(menuBar,BorderLayout.NORTH);//On ajoute la bar du menu dans le contentPane
 			
 		
-// Rï¿½alisation des objets de la fenetre
+		// Realisation des objets de la fenetre
 	
 		// Creation des panneaux
+		//PANNEAU ZONE DE CHAT
 		JPanel panneauChat = new JPanel(); //Panneau pour les messages du chat
-		JPanel panneauTextUtilisateur = new JPanel(); //Panneau pour que l'utilisateur tape son texte
-		JPanel panneauListe = new JPanel(); //Panneau avec la liste des personnes connectees et le bouton kick
-		JPanel panneauFinal = new JPanel(); //Panneau qui regroupe touts les autres panneaux
-		//Surligne les contours des panneaux pour les differencier
-		m.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, borderBlue));
-		
-		JPanel panel_5 = new JPanel();
-		panel_5.setMaximumSize(new Dimension(600, 0));
-		m.add(panel_5);
-		panneauTextUtilisateur.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, borderBlue));
-		panneauListe.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, borderBlue));
-		//COuleur de fond
+		panneauChat.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, borderBlue));
 		panneauChat.setBackground(backField);
-		panneauListe.setBackground(backField);
+		
+		// PANNEAU ZONE DE TEXT
+		JPanel panneauTextUtilisateur = new JPanel(); //Panneau pour que l'utilisateur tape son texte
+		panneauTextUtilisateur.setLayout(new BorderLayout(0, 0));
+		panneauTextUtilisateur.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, borderBlue));
 		panneauTextUtilisateur.setBackground(backField);
-		panneauChat.setLayout(new BorderLayout());
+				//Ceci est la zone ou l'utilisateur ecrira le message avant de l'envoyer
+				TextUtilisateur = new JTextField();
+				TextUtilisateur.addFocusListener(this);
+				TextUtilisateur.addKeyListener(this);
+				TextUtilisateur.setForeground(Color.white);
+				TextUtilisateur.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, borderBlue));
+				TextUtilisateur.setBackground(backField);
+				panneauTextUtilisateur.add(TextUtilisateur, BorderLayout.CENTER);
+				//Creation de panneau vide autour de la zone de texte		
+				JPanel panelNORD = new JPanel();
+				panelNORD.setBackground(backBlueLight);
+				panneauTextUtilisateur.add(panelNORD, BorderLayout.NORTH);	
+				JPanel panelSUD = new JPanel();
+				panelSUD.setBackground(backBlueLight);
+				panneauTextUtilisateur.add(panelSUD, BorderLayout.SOUTH);		
+				JPanel panelEST = new JPanel();
+				panelEST.setBackground(backBlueLight);
+				panneauTextUtilisateur.add(panelEST, BorderLayout.EAST);		
+				JPanel panelOUEST = new JPanel();
+				panelOUEST.setBackground(backBlueLight);
+				panneauTextUtilisateur.add(panelOUEST, BorderLayout.WEST);		
+		
+		//PANNEAU DE LA LISTE DES PERSONNES CONNECTEES AVEC BOUTTON CHAT/KICK
+		JPanel panneauListe = new JPanel(); //Panneau avec la liste des personnes connectees et le bouton kick
+		panneauListe.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, borderBlue));
+		panneauListe.setBackground(backField);
 		GridBagLayout gbl_panneauListe = new GridBagLayout();
-		gbl_panneauListe.rowWeights = new double[]{1.0, 0.0};
 		gbl_panneauListe.columnWeights = new double[]{1.0};
 		panneauListe.setLayout(gbl_panneauListe);
+		
+		//Panneau avec la liste des connectes
+		JLabel ListeC = new JLabel("Pseudo est ABSENT");
+		ListeC.setVerticalTextPosition(SwingConstants.TOP);
+		ListeC.setVerticalAlignment(SwingConstants.TOP);
+		ListeC.setHorizontalAlignment(SwingConstants.LEFT);
+		ListeC.setAlignmentY(Component.TOP_ALIGNMENT);
+		GridBagConstraints gbcL = new GridBagConstraints();
+		gbcL.anchor = GridBagConstraints.WEST;
+		gbcL.gridx=0;
+		gbcL.weightx=0;
+		gbcL.weighty=0.95;
+		gbcL.gridy=0;
+		panneauListe.add(ListeC,gbcL);
 		JButton butChat = new JButton("CHAT");
 		butChat.setForeground(Color.WHITE);
 		butChat.setBackground(buttBlue);
@@ -139,18 +177,13 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		gbcK.gridy=1;
 		butChat.setActionCommand(CHAT);
 		butChat.addActionListener(this);
-		
-		JList listConnect = new JList();
-		listConnect.setBackground(backField);
-		GridBagConstraints gbc_list_1 = new GridBagConstraints();
-		gbc_list_1.insets = new Insets(0, 0, 5, 0);
-		gbc_list_1.fill = GridBagConstraints.BOTH;
-		gbc_list_1.gridx = 0;
-		gbc_list_1.gridy = 0;
-		panneauListe.add(listConnect, gbc_list_1);
 		panneauListe.add(butChat,gbcK);
-		panneauTextUtilisateur.setLayout(new BorderLayout(0, 0));
 		
+		//PANNEAU FINAL AVEC TOUTS LES AUTRES PANNEAUX
+		JPanel panneauFinal = new JPanel(); //Panneau qui regroupe touts les autres panneaux
+		
+	
+		//Ajout des panneaux dans le panneau final
 		panneauFinal.setLayout(new GridBagLayout());
 		GridBagConstraints gbcC = new GridBagConstraints();
 		gbcC.gridx=0;
@@ -159,18 +192,6 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		gbcC.weightx = 0.8;
 		gbcC.weighty = 0.9;
 		panneauFinal.add(panneauChat,gbcC);
-		
-		JTextArea textChat = new JTextArea();
-		textChat.setBackground(backField);
-		textChat.setLineWrap(true); 
-		textChat.setWrapStyleWord(true);
-		String pseudoChat = new String("BG185");
-		String textChatExemple = new String("texte de BG185");
-		textChat.setText(pseudoChat+ "\n"
-				+ textChatExemple);
-		panneauChat.add(textChat, BorderLayout.CENTER);
-		
-		
 		GridBagConstraints gbcLi = new GridBagConstraints();
 		gbcLi.gridx=1;
 		gbcLi.gridy=0;
@@ -187,29 +208,9 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		gbcTF.weightx = 1;
 		gbcTF.weighty = 0.1;
 		panneauFinal.add(panneauTextUtilisateur,gbcTF);
-		//Ceci est la zone ou l'utilisateur ecrira le message avant de l'envoyer
-		TextUtilisateur = new JTextField();
-		TextUtilisateur.addFocusListener(this);
-		panneauTextUtilisateur.add(TextUtilisateur, BorderLayout.CENTER);
-		TextUtilisateur.setForeground(new Color(255, 255, 255));
-		TextUtilisateur.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, borderBlue));
-		TextUtilisateur.setBackground(backField);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(backBlueLight);
-		panneauTextUtilisateur.add(panel, BorderLayout.NORTH);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(backBlueLight);
-		panneauTextUtilisateur.add(panel_1, BorderLayout.SOUTH);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(backBlueLight);
-		panneauTextUtilisateur.add(panel_2, BorderLayout.EAST);
-		
-		JPanel panel_3 = new JPanel();
-		panel_3.setBackground(backBlueLight);
-		panneauTextUtilisateur.add(panel_3, BorderLayout.WEST);
 		
 		
 		
@@ -240,25 +241,31 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		}
 		else if(APROPOS.equals(cmd))
 		{
-			@SuppressWarnings("unused")
-			AProposDialog AP = new AProposDialog();
+			JOptionPane.showMessageDialog(getParent(), "Version de l'IHM 1.0 \n "
+					+ "Chef de projet : Thibault SAROBERT\n"
+					+ "Architecte : Olivier ROMAN\n"
+					+ "Testeur/Valideur : Maxime MORREAU\n"
+					+ "Developeur : Pablo ORTEGA");
 		}
 		else if(AIDE.equals(cmd))
 		{
-			@SuppressWarnings("unused")
-			AideDialog AP = new AideDialog();
+			JOptionPane.showMessageDialog(getParent(), "Version de l'IHM 1.0 \n "
+					+ "Chef de projet : Thibault SAROBERT\n"
+					+ "Architecte : Olivier ROMAN\n"
+					+ "Testeur/Valideur : Maxime MORREAU\n"
+					+ "Developeur : Pablo ORTEGA");
 		}
 		else if(CHAT.equals(cmd))
 		{
-			final String[] listeChat = { "Qui", "Michel", "Vero", "les PD" };
+			final String[] listeKick = { "Qui", "Michel", "Vero", "les PD" };
 			@SuppressWarnings("unused")
-			String quiChat = (String) JOptionPane.showInputDialog(this, 
-			        "Avec qui voulez demarer une conversation privée ?",
-			        "Chat",
+			String quiKick = (String) JOptionPane.showInputDialog(this, 
+			        "Avec qui voulez-vous lancer une conversation privée ?",
+			        "Chat Perso",
 			        JOptionPane.QUESTION_MESSAGE, 
 			        null, 
-			        listeChat, 
-			        listeChat[0]);
+			        listeKick, 
+			        listeKick[0]);
 			
 				       
 		}
@@ -274,4 +281,27 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		TextUtilisateur.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, borderBlue));
 		
 	}
+	
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if (e.getKeyCode()==KeyEvent.VK_ENTER){
+			TextUtilisateur.setText("");
+        	System.out.println("j'ai appuy� sur entr�e");
+            //sendMessage();
+        }
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }
