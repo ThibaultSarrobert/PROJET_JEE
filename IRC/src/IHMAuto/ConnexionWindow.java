@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -33,6 +34,7 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 	private Color buttBlue = new Color(10,129,183);
 	private Color backField = new Color(20,25,34);
 	private Color borderGrey = new Color(53,62,80);
+	private ArrayList<InfoConnectListener> m_infoListeners = new ArrayList<InfoConnectListener>();
 	
 	//Fin de l'initialisation de nos variables
 	
@@ -120,6 +122,10 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 	contentPane.add(finalPane);//On ajoute le tout dans le contentPane
 	setVisible(true);//On le rend visible
 	}
+	
+	public void addInfoListener(InfoConnectListener listener){
+		m_infoListeners.add(listener);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -136,11 +142,9 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 				JOptionPane.showMessageDialog(null,"Votre ID doit etre compris entre 3 et 15 charactères","Erreur",JOptionPane.ERROR_MESSAGE);
 			}
 			else{
-				
-			
-			this.setVisible(false);
-			@SuppressWarnings("unused")
-			ChatClientWindow C = new ChatClientWindow(ID);
+				for(InfoConnectListener l : m_infoListeners){
+					l.askForConnect(ID, "127.0.0.1", 4444);
+				}
 			}
 		}
 		else if(HELP.equals(cmd))
