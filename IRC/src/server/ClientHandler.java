@@ -18,17 +18,13 @@ public class ClientHandler implements Runnable {
 		m_sock=sock;
 	}
 	
-	public void addListener(ComListener listener){
+	public synchronized void addListener(ComListener listener){
 		m_comListeners.add(listener);
 	}
 	
-	public void post(String msg){
-		PrintWriter out = null;
-		try {
-			out = new PrintWriter(m_sock.getOutputStream(), true);
-			out.println(msg);
-		} catch (IOException e) {
-		}
+	public synchronized void post(String msg) throws IOException{
+		PrintWriter out = new PrintWriter(m_sock.getOutputStream(), true);
+		out.println(msg);
 	}
 	
 	@Override
@@ -39,13 +35,19 @@ public class ClientHandler implements Runnable {
 			in=new BufferedReader(new InputStreamReader(m_sock.getInputStream()));
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.exit(-1);
+			m_quit=true;
 		}
 		while(!m_quit){
 			try {
 				line=in.readLine();
-				for(ComListener l : m_comListeners){
-					l.onTrameReceived(line);
+				if(line==null){
+					m_quit=true;
+				}else{
+					for(ComListener l : m_comListeners){
+						synchronized(l){
+							l.onTrameReceived(line);
+						}
+					}
 				}
 			} catch (IOException e) {
 				try {

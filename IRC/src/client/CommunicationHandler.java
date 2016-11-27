@@ -15,18 +15,20 @@ public class CommunicationHandler implements Runnable {
 	private ArrayList<ComListener> m_comListeners = null;
 	private boolean m_quit = false;
 	
-	public void stop(){
+	public synchronized void stop(){
 		m_quit=true;
 	}
 	
 	private void changeState(StateListener.State new_state){
 		this.m_state=new_state;
 		for(StateListener l : m_stateListeners){
-			l.onStateChanged(new_state);
+			synchronized(l){
+				l.onStateChanged(new_state);
+			}
 		}
 	}
 	
-	public StateListener.State getState(){
+	public synchronized StateListener.State getState(){
 		return m_state;
 	}
 	
@@ -38,16 +40,16 @@ public class CommunicationHandler implements Runnable {
 		this.m_comListeners=new ArrayList<ComListener>();
 	}
 	
-	public void addStateListener(StateListener listener){
+	public synchronized void addStateListener(StateListener listener){
 		m_stateListeners.add(listener);
 	}
 	
-	public void addComListener(ComListener listener){
+	public synchronized void addComListener(ComListener listener){
 		m_comListeners.add(listener);
 	}
 	
-	public void configure(String ipaddr, int port){
-		if(m_state==StateListener.State.CONNECTED)
+	public synchronized void configure(String ipaddr, int port){
+		if(this.getState()==StateListener.State.CONNECTED)
 		{
 			this.disconnect();
 		}
@@ -56,12 +58,13 @@ public class CommunicationHandler implements Runnable {
 			this.m_sock=new Socket(ipaddr, port);
 			this.changeState(StateListener.State.CONNECTED);
 		} catch (IOException e) {
+			System.out.println("Couldn't create socket");
 			this.m_sock=new Socket();
 			this.changeState(StateListener.State.INITIAL);
 		}
 	}
 	
-	public void disconnect(){
+	public synchronized void disconnect(){
 		this.changeState(StateListener.State.DISCONNECTING);
 		try {
 			this.m_sock.close();
@@ -73,19 +76,20 @@ public class CommunicationHandler implements Runnable {
 		}
 	}
 	
-	public void post(String msg){
+	public synchronized void post(String msg){
 		PrintWriter out = null;
 		try {
 			out = new PrintWriter(m_sock.getOutputStream(), true);
 			out.println(msg);
 		} catch (IOException e) {
+			System.out.println("Cannot get output stream");
 		}
 	}
 	
 	@Override
 	public void run() {
 		while(!m_quit){
-			if(m_state == StateListener.State.CONNECTED){
+			if(this.getState() == StateListener.State.CONNECTED){
 				String line;
 				BufferedReader in = null;
 				try{
@@ -94,11 +98,13 @@ public class CommunicationHandler implements Runnable {
 					this.disconnect();
 				}
 
-				while(m_state == StateListener.State.CONNECTED){
+				while(this.getState() == StateListener.State.CONNECTED){
 					try{
 						line = in.readLine();
 						for(ComListener l : m_comListeners){
-							l.onTrameReceived(line);
+							synchronized(l){
+								l.onTrameReceived(line);
+							}
 						}
 					}catch (IOException e) {
 						this.disconnect();
@@ -111,7 +117,9 @@ public class CommunicationHandler implements Runnable {
 	
 	protected void finalize(){
 		try{
-			m_sock.close();
+			if(m_sock != null){
+				m_sock.close();
+			}
 		} catch (IOException e) {
 			System.out.println("Could not close socket");
 			System.exit(-1);
