@@ -62,16 +62,22 @@ public class Server implements Runnable, ComListener {
 
 	@Override
 	public void onTrameReceived(String trame) {
-		ArrayList<ClientHandler> trash = new ArrayList<ClientHandler>();
-		for(ClientHandler c : m_clients){
-			try {
-				c.post(trame);
-			} catch (IOException e) {
-				trash.add(c);
+		if(trame.startsWith("!q")){
+			synchronized(this){
+				this.m_quit=true;
 			}
-		}
-		for(ClientHandler h : trash){
-			m_clients.remove(h);
+		}else{
+			ArrayList<ClientHandler> trash = new ArrayList<ClientHandler>();
+			for(ClientHandler c : m_clients){
+				try {
+					c.post(trame);
+				} catch (IOException e) {
+					trash.add(c);
+				}
+			}
+			for(ClientHandler h : trash){
+				m_clients.remove(h);
+			}
 		}
 	}
 }

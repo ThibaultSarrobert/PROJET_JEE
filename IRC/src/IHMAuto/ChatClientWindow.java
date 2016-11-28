@@ -72,9 +72,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		setLocation(200,200); //Localisation sur l'ecran a l'ouverture
 		setSize(1000,500); //Taille de la fenetre
 		setResizable(false);//Ne peut être ajuster sur la taille
-		
-		users.addElement(statutLogo+" "+pseudo+ " - "+statut);
-		
+				
 		Container contentPane = getContentPane();// COntainer qui contient le BorderLayout
 		
 		// Realisation des onglets du menu
@@ -162,12 +160,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		JPanel panneauChat = new JPanel(new BorderLayout()); //Panneau pour les messages du chat
 		panneauChat.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, borderBlue));
 		panneauChat.setBackground(backField);
-		int H = new Date().getHours(); 
-		int M = new Date().getMinutes();
-		for(int i=0;i<30;i++)
-		chat.addElement(H+":"+M+" - "+pseudo+" : "+"Bienvenu");
 		
-	
 		panneauChat.setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane chatScrollPane = new JScrollPane();
@@ -282,13 +275,11 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		gbcTF.weighty = 0.1;
 		panneauFinal.add(panneauTextUtilisateur,gbcTF);
 		
-		
-		
-		
-		
-		
-		
 		contentPane.add(panneauFinal);
+		
+		int H = new Date().getHours(); 
+		int M = new Date().getMinutes();
+		this.sendMessage(H+":"+M+" - "+pseudo+" : "+"Bienvenu");
 	}
 	
 	public void addListener(ChatListener listener){
@@ -355,22 +346,54 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		}
 		else if(LIGNE.equals(cmd)){
 			menuStatut.setForeground(Color.GREEN);
+			for(ChatListener l : m_listeners){
+				l.StatusChanged(2);
+			}
 		}
 		else if(OCCUPE.equals(cmd)){
 			menuStatut.setForeground(Color.RED);
+			for(ChatListener l : m_listeners){
+				l.StatusChanged(1);
+			}
 		}
 		else if(ABSENT.equals(cmd)){
 			menuStatut.setForeground(Color.ORANGE);
+			for(ChatListener l : m_listeners){
+				l.StatusChanged(0);
+			}
 		}
 	}
 	
 	public void addMessage(String msg){
-		System.out.println(msg);
+		chat.addElement(msg);
 	}
 	
 	private void sendMessage(String msg){
 		for(ChatListener l : m_listeners){
 			l.sendMessage(msg);
+		}
+	}
+	
+	public void addUser(String nom){
+		users.addElement(statutLogo+" "+nom+ " - "+statut);
+	}
+	
+	public void changeStatus(String nom, int status){
+		for(int i=0; i<users.size(); ++i){
+			if(users.get(i).contains(nom)){
+				String[] tmp  = users.get(i).split(" - ");
+				switch(status){
+				case 0:
+					users.set(i, tmp[0]+" - Absent");
+					break;
+				case 1:
+					users.set(i, tmp[0]+" - Occupé");
+					break;
+				case 2:
+					users.set(i, tmp[0]+" - En Ligne");
+					break;
+				}
+			}
 		}
 	}
 

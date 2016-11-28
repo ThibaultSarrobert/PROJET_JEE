@@ -36,8 +36,27 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 	
 	@Override
 	public void onTrameReceived(String trame){
-		if(m_chatWindow != null){
-			m_chatWindow.addMessage(trame);
+		String prefix = trame.substring(0, 2);
+		if(prefix.equals("+m")){
+			if(m_chatWindow != null){
+				m_chatWindow.addMessage(trame.substring(2));
+			}
+		}else if(prefix.equals("+u")){
+			if(m_chatWindow!=null){
+				m_chatWindow.addUser(trame.substring(2));
+			}
+		}else if(prefix.equals("!f")){
+			if(m_chatWindow!=null){
+				m_chatWindow.changeStatus(trame.substring(2), 0);
+			}
+		}else if(prefix.equals("!b")){
+			if(m_chatWindow!=null){
+				m_chatWindow.changeStatus(trame.substring(2), 1);
+			}
+		}else if(prefix.equals("!l")){
+			if(m_chatWindow!=null){
+				m_chatWindow.changeStatus(trame.substring(2), 2);
+			}
 		}
 	}
 
@@ -48,6 +67,7 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 			m_chatWindow.addListener(this);
 			m_chatWindow.setVisible(true);
 			m_connectWindow.setVisible(false);
+			m_com.post("+u"+m_pseudo);
 		}else{
 			if(m_chatWindow!=null){
 				m_chatWindow.dispose();
@@ -64,12 +84,21 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 
 	@Override
 	public void sendMessage(String msg) {
-		m_com.post(msg);
+		m_com.post("+m"+msg);
 	}
 
 	@Override
 	public void StatusChanged(int status) {
-		// TODO Auto-generated method stub
-		
+		switch(status){
+		case 0:
+			m_com.post("!f"+m_pseudo);
+			break;
+		case 1:
+			m_com.post("!b"+m_pseudo);
+			break;
+		case 2:
+			m_com.post("!l"+m_pseudo);
+			break;
+		}
 	}
 }
