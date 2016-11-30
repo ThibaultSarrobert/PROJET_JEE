@@ -6,12 +6,12 @@ import java.util.ArrayList;
 
 import client.ComListener;
 
-public class Server implements Runnable, ComListener {
+public class Server implements Runnable, ComListener, IDataPool {
 	private ServerSocket m_sock=null;
 	private ArrayList<ClientHandler> m_clients = new ArrayList<ClientHandler>();
 	private boolean m_quit = false;
 	private int m_port;
-	
+		
 	public Server(int port){
 		m_port = port;
 	}
@@ -36,7 +36,7 @@ public class Server implements Runnable, ComListener {
 		while(!m_quit){
 			ClientHandler h = null;
 			try {
-				h=new ClientHandler(m_sock.accept());
+				h=new ClientHandler(m_sock.accept(), this);
 				h.addListener(this);
 				synchronized(this){
 					m_clients.add(h);
@@ -66,6 +66,20 @@ public class Server implements Runnable, ComListener {
 			synchronized(this){
 				this.m_quit=true;
 			}
+		}else if(trame.startsWith("-u")){
+			for(ClientHandler c : m_clients){
+				if(trame.substring(2).equals(c.getName())){
+					c.stop();
+					m_clients.remove(c);
+					break;
+				}
+			}
+			for(ClientHandler c : m_clients){
+				try {
+					c.post(trame);
+				} catch (IOException e) {
+				}
+			}
 		}else{
 			ArrayList<ClientHandler> trash = new ArrayList<ClientHandler>();
 			for(ClientHandler c : m_clients){
@@ -79,5 +93,19 @@ public class Server implements Runnable, ComListener {
 				m_clients.remove(h);
 			}
 		}
+	}
+
+	@Override
+	public ArrayList<String> getUserPool() {
+		ArrayList<String> userPool = new ArrayList<String>();
+		synchronized(this){
+			for(ClientHandler c : m_clients){
+				String user = c.getName();
+				if(user != null){
+					userPool.add(user);
+				}
+			}
+		}
+		return userPool;
 	}
 }

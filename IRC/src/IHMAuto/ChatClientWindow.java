@@ -14,8 +14,6 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.Date;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
@@ -51,6 +49,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	private String statut = "En Ligne";
 	private JTextField TextUtilisateur;
 	private DefaultListModel<String> chat = new DefaultListModel<String>();
+	private JList<String> chatList = null;
 	private DefaultListModel<String> users = new DefaultListModel<String>();
 	private Color borderBlue = new Color(53,62,80);
 	private Color buttBlue = new Color(15,114,176);
@@ -166,7 +165,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		JScrollPane chatScrollPane = new JScrollPane();
 		panneauChat.add(chatScrollPane, BorderLayout.CENTER);
 		
-		JList<String> chatList = new JList<String>(chat);
+		chatList = new JList<String>(chat);
 		chatScrollPane.setViewportView(chatList);
 		chatList.setBackground(backField);
 		chatList.setForeground(buttBlue);
@@ -276,14 +275,11 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		panneauFinal.add(panneauTextUtilisateur,gbcTF);
 		
 		contentPane.add(panneauFinal);
-		
-		int H = new Date().getHours(); 
-		int M = new Date().getMinutes();
-		this.sendMessage(H+":"+M+" - "+pseudo+" : "+"Bienvenu");
 	}
 	
 	public void addListener(ChatListener listener){
 		m_listeners.add(listener);
+		listener.askInitialization();
 	}
 
 	@Override
@@ -302,7 +298,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 			int retour = JOptionPane.showConfirmDialog(getParent(), "Etes vous sur de vouloir vous deconecter ?");
 			if(retour==0){
 				for(ChatListener l : m_listeners){
-					l.deconnectionAsked();
+					l.askDeconnection();
 				}
 			}
 			else if(retour==1){}
@@ -366,6 +362,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	
 	public void addMessage(String msg){
 		chat.addElement(msg);
+		chatList.ensureIndexIsVisible(chat.size()-1);
 	}
 	
 	private void sendMessage(String msg){
@@ -376,6 +373,14 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	
 	public void addUser(String nom){
 		users.addElement(statutLogo+" "+nom+ " - "+statut);
+	}
+	
+	public void supprUser(String nom){
+		for(int i=0; i<users.size(); ++i){
+			if(users.get(i).contains(nom)){
+				users.remove(i);
+			}
+		}
 	}
 	
 	public void changeStatus(String nom, int status){

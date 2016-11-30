@@ -11,11 +11,43 @@ import client.ComListener;
 
 public class ClientHandler implements Runnable {
 	private Socket m_sock = null;
+	private IDataPool m_dataPool = null;
 	private boolean m_quit = false;
+	private String m_pseudo = null;
 	private ArrayList<ComListener> m_comListeners = new ArrayList<ComListener>();
 	
-	public ClientHandler(Socket sock){
+	private void interpret(String trame){
+		if(trame.startsWith("+u")){
+			m_pseudo=trame.substring(2);
+			this.propagate(trame);
+		}else if(trame.startsWith("!i")){
+			for(String nom : m_dataPool.getUserPool()){
+				try {
+					this.post("+u"+nom);
+				} catch (IOException e) {
+					m_quit=true;
+				}
+			}
+		}else{
+			this.propagate(trame);
+		}
+	}
+	
+	private void propagate(String trame){
+		for(ComListener l : m_comListeners){
+			synchronized(l){
+				l.onTrameReceived(trame);
+			}
+		}
+	}
+	
+	public String getName(){
+		return m_pseudo;
+	}
+	
+	public ClientHandler(Socket sock, IDataPool datas){
 		m_sock=sock;
+		m_dataPool=datas;
 	}
 	
 	public synchronized void addListener(ComListener listener){
@@ -25,6 +57,10 @@ public class ClientHandler implements Runnable {
 	public synchronized void post(String msg) throws IOException{
 		PrintWriter out = new PrintWriter(m_sock.getOutputStream(), true);
 		out.println(msg);
+	}
+	
+	public synchronized void stop(){
+		m_quit = true;
 	}
 	
 	@Override
@@ -43,19 +79,9 @@ public class ClientHandler implements Runnable {
 				if(line==null){
 					m_quit=true;
 				}else{
-					for(ComListener l : m_comListeners){
-						synchronized(l){
-							l.onTrameReceived(line);
-						}
-					}
+					interpret(line);
 				}
 			} catch (IOException e) {
-				try {
-					m_sock.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-					System.exit(-1);
-				}
 				m_quit=true;
 			}
 		}
@@ -64,6 +90,9 @@ public class ClientHandler implements Runnable {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		if(m_pseudo != null){
+			this.interpret("-u"+m_pseudo);
 		}
 	}
 

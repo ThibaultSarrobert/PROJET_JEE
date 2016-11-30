@@ -36,24 +36,27 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 	
 	@Override
 	public void onTrameReceived(String trame){
-		String prefix = trame.substring(0, 2);
-		if(prefix.equals("+m")){
+		if(trame.startsWith("+m")){
 			if(m_chatWindow != null){
 				m_chatWindow.addMessage(trame.substring(2));
 			}
-		}else if(prefix.equals("+u")){
+		}else if(trame.startsWith("+u")){
 			if(m_chatWindow!=null){
 				m_chatWindow.addUser(trame.substring(2));
 			}
-		}else if(prefix.equals("!f")){
+		}else if(trame.startsWith("-u")){
+			if(m_chatWindow != null){
+				m_chatWindow.supprUser(trame.substring(2));
+			}
+		}else if(trame.startsWith("!f")){
 			if(m_chatWindow!=null){
 				m_chatWindow.changeStatus(trame.substring(2), 0);
 			}
-		}else if(prefix.equals("!b")){
+		}else if(trame.startsWith("!b")){
 			if(m_chatWindow!=null){
 				m_chatWindow.changeStatus(trame.substring(2), 1);
 			}
-		}else if(prefix.equals("!l")){
+		}else if(trame.startsWith("!l")){
 			if(m_chatWindow!=null){
 				m_chatWindow.changeStatus(trame.substring(2), 2);
 			}
@@ -78,7 +81,8 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 	}
 
 	@Override
-	public void deconnectionAsked() {
+	public void askDeconnection() {
+		m_com.post("-u"+m_pseudo);
 		m_com.disconnect();
 	}
 
@@ -100,5 +104,10 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 			m_com.post("!l"+m_pseudo);
 			break;
 		}
+	}
+
+	@Override
+	public void askInitialization() {
+		m_com.post("!i");
 	}
 }

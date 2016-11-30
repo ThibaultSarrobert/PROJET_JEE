@@ -11,8 +11,8 @@ public class CommunicationHandler implements Runnable {
 	private Socket m_sock = null;
 	public static final int TIMEOUT = 5000;
 	private StateListener.State m_state=StateListener.State.INITIAL;
-	private ArrayList<StateListener> m_stateListeners = null;
-	private ArrayList<ComListener> m_comListeners = null;
+	private ArrayList<StateListener> m_stateListeners = new ArrayList<StateListener>();
+	private ArrayList<ComListener> m_comListeners = new ArrayList<ComListener>();
 	private boolean m_quit = false;
 	
 	public synchronized void stop(){
@@ -33,11 +33,8 @@ public class CommunicationHandler implements Runnable {
 	}
 	
 	public CommunicationHandler(){
-		this.m_quit=false;
 		this.m_sock = new Socket();
 		this.m_state=StateListener.State.INITIAL;
-		this.m_stateListeners=new ArrayList<StateListener>();
-		this.m_comListeners=new ArrayList<ComListener>();
 	}
 	
 	public synchronized void addStateListener(StateListener listener){
