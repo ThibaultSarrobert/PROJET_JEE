@@ -70,6 +70,7 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 			m_chatWindow.addListener(this);
 			m_chatWindow.setVisible(true);
 			m_connectWindow.setVisible(false);
+		}else if(new_state==StateListener.State.CONNECTING){
 			m_com.post("+u"+m_pseudo);
 		}else{
 			if(m_chatWindow!=null){

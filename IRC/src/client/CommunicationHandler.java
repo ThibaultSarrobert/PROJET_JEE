@@ -15,6 +15,23 @@ public class CommunicationHandler implements Runnable {
 	private ArrayList<ComListener> m_comListeners = new ArrayList<ComListener>();
 	private boolean m_quit = false;
 	
+	private void interpret(String trame){
+		if(this.getState()==StateListener.State.CONNECTING){
+			if(trame.startsWith("!n")){
+				this.disconnect();
+			}else if(trame.startsWith("!o")){
+				this.changeState(StateListener.State.CONNECTED);
+			}
+		}else if(this.getState()==StateListener.State.CONNECTED){
+			for(ComListener l : m_comListeners){
+				synchronized(l){
+					l.onTrameReceived(trame);
+				}
+			}
+		}
+	}
+	
+	
 	public synchronized void stop(){
 		m_quit=true;
 	}
@@ -46,14 +63,13 @@ public class CommunicationHandler implements Runnable {
 	}
 	
 	public synchronized void configure(String ipaddr, int port){
-		if(this.getState()==StateListener.State.CONNECTED)
+		if(this.getState()!=StateListener.State.INITIAL)
 		{
 			this.disconnect();
 		}
-		this.changeState(StateListener.State.CONNECTING);
 		try {
 			this.m_sock=new Socket(ipaddr, port);
-			this.changeState(StateListener.State.CONNECTED);
+			this.changeState(StateListener.State.CONNECTING);
 		} catch (IOException e) {
 			System.out.println("Couldn't create socket");
 			this.m_sock=new Socket();
@@ -86,7 +102,7 @@ public class CommunicationHandler implements Runnable {
 	@Override
 	public void run() {
 		while(!m_quit){
-			if(this.getState() == StateListener.State.CONNECTED){
+			if(this.getState() != StateListener.State.INITIAL){
 				String line;
 				BufferedReader in = null;
 				try{
@@ -95,14 +111,10 @@ public class CommunicationHandler implements Runnable {
 					this.disconnect();
 				}
 
-				while(this.getState() == StateListener.State.CONNECTED){
+				while(this.getState() != StateListener.State.INITIAL){
 					try{
 						line = in.readLine();
-						for(ComListener l : m_comListeners){
-							synchronized(l){
-								l.onTrameReceived(line);
-							}
-						}
+						this.interpret(line);
 					}catch (IOException e) {
 						this.disconnect();
 					}

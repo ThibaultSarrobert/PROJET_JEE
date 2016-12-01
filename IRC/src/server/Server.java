@@ -30,6 +30,7 @@ public class Server implements Runnable, ComListener, IDataPool {
 	public void run() {
 		try {
 			m_sock=new ServerSocket(m_port);
+			System.out.println("Serveur en ligne");
 		} catch (IOException e) {
 			m_quit = true;
 		}

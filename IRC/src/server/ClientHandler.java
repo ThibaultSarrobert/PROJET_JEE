@@ -18,8 +18,26 @@ public class ClientHandler implements Runnable {
 	
 	private void interpret(String trame){
 		if(trame.startsWith("+u")){
-			m_pseudo=trame.substring(2);
-			this.propagate(trame);
+			boolean dejaPris=false;
+			for(String s : m_dataPool.getUserPool()){
+				if(s.equals(trame.substring(2))){
+					dejaPris=true;
+					break;
+				}
+			}
+			if(dejaPris){
+				try {
+					this.post("!n");
+				} catch (IOException e) {
+				}
+			}else{
+				try {
+					m_pseudo=trame.substring(2);
+					this.propagate(trame);
+					this.post("!o");
+				} catch (IOException e) {
+				}
+			}
 		}else if(trame.startsWith("!i")){
 			for(String nom : m_dataPool.getUserPool()){
 				try {
