@@ -1,6 +1,44 @@
 @startuml
+interface ComListener {
+        # void onTrameReceived(String)
+}
+
+interface StateListener {
+        + State : enum
+        + void onStateChanged(State)
+}
+
+enum State{
+        INITIAL
+        CONNECTING
+        CONNECTED
+        DISCONNECTING
+}
+
 class Client {
-	- m_state : State
+        - m_com : CommunicationHandler
+        - m_pseudo : String
+        - m_connectWindow : ConnexionWindow
+        - m_chatWindow : ChatClientWindow 
+}
+
+class CommunicationHandler {
+        + {static} TIMEOUT : final int 
+        - m_sock : Socket      
+        - m_state : StateListener.State
+        - m_stateListeners : ArrayList<StateListener>
+        - m_comListeners : ArrayList<ComListener>
+        - m_quit : boolean
+
+        + void stop()
+        - void changeState(StateListener.State)
+        + StateListener.State getState()
+        + CommunicationHandler()
+        + addStateListener(StateListener)
+        + addComListener(ComListener)
+        + void configure(String, int)
+        + void disconnect()
+        + void post(String)
 }
 
 class ConnexionHandler {
