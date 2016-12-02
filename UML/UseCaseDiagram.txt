@@ -17,7 +17,8 @@ rectangle System_Server{
     (Show thread history)
     (Kick a user)
     (Close the discussion)
-    (Disconnect the server)    
+    (Disconnect the server)
+    (Log in with Keyword)
 }
 
 User - (To log in)
@@ -28,5 +29,6 @@ User - (Show thread history)
 Admin - (Kick a user)
 Admin - (Close the discussion)
 Admin - (Disconnect the server)
+Admin - (Log in with Keyword)
 
 @enduml
