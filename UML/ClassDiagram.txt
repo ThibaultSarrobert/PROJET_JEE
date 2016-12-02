@@ -1,86 +1,114 @@
 @startuml
-interface ComListener {
-        # void onTrameReceived(String)
+
+'Package Client'
+
+package client{
+        interface ComListener {
+                # void onTrameReceived(String)
+        }
+
+        interface StateListener {
+                + State : enum
+                + void onStateChanged(State)
+        }
+
+        enum State{
+                INITIAL
+                CONNECTING
+                CONNECTED
+                DISCONNECTING
+        }
+
+        class Client {
+                - m_com : CommunicationHandler
+                - m_pseudo : String
+                - m_connectWindow : ConnexionWindow
+                - m_chatWindow : ChatClientWindow 
+        }
+
+        class CommunicationHandler {
+                + {static} TIMEOUT : final int 
+                - m_sock : Socket      
+                - m_state : StateListener.State
+                - m_stateListeners : ArrayList<StateListener>
+                - m_comListeners : ArrayList<ComListener>
+                - m_quit : boolean
+
+                + void stop()
+                - void changeState(StateListener.State)
+                + StateListener.State getState()
+                + CommunicationHandler()
+                + addStateListener(StateListener)
+                + addComListener(ComListener)
+                + void configure(String, int)
+                + void disconnect()
+                + void post(String)
+        }
 }
 
-interface StateListener {
-        + State : enum
-        + void onStateChanged(State)
+'Fin Package client'
+
+'Package IHMAuto'
+
+package IHMAuto{
+        interface ChatListener {
+            + void askDeconnection()
+            + void askInitialization()
+            + void sendMessage(String)
+            + void StatusChanged(int)
+        }
+
+        interface InfoConnectListener {
+            + void askForConnect(String, String, int)
+        }
+
+        class ConnexionWindow {
+        }
+
+        class ChatClientWindow {
+        }
+
+        class ChatAdminWindow {
+        }
+
+        class ConnexionAdminWindow {
+        }
 }
+'Fin package IHMAuto'
 
-enum State{
-        INITIAL
-        CONNECTING
-        CONNECTED
-        DISCONNECTING
+
+'Package server'
+
+package server {
+        interface IDataPool {
+            + ArrayList<String> getUserPool()
+        }
+
+        class Server {
+                - m_conversation : ArrayList<String>
+                - m_userList : ArrayList<String>
+                - m_adminList : ArrayList<String>
+                - void interpret(String)
+        }
+
+        class ClientHandler {
+                - m_state : State
+                - m_sock : Socket
+                - m_pseudonym : String
+                - m_isAdmin : boolean
+                - void interpret(String)
+        }
 }
+'Fin package server'
 
-class Client {
-        - m_com : CommunicationHandler
-        - m_pseudo : String
-        - m_connectWindow : ConnexionWindow
-        - m_chatWindow : ChatClientWindow 
-}
-
-class CommunicationHandler {
-        + {static} TIMEOUT : final int 
-        - m_sock : Socket      
-        - m_state : StateListener.State
-        - m_stateListeners : ArrayList<StateListener>
-        - m_comListeners : ArrayList<ComListener>
-        - m_quit : boolean
-
-        + void stop()
-        - void changeState(StateListener.State)
-        + StateListener.State getState()
-        + CommunicationHandler()
-        + addStateListener(StateListener)
-        + addComListener(ComListener)
-        + void configure(String, int)
-        + void disconnect()
-        + void post(String)
-}
-
-class ConnexionHandler {
-	- m_sock : Socket
-	- void interpret(String)
-	- void receive(Byte[])
-}
-
-class ConnexionWindow {
-}
-
-class ChatClientWindow {
-}
-
-class ChatAdminWindow {
-}
-
-class ConnexionAdminWindow {
-}
-
-Runnable<|--ConnexionHandler
-Client"1"*--ConnexionHandler
+Runnable<|--CommunicationHandler
+Client"1"*--CommunicationHandler
 Client"1"*--ConnexionWindow
 ConnexionWindow"1"*--ChatClientWindow
 ConnexionWindow"1"*--ConnexionAdminWindow
 ConnexionAdminWindow"1"*--ChatAdminWindow
 
-class Server {
-	- m_conversation : ArrayList<String>
-	- m_userList : ArrayList<String>
-	- m_adminList : ArrayList<String>
-	- void interpret(String)
-}
-
-class ClientHandler {
-	- m_state : State
-	- m_sock : Socket
-	- m_pseudonym : String
-	- m_isAdmin : boolean
-	- void interpret(String)
-}
-
 Server"1"*--"n"ClientHandler
 Runnable<|--ClientHandler
+
 @enduml
