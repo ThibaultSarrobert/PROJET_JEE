@@ -37,7 +37,7 @@ import javax.swing.ListCellRenderer;
 import java.awt.Component;
 import javax.swing.ScrollPaneConstants;
 
-public class ChatAdmintWindow extends JFrame implements ActionListener, FocusListener,KeyListener {
+public class ChatAdminWindow extends JFrame implements ActionListener, FocusListener,KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	private static final String CHAT = "CHAT";
@@ -106,11 +106,11 @@ public class ChatAdmintWindow extends JFrame implements ActionListener, FocusLis
 	}
 	
 	
-	public ChatClientWindow(String pseudo){
+	public ChatAdminWindow(){
 		
 		setIconImage(new ImageIcon(this.getClass().getResource("/logo_appli.jpg")).getImage());
 		
-		setTitle("Connecté en tant que Client - "+pseudo);
+		setTitle("Connecté en tant que Admin - ");
 		setBackground(Color.BLACK);
 		getContentPane().setBackground(Color.BLUE);
 		
@@ -212,7 +212,7 @@ public class ChatAdmintWindow extends JFrame implements ActionListener, FocusLis
 		@SuppressWarnings("deprecation")
 		int M = new Date().getMinutes();
 		
-		chat.addElement(H+":"+M+" - "+ "Bienvenu "+pseudo);
+		chat.addElement(H+":"+M+" - "+ "Bienvenu ");
 
 		panneauChat.setLayout(new BorderLayout(0, 0));
 		

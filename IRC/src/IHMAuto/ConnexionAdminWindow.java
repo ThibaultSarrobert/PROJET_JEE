@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -30,8 +31,11 @@ public class ConnexionAdminWindow extends JFrame implements ActionListener{
 	private Color backField = new Color(20,25,34);
 	private Color borderBlue = new Color(53,62,80);
 	private Color borderGrey = new Color(53,62,80);
+	private String pseudo = new String(); 
+	private ArrayList<InfoConnectListener> m_infoListeners = new ArrayList<InfoConnectListener>();
 	
-	public ConnexionAdminWindow(){
+	public ConnexionAdminWindow(String ID){
+		
 		setIconImage(new ImageIcon(this.getClass().getResource("/logo_appli.jpg")).getImage());
 		//Initialisation de la JFRAME avec ses reglages - options
 		setTitle(titreFenetre);
@@ -44,7 +48,7 @@ public class ConnexionAdminWindow extends JFrame implements ActionListener{
 		setVisible(true);
 		setAlwaysOnTop(false);
 		
-	
+		pseudo=ID;
 	//Contenu de la JFrame :
 		//Partie Pseudo
 	
@@ -96,6 +100,10 @@ public class ConnexionAdminWindow extends JFrame implements ActionListener{
 		
 		contentPane.add(finalPane);
 	}
+	
+	public void addInfoListener(InfoConnectListener listener){
+		m_infoListeners.add(listener);
+	}
 
 	@Override
 public void actionPerformed(ActionEvent e) 
@@ -103,19 +111,20 @@ public void actionPerformed(ActionEvent e)
 		String cmd = e.getActionCommand();
 		char[] mdp = passwordField.getPassword();
 		String s = new String(mdp);
-		System.out.println(mdp);
+		System.out.println(pseudo);
 		if (OK.equals(cmd)) 
 		{
 			if(s.equals("mdp")){
-				System.out.println("MDP OK");
+				System.out.println("mdp ok");
+				for(InfoConnectListener l : m_infoListeners){
+				l.askForConnect(pseudo, "127.0.0.1", 4444);
+				}
 			}
 			else{
 				passwordField.setText("");
 				JOptionPane.showMessageDialog(null, "Mauvais Mot de Passe","Erreur",JOptionPane.ERROR_MESSAGE);
 			}
-			//this.setVisible(false);
-			//@SuppressWarnings("unused")
-			//ChatAdminWindow CA = new ChatAdminWindow();
+			
 		}
 		else if(EXIT.equals(cmd))
 		{
