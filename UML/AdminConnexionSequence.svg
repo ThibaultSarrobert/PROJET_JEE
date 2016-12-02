@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1066pt" style="width:651px;height:1066px;" version="1.1" viewBox="0 0 651 1066" width="651pt">
+    <defs>
+        <filter height="300%" id="f1" width="300%" x="-1" y="-1">
+            <feGaussianBlur result="blurOut" stdDeviation="2.0"/>
+            <feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/>
+            <feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/>
+            <feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/>
+        </filter>
+    </defs>
+    <g>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="167" x="244" y="24.5332">UML Diagram Sequence</text>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="121" x="267" y="42.1426">Admin connexion</text>
+        <rect fill="#FFFFFF" filter="url(#f1)" height="566.8359" style="stroke: #000000; stroke-width: 2.0;" width="629" x="13" y="396.6406"/>
+        <rect fill="#FFFFFF" filter="url(#f1)" height="107.8906" style="stroke: #000000; stroke-width: 2.0;" width="250.5" x="381.5" y="421.9922"/>
+        <rect fill="#FFFFFF" height="59.1875" style="stroke: none; stroke-width: 1.0;" width="250.5" x="381.5" y="470.6953"/>
+        <rect fill="#FFFFFF" height="379.8906" style="stroke: none; stroke-width: 1.0;" width="629" x="13" y="583.5859"/>
+        <rect fill="#FFFFFF" filter="url(#f1)" height="289.3516" style="stroke: #000000; stroke-width: 2.0;" width="609" x="23" y="667.125"/>
+        <rect fill="#FFFFFF" height="193.9453" style="stroke: none; stroke-width: 1.0;" width="609" x="23" y="762.5313"/>
+        <line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;" x1="214" x2="214" y1="136.8281" y2="980.4766"/>
+        <line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;" x1="410.5" x2="410.5" y1="136.8281" y2="980.4766"/>
+        <line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;" x1="599" x2="599" y1="136.8281" y2="980.4766"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="38" x="192" y="133.752">admin</text>
+        <ellipse cx="214" cy="62.2188" fill="#FEFECE" filter="url(#f1)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <path d="M214,70.2188 L214,97.2188 M201,78.2188 L227,78.2188 M214,97.2188 L201,112.2188 M214,97.2188 L227,112.2188 " fill="#FEFECE" filter="url(#f1)" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="38" x="192" y="994.0098">admin</text>
+        <ellipse cx="214" cy="1007.0859" fill="#FEFECE" filter="url(#f1)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <path d="M214,1015.0859 L214,1042.0859 M201,1023.0859 L227,1023.0859 M214,1042.0859 L201,1057.0859 M214,1042.0859 L227,1057.0859 " fill="#FEFECE" filter="url(#f1)" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="33" x="391.5" y="133.752">client</text>
+        <ellipse cx="411" cy="103.2188" fill="#FEFECE" filter="url(#f1)" rx="12" ry="12" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <line style="stroke: #A80036; stroke-width: 2.0;" x1="399" x2="423" y1="117.2188" y2="117.2188"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="33" x="391.5" y="994.0098">client</text>
+        <ellipse cx="411" cy="1013.0859" fill="#FEFECE" filter="url(#f1)" rx="12" ry="12" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <line style="stroke: #A80036; stroke-width: 2.0;" x1="399" x2="423" y1="1027.0859" y2="1027.0859"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="40" x="576" y="133.752">server</text>
+        <ellipse cx="599" cy="103.2188" fill="#FEFECE" filter="url(#f1)" rx="12" ry="12" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <line style="stroke: #A80036; stroke-width: 2.0;" x1="587" x2="611" y1="117.2188" y2="117.2188"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="40" x="576" y="994.0098">server</text>
+        <ellipse cx="599" cy="1013.0859" fill="#FEFECE" filter="url(#f1)" rx="12" ry="12" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <line style="stroke: #A80036; stroke-width: 2.0;" x1="587" x2="611" y1="1027.0859" y2="1027.0859"/>
+        <polygon fill="#A80036" points="225,164.8281,215,168.8281,225,172.8281,221,168.8281" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="219" x2="410" y1="168.8281" y2="168.8281"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="134" x="231" y="164.3232">print connexion window</text>
+        <polygon fill="#A80036" points="399,195.1797,409,199.1797,399,203.1797,403,199.1797" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="214" x2="405" y1="199.1797" y2="199.1797"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="129" x="221" y="194.6748">Key-in his pseudonym</text>
+        <polygon fill="#A80036" points="399,225.5313,409,229.5313,399,233.5313,403,229.5313" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="214" x2="405" y1="229.5313" y2="229.5313"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="161" x="221" y="225.0264">Key-in the server coordinate</text>
+        <polygon fill="#A80036" points="399,255.8828,409,259.8828,399,263.8828,403,259.8828" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="214" x2="405" y1="259.8828" y2="259.8828"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="57" x="221" y="255.3779">Validation</text>
+        <polygon fill="#A80036" points="225,286.2344,215,290.2344,225,294.2344,221,290.2344" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="219" x2="410" y1="290.2344" y2="290.2344"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="173" x="231" y="285.7295">print connexion window admin</text>
+        <polygon fill="#A80036" points="399,316.5859,409,320.5859,399,324.5859,403,320.5859" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="214" x2="405" y1="320.5859" y2="320.5859"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="135" x="221" y="316.0811">Key-in admin password</text>
+        <polygon fill="#A80036" points="399,346.9375,409,350.9375,399,354.9375,403,350.9375" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="214" x2="405" y1="350.9375" y2="350.9375"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="57" x="221" y="346.4326">Validation</text>
+        <polygon fill="#A80036" points="587,377.2891,597,381.2891,587,385.2891,591,381.2891" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="411" x2="593" y1="381.2891" y2="381.2891"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="78" x="418" y="376.7842">try connexion</text>
+        <rect fill="none" height="566.8359" style="stroke: #000000; stroke-width: 2.0;" width="629" x="13" y="396.6406"/>
+        <polygon fill="#EEEEEE" points="13,396.6406,74,396.6406,74,404.6406,64,414.6406,13,414.6406,13,396.6406" style="stroke: #000000; stroke-width: 2.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="16" x="28" y="411.1357">alt</text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="97" x="89" y="410.0596">[server is wrong]</text>
+        <rect fill="none" height="107.8906" style="stroke: #000000; stroke-width: 2.0;" width="250.5" x="381.5" y="421.9922"/>
+        <polygon fill="#EEEEEE" points="381.5,421.9922,442.5,421.9922,442.5,429.9922,432.5,439.9922,381.5,439.9922,381.5,421.9922" style="stroke: #000000; stroke-width: 2.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="16" x="396.5" y="436.4873">alt</text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="115" x="457.5" y="435.4111">[server return error]</text>
+        <polygon fill="#A80036" points="422,458.3438,412,462.3438,422,466.3438,418,462.3438" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="416" x2="598" y1="462.3438" y2="462.3438"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="89" x="428" y="457.8389">connexion error</text>
+        <line style="stroke: #000000; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="381.5" x2="632" y1="471.6953" y2="471.6953"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="146" x="386.5" y="483.1143">[server is not responding]</text>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="411" x2="453" y1="508.8828" y2="508.8828"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="453" x2="453" y1="508.8828" y2="521.8828"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="412" x2="453" y1="521.8828" y2="521.8828"/>
+        <polygon fill="#A80036" points="422,517.8828,412,521.8828,422,525.8828,418,521.8828" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="43" x="418" y="504.0264">timeout</text>
+        <polygon fill="#A80036" points="225,570.8828,215,574.8828,225,578.8828,221,574.8828" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="219" x2="410" y1="574.8828" y2="574.8828"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="134" x="231" y="554.3779">print connexion window</text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="96" x="231" y="570.7295">(return to step 1)</text>
+        <line style="stroke: #000000; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="13" x2="642" y1="584.5859" y2="584.5859"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="75" x="18" y="596.0049">[server is ok]</text>
+        <polygon fill="#A80036" points="422,617.4219,412,621.4219,422,625.4219,418,621.4219" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="416" x2="598" y1="621.4219" y2="621.4219"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="68" x="428" y="616.917">acknowlege</text>
+        <polygon fill="#A80036" points="587,647.7734,597,651.7734,587,655.7734,591,651.7734" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="411" x2="593" y1="651.7734" y2="651.7734"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="123" x="418" y="647.2686">request of new admin</text>
+        <rect fill="none" height="289.3516" style="stroke: #000000; stroke-width: 2.0;" width="609" x="23" y="667.125"/>
+        <polygon fill="#EEEEEE" points="23,667.125,84,667.125,84,675.125,74,685.125,23,685.125,23,667.125" style="stroke: #000000; stroke-width: 2.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="16" x="38" y="681.6201">alt</text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="281" x="99" y="680.5439">[pseudonym is already taken or password is false]</text>
+        <polygon fill="#A80036" points="422,703.4766,412,707.4766,422,711.4766,418,707.4766" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="416" x2="598" y1="707.4766" y2="707.4766"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="147" x="428" y="702.9717">Refuse admin registration</text>
+        <polygon fill="#A80036" points="225,749.8281,215,753.8281,225,757.8281,221,753.8281" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="219" x2="410" y1="753.8281" y2="753.8281"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="134" x="231" y="733.3232">print connexion window</text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="96" x="231" y="749.6748">(return to step 1)</text>
+        <line style="stroke: #000000; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" x1="23" x2="632" y1="763.5313" y2="763.5313"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="137" x="28" y="774.9502">[pseudonym is available]</text>
+        <polygon fill="#A80036" points="422,796.3672,412,800.3672,422,804.3672,418,800.3672" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="416" x2="598" y1="800.3672" y2="800.3672"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="140" x="428" y="795.8623">Confirmation registration</text>
+        <polygon fill="#A80036" points="587,826.7188,597,830.7188,587,834.7188,591,830.7188" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="411" x2="593" y1="830.7188" y2="830.7188"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="123" x="418" y="826.2139">ask for current status</text>
+        <polygon fill="#A80036" points="422,857.0703,412,861.0703,422,865.0703,418,861.0703" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="416" x2="598" y1="861.0703" y2="861.0703"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="121" x="428" y="856.5654">send the list of users</text>
+        <polygon fill="#A80036" points="422,887.4219,412,891.4219,422,895.4219,418,891.4219" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="416" x2="598" y1="891.4219" y2="891.4219"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="164" x="428" y="886.917">send the history of message</text>
+        <polygon fill="#A80036" points="225,930.9492,215,934.9492,225,938.9492,221,934.9492" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="219" x2="410" y1="934.9492" y2="934.9492"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="100" x="231" y="930.4443">print chat window</text>
+        <polygon fill="#FBFB77" filter="url(#f1)" points="33,904.7734,33,946.7734,205,946.7734,205,914.7734,195,904.7734,33,904.7734" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="195" x2="195" y1="904.7734" y2="914.7734"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="205" x2="195" y1="914.7734" y2="914.7734"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="125" x="39" y="923.2686">User can now access</text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="151" x="39" y="939.6201">to Conversation Sequence</text>
+    </g>
+</svg>

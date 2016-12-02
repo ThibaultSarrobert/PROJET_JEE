@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="628pt" style="width:330px;height:628px;" version="1.1" viewBox="0 0 330 628" width="330pt">
+    <defs>
+        <filter height="300%" id="f1" width="300%" x="-1" y="-1">
+            <feGaussianBlur result="blurOut" stdDeviation="2.0"/>
+            <feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/>
+            <feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/>
+            <feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/>
+        </filter>
+    </defs>
+    <g>
+        <text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="100" x="124.5" y="18.6855">UML Digram</text>
+        <text fill="#000000" font-family="sans-serif" font-size="18" lengthAdjust="spacingAndGlyphs" textLength="79" x="135" y="41.3262">Use Case</text>
+        <rect fill="#FFFFFF" filter="url(#f1)" height="560" style="stroke: #000000; stroke-width: 2.0;" width="188" x="135" y="61.2813"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="106" x="176" y="77.8145">System_Server</text>
+        <ellipse cx="228.8909" cy="317.233" fill="#FEFECE" filter="url(#f1)" rx="41.8909" ry="15.4517" style="stroke: #A80036; stroke-width: 1.5;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="55" x="201.3909" y="322.5376">To log in</text>
+        <ellipse cx="228.7696" cy="383.233" fill="#FEFECE" filter="url(#f1)" rx="39.7696" ry="15.4517" style="stroke: #A80036; stroke-width: 1.5;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="52" x="202.7696" y="388.5376">Sign out</text>
+        <ellipse cx="228.8977" cy="450.1608" fill="#FEFECE" filter="url(#f1)" rx="67.3977" ry="15.8795" style="stroke: #A80036; stroke-width: 1.5;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="94" x="181.8977" y="455.4655">Send message</text>
+        <ellipse cx="229.1163" cy="521.4045" fill="#FEFECE" filter="url(#f1)" rx="86.1163" ry="19.6233" style="stroke: #A80036; stroke-width: 1.5;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="141" x="158.6163" y="526.7092">Send private message</text>
+        <ellipse cx="228.9481" cy="594.0709" fill="#FEFECE" filter="url(#f1)" rx="79.4481" ry="18.2896" style="stroke: #A80036; stroke-width: 1.5;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="125" x="166.4481" y="599.3756">Show thread history</text>
+        <ellipse cx="228.9975" cy="251.233" fill="#FEFECE" filter="url(#f1)" rx="52.4975" ry="15.4517" style="stroke: #A80036; stroke-width: 1.5;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="70" x="193.9975" y="256.5376">Kick a user</text>
+        <ellipse cx="229.0052" cy="108.4823" fill="#FEFECE" filter="url(#f1)" rx="81.5052" ry="18.701" style="stroke: #A80036; stroke-width: 1.5;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="130" x="164.0052" y="113.787">Close the discussion</text>
+        <ellipse cx="228.8478" cy="181.1508" fill="#FEFECE" filter="url(#f1)" rx="84.8478" ry="19.3696" style="stroke: #A80036; stroke-width: 1.5;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="138" x="159.8478" y="186.4555">Disconnect the server</text>
+        <ellipse cx="44.5" cy="384.7813" fill="#FEFECE" filter="url(#f1)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <path d="M44.5,392.7813 L44.5,419.7813 M31.5,400.7813 L57.5,400.7813 M44.5,419.7813 L31.5,434.7813 M44.5,419.7813 L57.5,434.7813 " fill="#FEFECE" filter="url(#f1)" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="29" x="30" y="456.3145">User</text>
+        <ellipse cx="44.5" cy="183.7813" fill="#FEFECE" filter="url(#f1)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <path d="M44.5,191.7813 L44.5,218.7813 M31.5,199.7813 L57.5,199.7813 M44.5,218.7813 L31.5,233.7813 M44.5,218.7813 L57.5,233.7813 " fill="#FEFECE" filter="url(#f1)" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="77" x="6" y="255.3145">Main_Admin</text>
+        <path d="M44.5,258.9233 C44.5,290.6743 44.5,322.4253 44.5,354.1763 " fill="none" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <polygon fill="none" points="51.5001,354.4903,44.5,374.4903,37.5001,354.4903,51.5001,354.4903" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M59.7668,404.4313 C76.6942,389.7223 106.256,365.6793 135,350.2813 C153.877,340.1693 176.493,332.0643 194.695,326.4173 " fill="none" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M59.5174,414.6703 C87.729,409.4143 152.118,397.4183 192.625,389.8713 " fill="none" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M59.5174,419.8162 C83.8895,424.2233 135.262,433.5123 174.911,440.6813 " fill="none" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M59.5687,429.6813 C76.544,444.1863 106.382,468.2503 135,484.2813 C149.099,492.1793 165.228,499.2223 180.051,504.9883 " fill="none" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M59.5156,451.2753 C74.1231,482.9123 99.8133,529.4013 135,558.2813 C146.643,567.8375 161.113,575.0562 175.145,580.4226 " fill="none" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M83.3141,223.5333 C112.756,229.1793 153.658,237.0243 184.464,242.9323 " fill="none" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M83.2524,181.6063 C98.5488,168.7403 116.864,154.7473 135,144.2813 C149.246,136.0603 165.726,128.9833 180.82,123.3333 " fill="none" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <path d="M83.3141,209.0293 C106.388,204.6042 136.499,198.8293 163.274,193.6943 " fill="none" style="stroke: #A80036; stroke-width: 1.0;"/>
+    </g>
+</svg>

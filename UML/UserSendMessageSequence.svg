@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="480pt" style="width:855px;height:480px;" version="1.1" viewBox="0 0 855 480" width="855pt">
+    <defs>
+        <filter height="300%" id="f1" width="300%" x="-1" y="-1">
+            <feGaussianBlur result="blurOut" stdDeviation="2.0"/>
+            <feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/>
+            <feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/>
+            <feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/>
+        </filter>
+    </defs>
+    <g>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="167" x="348.5" y="24.5332">UML Diagram Sequence</text>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="151" x="356.5" y="42.1426">User send a message</text>
+        <line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;" x1="25" x2="25" y1="136.8281" y2="395.2891"/>
+        <line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;" x1="247.5" x2="247.5" y1="136.8281" y2="395.2891"/>
+        <line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;" x1="497" x2="497" y1="136.8281" y2="395.2891"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="28" x="8" y="133.752">user</text>
+        <ellipse cx="25" cy="62.2188" fill="#FEFECE" filter="url(#f1)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <path d="M25,70.2188 L25,97.2188 M12,78.2188 L38,78.2188 M25,97.2188 L12,112.2188 M25,97.2188 L38,112.2188 " fill="#FEFECE" filter="url(#f1)" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="28" x="8" y="408.8223">user</text>
+        <ellipse cx="25" cy="421.8984" fill="#FEFECE" filter="url(#f1)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <path d="M25,429.8984 L25,456.8984 M12,437.8984 L38,437.8984 M25,456.8984 L12,471.8984 M25,456.8984 L38,471.8984 " fill="#FEFECE" filter="url(#f1)" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="33" x="228.5" y="133.752">client</text>
+        <ellipse cx="248" cy="103.2188" fill="#FEFECE" filter="url(#f1)" rx="12" ry="12" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <line style="stroke: #A80036; stroke-width: 2.0;" x1="236" x2="260" y1="117.2188" y2="117.2188"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="33" x="228.5" y="408.8223">client</text>
+        <ellipse cx="248" cy="427.8984" fill="#FEFECE" filter="url(#f1)" rx="12" ry="12" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <line style="stroke: #A80036; stroke-width: 2.0;" x1="236" x2="260" y1="441.8984" y2="441.8984"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="40" x="474" y="133.752">server</text>
+        <ellipse cx="497" cy="103.2188" fill="#FEFECE" filter="url(#f1)" rx="12" ry="12" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <line style="stroke: #A80036; stroke-width: 2.0;" x1="485" x2="509" y1="117.2188" y2="117.2188"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="40" x="474" y="408.8223">server</text>
+        <ellipse cx="497" cy="427.8984" fill="#FEFECE" filter="url(#f1)" rx="12" ry="12" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <line style="stroke: #A80036; stroke-width: 2.0;" x1="485" x2="509" y1="441.8984" y2="441.8984"/>
+        <polygon fill="#A80036" points="236,164.8281,246,168.8281,236,172.8281,240,168.8281" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="25" x2="242" y1="168.8281" y2="168.8281"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="82" x="32" y="164.3232">type message</text>
+        <polygon fill="#A80036" points="236,195.1797,246,199.1797,236,203.1797,240,199.1797" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="25" x2="242" y1="199.1797" y2="199.1797"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="65" x="32" y="194.6748">press enter</text>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="248" x2="290" y1="229.8828" y2="229.8828"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="290" x2="290" y1="229.8828" y2="242.8828"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="249" x2="290" y1="242.8828" y2="242.8828"/>
+        <polygon fill="#A80036" points="259,238.8828,249,242.8828,259,246.8828,255,242.8828" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="86" x="255" y="225.0264">verify message</text>
+        <polygon fill="#A80036" points="485,268.8828,495,272.8828,485,276.8828,489,272.8828" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="248" x2="491" y1="272.8828" y2="272.8828"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="225" x="255" y="268.3779">send message via customized protocol</text>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="497" x2="539" y1="303.5859" y2="303.5859"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="539" x2="539" y1="303.5859" y2="316.5859"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="498" x2="539" y1="316.5859" y2="316.5859"/>
+        <polygon fill="#A80036" points="508,312.5859,498,316.5859,508,320.5859,504,316.5859" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="350" x="504" y="298.7295">verify message and distribute it to all communication threads</text>
+        <polygon fill="#A80036" points="259,342.5859,249,346.5859,259,350.5859,255,346.5859" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="253" x2="496" y1="346.5859" y2="346.5859"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="225" x="265" y="342.0811">send message via customized protocol</text>
+        <polygon fill="#A80036" points="36,372.9375,26,376.9375,36,380.9375,32,376.9375" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="30" x2="247" y1="376.9375" y2="376.9375"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="199" x="42" y="372.4326">print message in conversation field</text>
+    </g>
+</svg>

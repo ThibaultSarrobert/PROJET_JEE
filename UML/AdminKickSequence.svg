@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="511pt" style="width:777px;height:511px;" version="1.1" viewBox="0 0 777 511" width="777pt">
+    <defs>
+        <filter height="300%" id="f1" width="300%" x="-1" y="-1">
+            <feGaussianBlur result="blurOut" stdDeviation="2.0"/>
+            <feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/>
+            <feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/>
+            <feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/>
+        </filter>
+    </defs>
+    <g>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="167" x="309.5" y="24.5332">UML Diagram Sequence</text>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="111" x="337.5" y="42.1426">Admin kick user</text>
+        <line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;" x1="30" x2="30" y1="136.8281" y2="425.6406"/>
+        <line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;" x1="79" x2="79" y1="136.8281" y2="425.6406"/>
+        <line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;" x1="227.5" x2="227.5" y1="136.8281" y2="425.6406"/>
+        <line style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;" x1="509" x2="509" y1="136.8281" y2="425.6406"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="38" x="8" y="133.752">admin</text>
+        <ellipse cx="30" cy="62.2188" fill="#FEFECE" filter="url(#f1)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <path d="M30,70.2188 L30,97.2188 M17,78.2188 L43,78.2188 M30,97.2188 L17,112.2188 M30,97.2188 L43,112.2188 " fill="#FEFECE" filter="url(#f1)" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="38" x="8" y="439.1738">admin</text>
+        <ellipse cx="30" cy="452.25" fill="#FEFECE" filter="url(#f1)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <path d="M30,460.25 L30,487.25 M17,468.25 L43,468.25 M30,487.25 L17,502.25 M30,487.25 L43,502.25 " fill="#FEFECE" filter="url(#f1)" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="28" x="62" y="133.752">user</text>
+        <ellipse cx="79" cy="62.2188" fill="#FEFECE" filter="url(#f1)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <path d="M79,70.2188 L79,97.2188 M66,78.2188 L92,78.2188 M79,97.2188 L66,112.2188 M79,97.2188 L92,112.2188 " fill="#FEFECE" filter="url(#f1)" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="28" x="62" y="439.1738">user</text>
+        <ellipse cx="79" cy="452.25" fill="#FEFECE" filter="url(#f1)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <path d="M79,460.25 L79,487.25 M66,468.25 L92,468.25 M79,487.25 L66,502.25 M79,487.25 L92,502.25 " fill="#FEFECE" filter="url(#f1)" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="33" x="208.5" y="133.752">client</text>
+        <ellipse cx="228" cy="103.2188" fill="#FEFECE" filter="url(#f1)" rx="12" ry="12" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <line style="stroke: #A80036; stroke-width: 2.0;" x1="216" x2="240" y1="117.2188" y2="117.2188"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="33" x="208.5" y="439.1738">client</text>
+        <ellipse cx="228" cy="458.25" fill="#FEFECE" filter="url(#f1)" rx="12" ry="12" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <line style="stroke: #A80036; stroke-width: 2.0;" x1="216" x2="240" y1="472.25" y2="472.25"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="40" x="486" y="133.752">server</text>
+        <ellipse cx="509" cy="103.2188" fill="#FEFECE" filter="url(#f1)" rx="12" ry="12" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <line style="stroke: #A80036; stroke-width: 2.0;" x1="497" x2="521" y1="117.2188" y2="117.2188"/>
+        <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="40" x="486" y="439.1738">server</text>
+        <ellipse cx="509" cy="458.25" fill="#FEFECE" filter="url(#f1)" rx="12" ry="12" style="stroke: #A80036; stroke-width: 2.0;"/>
+        <line style="stroke: #A80036; stroke-width: 2.0;" x1="497" x2="521" y1="472.25" y2="472.25"/>
+        <polygon fill="#A80036" points="216,164.8281,226,168.8281,216,172.8281,220,168.8281" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="30" x2="222" y1="168.8281" y2="168.8281"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="107" x="37" y="164.3232">select user to kick</text>
+        <polygon fill="#A80036" points="216,195.1797,226,199.1797,216,203.1797,220,199.1797" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="30" x2="222" y1="199.1797" y2="199.1797"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="70" x="37" y="194.6748">confirm kick</text>
+        <polygon fill="#A80036" points="497,225.5313,507,229.5313,497,233.5313,501,229.5313" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="228" x2="503" y1="229.5313" y2="229.5313"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="257" x="235" y="225.0264">send kick command via customized protocol</text>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="509" x2="551" y1="260.2344" y2="260.2344"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="551" x2="551" y1="260.2344" y2="273.2344"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="510" x2="551" y1="273.2344" y2="273.2344"/>
+        <polygon fill="#A80036" points="520,269.2344,510,273.2344,520,277.2344,516,273.2344" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="104" x="516" y="255.3779">verify right access</text>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="509" x2="551" y1="303.5859" y2="303.5859"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="551" x2="551" y1="303.5859" y2="316.5859"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="510" x2="551" y1="316.5859" y2="316.5859"/>
+        <polygon fill="#A80036" points="520,312.5859,510,316.5859,520,320.5859,516,316.5859" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="260" x="516" y="298.7295">close user connexion and retire user from list</text>
+        <polygon fill="#A80036" points="239,342.5859,229,346.5859,239,350.5859,235,346.5859" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="233" x2="508" y1="346.5859" y2="346.5859"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="128" x="245" y="342.0811">send updated user list</text>
+        <polygon fill="#A80036" points="90,372.9375,80,376.9375,90,380.9375,86,376.9375" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="84" x2="227" y1="376.9375" y2="376.9375"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="125" x="96" y="372.4326">print updated user list</text>
+        <polygon fill="#A80036" points="41,403.2891,31,407.2891,41,411.2891,37,407.2891" style="stroke: #A80036; stroke-width: 1.0;"/>
+        <line style="stroke: #A80036; stroke-width: 1.0;" x1="35" x2="227" y1="407.2891" y2="407.2891"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="125" x="47" y="402.7842">print updated user list</text>
+    </g>
+</svg>
