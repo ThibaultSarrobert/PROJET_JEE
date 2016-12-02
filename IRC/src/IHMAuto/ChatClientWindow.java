@@ -18,7 +18,6 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -61,8 +60,11 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	public static final Color buttBlue = new Color(15,114,176);
 	public static final Color backField = new Color(20,25,34);
 	public static final Color backBlueLight = new Color(40,50,68);
+	JScrollPane chatScrollPane;
 	Font font = new Font("Serial", Font.BOLD, 22);
 	Font font2 = new Font("Serial", Font.BOLD, 18);
+	Font fontChat = new Font("Serial", Font.PLAIN, 16);
+	Font fontUser = new Font("Serial", Font.PLAIN, 20);
 	
 	private class CustomCellRenderer extends JTextArea implements ListCellRenderer<String>{
 		private static final long serialVersionUID = -8221786621557567653L;
@@ -74,25 +76,27 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 			this.setLineWrap(true);
 			this.setEditable(false);
 			this.setSize(list.getWidth(), list.getHeight());
+			this.setFont(fontChat);
 
 	         Color background;
 	         Color foreground;
 	         
 	         // check if this cell is selected
 	         if (isSelected) {
-	             background = Color.BLACK;
-	             foreground = Color.WHITE;
+	             background = backField;
+	             foreground = buttBlue;
 
 	         // unselected, and not the DnD drop location
-	         } else {
+	         }
+	         else {
 	        	 if(index%2 == 1){
 	        		 background = ChatClientWindow.backBlueLight;
 	        	 }else{
-	        		 background = ChatClientWindow.buttBlue;
+	        		 background = ChatClientWindow.backField;
 	        	 }
-	             foreground = Color.WHITE;
-	         };
-
+	             foreground = buttBlue;
+	         }
+	         
 	         setBackground(background);
 	         setForeground(foreground);
 
@@ -212,15 +216,14 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 
 		panneauChat.setLayout(new BorderLayout(0, 0));
 		
-		JScrollPane chatScrollPane = new JScrollPane();
+		chatScrollPane = new JScrollPane(this.chatList);
 		chatScrollPane.setAutoscrolls(true);
 		chatScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		panneauChat.add(chatScrollPane, BorderLayout.CENTER);
 		
 		chatList = new JList<String>(chat);
 		chatList.setCellRenderer(new CustomCellRenderer());
-		chatList.setAutoscrolls(false);
-		chatList.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		chatList.setFont(fontUser);
 		chatScrollPane.setViewportView(chatList);
 		chatList.setBackground(backField);
 		chatList.setForeground(buttBlue);
@@ -265,10 +268,9 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		
 		//Panneau avec la liste des connectes
 		JList<String> usersJList = new JList<String>(users);
-		usersJList.setCellRenderer(new CustomCellRenderer());
 		usersJList.setSelectionBackground(backField);
 		usersJList.setSelectionForeground(buttBlue);
-		usersJList.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		usersJList.setFont(fontChat);
 		JScrollPane userListScrollPane = new JScrollPane(usersJList);
 		//usersJList.setVerticalTextPosition(SwingConstants.TOP);
 		//usersJList.setVerticalAlignment(SwingConstants.TOP);
@@ -429,7 +431,12 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		int H = new Date().getHours(); 
 		@SuppressWarnings("deprecation")
 		int M = new Date().getMinutes();
-		chat.addElement(H+":"+M+" - "+msg);
+		
+		int index = msg.indexOf(" : ");
+		String msgPseudo = msg.substring(0, index);
+		String msgMsg = msg.substring(index+3);
+		chatList.ensureIndexIsVisible(chat.size()-1);
+		chat.addElement(H+":"+M+" - "+msgPseudo+"\n"+"· "+msgMsg);
 	}
 	
 	private void sendMessage(String msg){
@@ -487,8 +494,11 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode()==KeyEvent.VK_ENTER){
-			this.sendMessage(TextUtilisateur.getText());
-			TextUtilisateur.setText("");
+			if(TextUtilisateur.getText().isEmpty()){}
+			else{
+				this.sendMessage(TextUtilisateur.getText());
+				TextUtilisateur.setText("");
+			}
         }
 	}
 
@@ -502,16 +512,5 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	class MyCellRenderer extends DefaultListCellRenderer {
-		   public static final String HTML_1 = "<html><body style='width: ";
-		   public static final String HTML_2 = "px'>";
-		   public static final String HTML_3 = "</html>";
-		   private int width;
-
-		   public MyCellRenderer(int width) {
-		      this.width = width;
-		   }
 	}
 }

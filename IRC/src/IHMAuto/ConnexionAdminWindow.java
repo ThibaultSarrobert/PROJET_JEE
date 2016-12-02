@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
@@ -41,13 +42,14 @@ public class ConnexionAdminWindow extends JFrame implements ActionListener{
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setVisible(true);
-		setAlwaysOnTop(true);
+		setAlwaysOnTop(false);
 		
 	
 	//Contenu de la JFrame :
 		//Partie Pseudo
 	
 	passwordField = new JPasswordField(10);
+	passwordField.setForeground(Color.WHITE);
 	passwordField.setActionCommand(OK);
 	passwordField.addFocusListener(listenerPassword);
 	passwordField.setBackground(backField);
@@ -99,15 +101,17 @@ public class ConnexionAdminWindow extends JFrame implements ActionListener{
 public void actionPerformed(ActionEvent e) 
 	{
 		String cmd = e.getActionCommand();
-		String mdp = passwordField.getText();
+		char[] mdp = passwordField.getPassword();
+		String s = new String(mdp);
 		System.out.println(mdp);
 		if (OK.equals(cmd)) 
 		{
-			if(mdp=="mdp"){
+			if(s.equals("mdp")){
 				System.out.println("MDP OK");
 			}
 			else{
-				System.out.println("MDP KO");
+				passwordField.setText("");
+				JOptionPane.showMessageDialog(null, "Mauvais Mot de Passe","Erreur",JOptionPane.ERROR_MESSAGE);
 			}
 			//this.setVisible(false);
 			//@SuppressWarnings("unused")

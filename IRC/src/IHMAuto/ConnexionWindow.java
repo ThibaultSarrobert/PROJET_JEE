@@ -139,7 +139,7 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 			}
 			
 			else if(ID.length()<3||ID.length()>15){
-				JOptionPane.showMessageDialog(null,"Votre ID doit etre compris entre 3 et 15 charactères","Erreur",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Votre ID doit etre compris entre 3 et 15 caractères","Erreur",JOptionPane.ERROR_MESSAGE);
 			}
 			else if(ID.contains(" ")||ID.contains("!")){
 				JOptionPane.showMessageDialog(null,"Votre ID ne doit pas contenir d'espaces","Erreur",JOptionPane.ERROR_MESSAGE);
@@ -152,7 +152,7 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 		}
 		else if(HELP.equals(cmd))
 		{
-			JOptionPane.showMessageDialog(null,"Votre pseudo doit étre compris entre 3 et  15 charactères\n "
+			JOptionPane.showMessageDialog(null,"Votre pseudo doit étre compris entre 3 et  15 caractères\n "
 					+ "Si il n'est pas accepté : c'est qu'il est deja utilisé\n", "Aide",JOptionPane.INFORMATION_MESSAGE);
 		}
 		else{
