@@ -19,6 +19,11 @@ public class CommunicationHandler implements Runnable {
 		if(this.getState()==StateListener.State.CONNECTING){
 			if(trame.startsWith("!n")){
 				this.disconnect();
+				for(ComListener l : m_comListeners){
+					synchronized(l){
+						l.Error("pseudo déjà pris");
+					}
+				}
 			}else if(trame.startsWith("!o")){
 				this.changeState(StateListener.State.CONNECTED);
 			}

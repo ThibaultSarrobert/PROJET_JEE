@@ -1,5 +1,7 @@
 package client;
 
+import javax.swing.JOptionPane;
+
 import IHMAuto.ChatClientWindow;
 import IHMAuto.ChatListener;
 import IHMAuto.ConnexionWindow;
@@ -89,7 +91,7 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 
 	@Override
 	public void sendMessage(String msg) {
-		m_com.post("+m"+msg);
+		m_com.post("+m"+m_pseudo+" : "+msg);
 	}
 
 	@Override
@@ -110,5 +112,11 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 	@Override
 	public void askInitialization() {
 		m_com.post("!i");
+	}
+
+	@Override
+	public void Error(String error) {
+		JOptionPane.showMessageDialog(m_chatWindow,"Ce pseudo est atuellement utilisé par un autre utilisateur connecté!", "Erreur", 0);
+		
 	}
 }

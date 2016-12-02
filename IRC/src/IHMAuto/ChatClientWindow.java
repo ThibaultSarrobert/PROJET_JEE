@@ -14,8 +14,11 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Date;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -28,9 +31,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import java.awt.Component;
+import javax.swing.ScrollPaneConstants;
 
 public class ChatClientWindow extends JFrame implements ActionListener, FocusListener,KeyListener {
 
@@ -90,7 +95,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		//AJOUT DE LA GLUE
 		menuBar.add(Box.createHorizontalGlue());//On met de la glue pour que les menus soient a droite
 		//Menu Statut
-		menuStatut = new JMenu("▼");
+		menuStatut = new JMenu("∨");
 		menuStatut.setForeground(Color.GREEN);
 		menuStatut.setFont(font2);
 			//Premier Item du menuStatut
@@ -159,13 +164,24 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		JPanel panneauChat = new JPanel(new BorderLayout()); //Panneau pour les messages du chat
 		panneauChat.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, borderBlue));
 		panneauChat.setBackground(backField);
+
+		@SuppressWarnings("deprecation")
+		int H = new Date().getHours(); 
+		@SuppressWarnings("deprecation")
+		int M = new Date().getMinutes();
 		
+		chat.addElement(H+":"+M+" - "+ "Bienvenu "+pseudo);
+
 		panneauChat.setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane chatScrollPane = new JScrollPane();
+		chatScrollPane.setAutoscrolls(true);
+		chatScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		panneauChat.add(chatScrollPane, BorderLayout.CENTER);
 		
 		chatList = new JList<String>(chat);
+		chatList.setAutoscrolls(false);
+		chatList.setFont(new Font("Tahoma", Font.PLAIN, 19));
 		chatScrollPane.setViewportView(chatList);
 		chatList.setBackground(backField);
 		chatList.setForeground(buttBlue);
@@ -210,6 +226,9 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		
 		//Panneau avec la liste des connectes
 		JList<String> usersJList = new JList<String>(users);
+		usersJList.setSelectionBackground(backField);
+		usersJList.setSelectionForeground(buttBlue);
+		usersJList.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		JScrollPane userListScrollPane = new JScrollPane(usersJList);
 		//usersJList.setVerticalTextPosition(SwingConstants.TOP);
 		//usersJList.setVerticalAlignment(SwingConstants.TOP);
@@ -309,7 +328,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 			ImageIcon icon = new ImageIcon(ConnexionWindow.class.getResource("/logo_isen.png"));
 			JOptionPane.showMessageDialog(
                     null,
-                    "Version de l'IHM 1.0 \n "
+                    "Version de l'IHM 1.0 \n"
         					+ "Chef de projet : Thibault SAROBERT\n"
         					+ "Architecte : Olivier ROMAN\n"
         					+ "Testeur/Valideur : Maxime MORREAU\n"
@@ -320,7 +339,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		else if(AIDE.equals(cmd))
 		{
 			
-			JOptionPane.showMessageDialog(getParent(), "Version de l'IHM 1.0 \n "
+			JOptionPane.showMessageDialog(getParent(), "Version de l'IHM 1.0 \n"
 					+ "Chef de projet : Thibault SAROBERT\n"
 					+ "Architecte : Olivier ROMAN\n"
 					+ "Testeur/Valideur : Maxime MORREAU\n"
@@ -328,15 +347,20 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		}
 		else if(CHAT.equals(cmd))
 		{
-			final String[] listeChat = { " ", "Michel", "Vero", "les PD" };
+			ArrayList<String> listeChat = new ArrayList<String>();
+			for(int i=0; i<users.size(); ++i){
+				String[] parseNom = users.get(i).split(" - ");
+				String pseudoChat = parseNom[0].substring(2);
+				listeChat.add(pseudoChat);
+			}
 			@SuppressWarnings("unused")
 			String quiChat = (String) JOptionPane.showInputDialog(this, 
 			        "Avec qui voulez-vous lancer une conversation privée ?",
 			        "Chat Perso",
 			        JOptionPane.QUESTION_MESSAGE, 
 			        null, 
-			        listeChat, 
-			        listeChat[0]);
+			        listeChat.toArray(), 
+				    listeChat.get(0));
 			
 				       
 		}
@@ -361,8 +385,11 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	}
 	
 	public void addMessage(String msg){
-		chat.addElement(msg);
-		chatList.ensureIndexIsVisible(chat.size()-1);
+		@SuppressWarnings("deprecation")
+		int H = new Date().getHours(); 
+		@SuppressWarnings("deprecation")
+		int M = new Date().getMinutes();
+		chat.addElement(H+":"+M+" - "+msg);
 	}
 	
 	private void sendMessage(String msg){
@@ -385,7 +412,9 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	
 	public void changeStatus(String nom, int status){
 		for(int i=0; i<users.size(); ++i){
-			if(users.get(i).contains(nom)){
+			String[] parseNom = users.get(i).split(" - ");
+			String pseudoPars = parseNom[0].substring(2);
+			if(pseudoPars.equals(nom)){
 				String[] tmp  = users.get(i).split(" - ");
 				switch(status){
 				case 0:
@@ -400,6 +429,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 				}
 			}
 		}
+		
 	}
 
 	@Override
@@ -433,5 +463,15 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+	class MyCellRenderer extends DefaultListCellRenderer {
+		   public static final String HTML_1 = "<html><body style='width: ";
+		   public static final String HTML_2 = "px'>";
+		   public static final String HTML_3 = "</html>";
+		   private int width;
+
+		   public MyCellRenderer(int width) {
+		      this.width = width;
+		   }
+	}
 }
