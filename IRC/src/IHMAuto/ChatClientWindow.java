@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 
 import java.awt.Component;
 import javax.swing.ScrollPaneConstants;
@@ -56,12 +57,49 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	private DefaultListModel<String> chat = new DefaultListModel<String>();
 	private JList<String> chatList = null;
 	private DefaultListModel<String> users = new DefaultListModel<String>();
-	private Color borderBlue = new Color(53,62,80);
-	private Color buttBlue = new Color(15,114,176);
-	private Color backField = new Color(20,25,34);
-	private Color backBlueLight = new Color(40,50,68);
+	public static final Color borderBlue = new Color(53,62,80);
+	public static final Color buttBlue = new Color(15,114,176);
+	public static final Color backField = new Color(20,25,34);
+	public static final Color backBlueLight = new Color(40,50,68);
 	Font font = new Font("Serial", Font.BOLD, 22);
 	Font font2 = new Font("Serial", Font.BOLD, 18);
+	
+	private class CustomCellRenderer extends JTextArea implements ListCellRenderer<String>{
+		private static final long serialVersionUID = -8221786621557567653L;
+
+		@Override
+		public Component getListCellRendererComponent(JList<? extends String> list, String value, int index,
+				boolean isSelected, boolean cellHasFocus) {
+			this.setText(value.toString());
+			this.setLineWrap(true);
+			this.setEditable(false);
+			this.setSize(list.getWidth(), list.getHeight());
+
+	         Color background;
+	         Color foreground;
+	         
+	         // check if this cell is selected
+	         if (isSelected) {
+	             background = Color.BLACK;
+	             foreground = Color.WHITE;
+
+	         // unselected, and not the DnD drop location
+	         } else {
+	        	 if(index%2 == 1){
+	        		 background = ChatClientWindow.backBlueLight;
+	        	 }else{
+	        		 background = ChatClientWindow.buttBlue;
+	        	 }
+	             foreground = Color.WHITE;
+	         };
+
+	         setBackground(background);
+	         setForeground(foreground);
+
+	         return this;
+		}
+		
+	}
 	
 	
 	public ChatClientWindow(String pseudo){
@@ -180,6 +218,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		panneauChat.add(chatScrollPane, BorderLayout.CENTER);
 		
 		chatList = new JList<String>(chat);
+		chatList.setCellRenderer(new CustomCellRenderer());
 		chatList.setAutoscrolls(false);
 		chatList.setFont(new Font("Tahoma", Font.PLAIN, 19));
 		chatScrollPane.setViewportView(chatList);
@@ -226,6 +265,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		
 		//Panneau avec la liste des connectes
 		JList<String> usersJList = new JList<String>(users);
+		usersJList.setCellRenderer(new CustomCellRenderer());
 		usersJList.setSelectionBackground(backField);
 		usersJList.setSelectionForeground(buttBlue);
 		usersJList.setFont(new Font("Tahoma", Font.PLAIN, 15));
