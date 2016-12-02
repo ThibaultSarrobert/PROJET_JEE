@@ -66,7 +66,11 @@ package IHMAuto{
         }
 
         class ChatClientWindow {
-        }
+			+ void addMessage(String)
+			+ void addUser(String)
+			+ void supprMessage(String)
+			+ void supprUser(String)
+		}
 
         class ChatAdminWindow {
         }
@@ -81,7 +85,8 @@ package IHMAuto{
 
 package server {
         interface IDataPool {
-            + ArrayList<String> getUserPool()
+			+ ArrayList<String> getUserPool()
+			+ ArrayList<String> getMessagePool()
         }
 
         class Server {
@@ -92,23 +97,33 @@ package server {
         }
 
         class ClientHandler {
-                - m_state : State
-                - m_sock : Socket
-                - m_pseudonym : String
-                - m_isAdmin : boolean
-                - void interpret(String)
+        		- m_sock : Socket
+				- m_pseudonym : String
+				- m_isAdmin : boolean
+				- void interpret(String)
+				+ void post(String)
         }
 }
 'Fin package server'
 
+StateListener<|--Client
+ComListener<|--Client
+ChatListener<|--Client
+InfoConnectListener<|--Client
 Runnable<|--CommunicationHandler
 Client"1"*--CommunicationHandler
 Client"1"*--ConnexionWindow
-ConnexionWindow"1"*--ChatClientWindow
-ConnexionWindow"1"*--ConnexionAdminWindow
-ConnexionAdminWindow"1"*--ChatAdminWindow
+Client"1"*--ChatClientWindow
+Client"1"*--ConnexionAdminWindow
+Client"1"*--ChatAdminWindow
+CommunicationHandler"1"*--"n"ComListener
+ChatClientWindow"1"*--"n"ChatListener
+ConnexionWindow"1"*--"n"InfoConnectListener
 
+IDataPool<|--Server
+ComListener<|--Server
 Server"1"*--"n"ClientHandler
 Runnable<|--ClientHandler
+ClientHandler"1"*--"n"ComListener
 
 @enduml
