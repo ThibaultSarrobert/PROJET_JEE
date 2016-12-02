@@ -109,4 +109,10 @@ public class Server implements Runnable, ComListener, IDataPool {
 		}
 		return userPool;
 	}
+
+	@Override
+	public void Error(String error) {
+		// TODO Auto-generated method stub
+		
+	}
 }

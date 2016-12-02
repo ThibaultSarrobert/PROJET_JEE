@@ -141,6 +141,9 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 			else if(ID.length()<3||ID.length()>15){
 				JOptionPane.showMessageDialog(null,"Votre ID doit etre compris entre 3 et 15 charactères","Erreur",JOptionPane.ERROR_MESSAGE);
 			}
+			else if(ID.contains(" ")||ID.contains("!")){
+				JOptionPane.showMessageDialog(null,"Votre ID ne doit pas contenir d'espaces","Erreur",JOptionPane.ERROR_MESSAGE);
+			}
 			else{
 				for(InfoConnectListener l : m_infoListeners){
 					l.askForConnect(ID, "127.0.0.1", 4444);

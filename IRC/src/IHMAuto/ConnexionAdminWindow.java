@@ -99,9 +99,16 @@ public class ConnexionAdminWindow extends JFrame implements ActionListener{
 public void actionPerformed(ActionEvent e) 
 	{
 		String cmd = e.getActionCommand();
-
+		String mdp = passwordField.getText();
+		System.out.println(mdp);
 		if (OK.equals(cmd)) 
 		{
+			if(mdp=="mdp"){
+				System.out.println("MDP OK");
+			}
+			else{
+				System.out.println("MDP KO");
+			}
 			//this.setVisible(false);
 			//@SuppressWarnings("unused")
 			//ChatAdminWindow CA = new ChatAdminWindow();
