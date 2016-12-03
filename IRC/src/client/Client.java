@@ -119,4 +119,14 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 		JOptionPane.showMessageDialog(m_chatWindow,"Ce pseudo est atuellement utilisé par un autre utilisateur connecté!", "Erreur", 0);
 		
 	}
+	
+	public ConnexionWindow getConnexionWindow()
+	{
+		return m_connectWindow;
+	}
+	
+	public ChatClientWindow getChatClientWindow()
+	{
+		return m_chatWindow;
+	}
 }

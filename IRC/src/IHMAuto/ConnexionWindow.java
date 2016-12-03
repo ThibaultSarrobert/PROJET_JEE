@@ -196,4 +196,9 @@ public void focusLost(FocusEvent e) {
 	// TODO Auto-generated method stub
 	
 }
+
+public JTextField getIDField()
+{
+	return IDField;
+}
 }
