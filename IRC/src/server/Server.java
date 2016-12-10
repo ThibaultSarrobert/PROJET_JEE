@@ -1,72 +1,45 @@
 package server;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.util.ArrayList;
 
-import client.ComListener;
-
-public class Server implements Runnable, ComListener, IDataPool {
-	private ServerSocket m_sock=null;
+public class Server implements Runnable, ClientListener, ServeurListener, IDataPool, ILinker {
+	private ClientWaiter m_clientWaiter = null;
 	private ArrayList<ClientHandler> m_clients = new ArrayList<ClientHandler>();
-	private boolean m_quit = false;
-	private int m_port;
+	private ServerWaiter m_serverWaiter = null;
+	private ArrayList<ServerHandler> m_annexeServers = new ArrayList<ServerHandler>();
 		
-	public Server(int port){
-		m_port = port;
-	}
-	
-	protected void finalize(){
-		try{
-			if(m_sock != null){
-				m_sock.close();
-			}
-		} catch (IOException e) {
-			System.out.println("Could not close socket");
-		}
+	public Server(){
 	}
 
 	@Override
 	public void run() {
-		try {
-			m_sock=new ServerSocket(m_port);
-			System.out.println("Serveur en ligne");
-		} catch (IOException e) {
-			m_quit = true;
-		}
-		while(!m_quit){
-			ClientHandler h = null;
-			try {
-				h=new ClientHandler(m_sock.accept(), this);
-				h.addListener(this);
-				synchronized(this){
-					m_clients.add(h);
-				}
-				new Thread(h).start();
-			} catch (IOException e) {
-				m_quit = true;
-			}
-		}
-		try {
-			if(m_sock!=null){
-				m_sock.close();
-			}
-		} catch (IOException e) {
-		}
+		//TODO read the configuration file
+		//TODO register this server in the database
+		m_serverWaiter = new ServerWaiter(4445, this);
+		new Thread(m_serverWaiter).start();
+		m_clientWaiter = new ClientWaiter(4444, this, this);
+		new Thread(m_clientWaiter).start();
+		System.out.println("Serveur en ligne");
 	}
 	
 
 	public static void main(String[] args) {
-		Server s = new Server(4444);
+		Server s = new Server();
 		s.run();
 	}
 
-	@Override
-	public void onTrameReceived(String trame) {
+	public void interpret(String trame) {
 		if(trame.startsWith("!q")){
-			synchronized(this){
-				this.m_quit=true;
+			m_serverWaiter.stop();
+			m_clientWaiter.stop();
+			for(ServerHandler sh : m_annexeServers){
+				sh.stop();
 			}
+			for(ClientHandler ch : m_clients){
+				ch.stop();
+			}
+			System.exit(0);
 		}else if(trame.startsWith("-u")){
 			for(ClientHandler c : m_clients){
 				if(trame.substring(2).equals(c.getName())){
@@ -75,11 +48,16 @@ public class Server implements Runnable, ComListener, IDataPool {
 					break;
 				}
 			}
+			ArrayList<ClientHandler> trash = new ArrayList<ClientHandler>();
 			for(ClientHandler c : m_clients){
 				try {
 					c.post(trame);
 				} catch (IOException e) {
+					trash.add(c);
 				}
+			}
+			for(ClientHandler h : trash){
+				m_clients.remove(h);
 			}
 		}else{
 			ArrayList<ClientHandler> trash = new ArrayList<ClientHandler>();
@@ -111,8 +89,37 @@ public class Server implements Runnable, ComListener, IDataPool {
 	}
 
 	@Override
-	public void Error(String error) {
-		// TODO Auto-generated method stub
-		
+	public void linkClient(ClientHandler client) {
+		client.addListener(this);
+		m_clients.add(client);
+		new Thread(client).start();
+	}
+
+	@Override
+	public void linkServer(ServerHandler serv) {
+		serv.addListener(this);
+		m_annexeServers.add(serv);
+		new Thread(serv).start();
+	}
+
+	@Override
+	public void clientMessaging(String trame) {
+		ArrayList<ServerHandler> trash = new ArrayList<ServerHandler>();
+		for(ServerHandler sh : m_annexeServers){
+			try {
+				sh.post(trame);
+			} catch (IOException e) {
+				trash.add(sh);
+			}
+		}
+		for(ServerHandler sh : trash){
+			m_annexeServers.remove(sh);
+		}
+		interpret(trame);
+	}
+
+	@Override
+	public void serverMessaging(String trame) {
+		interpret(trame);
 	}
 }
