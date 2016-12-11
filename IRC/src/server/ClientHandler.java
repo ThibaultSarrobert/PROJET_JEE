@@ -7,14 +7,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import client.ComListener;
-
 public class ClientHandler implements Runnable {
 	private Socket m_sock = null;
 	private IDataPool m_dataPool = null;
 	private boolean m_quit = false;
 	private String m_pseudo = null;
-	private ArrayList<ComListener> m_comListeners = new ArrayList<ComListener>();
+	private ArrayList<ClientListener> m_listeners = new ArrayList<ClientListener>();
 	
 	private void interpret(String trame){
 		if(trame.startsWith("+u")){
@@ -52,9 +50,9 @@ public class ClientHandler implements Runnable {
 	}
 	
 	private void propagate(String trame){
-		for(ComListener l : m_comListeners){
+		for(ClientListener l : m_listeners){
 			synchronized(l){
-				l.onTrameReceived(trame);
+				l.clientMessaging(trame);
 			}
 		}
 	}
@@ -68,8 +66,8 @@ public class ClientHandler implements Runnable {
 		m_dataPool=datas;
 	}
 	
-	public synchronized void addListener(ComListener listener){
-		m_comListeners.add(listener);
+	public synchronized void addListener(ClientListener listener){
+		m_listeners.add(listener);
 	}
 	
 	public synchronized void post(String msg) throws IOException{
@@ -79,10 +77,17 @@ public class ClientHandler implements Runnable {
 	
 	public synchronized void stop(){
 		m_quit = true;
+		try {
+			m_sock.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	public void run() {
+		//TODO récupérer l'historique des messages et le transmettre
 		String line;
 		BufferedReader in=null;
 		try {
