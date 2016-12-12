@@ -6,12 +6,11 @@ import java.net.ServerSocket;
 public class ClientWaiter implements Runnable {
 	private ServerSocket m_sock = null;
 	private boolean m_quit = false;
-	private int m_port = 0;
 	private ILinker m_linker = null;
 	private IDataPool m_dataPool = null;
 	
-	public ClientWaiter(int port, ILinker linker, IDataPool dataPool){
-		m_port=port;
+	public ClientWaiter(int port, ILinker linker, IDataPool dataPool) throws IOException{
+		m_sock=new ServerSocket(port);
 		m_linker=linker;
 		m_dataPool=dataPool;
 	}
@@ -38,11 +37,6 @@ public class ClientWaiter implements Runnable {
 
 	@Override
 	public void run() {
-		try {
-			m_sock=new ServerSocket(m_port);
-		} catch (IOException e) {
-			m_quit = true;
-		}
 		while(!m_quit){
 			ClientHandler h = null;
 			try {

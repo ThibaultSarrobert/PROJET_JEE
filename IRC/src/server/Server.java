@@ -1,6 +1,8 @@
 package server;
 
 import java.io.IOException;
+import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Server implements Runnable, ClientListener, ServeurListener, IDataPool, ILinker {
@@ -8,19 +10,49 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 	private ArrayList<ClientHandler> m_clients = new ArrayList<ClientHandler>();
 	private ServerWaiter m_serverWaiter = null;
 	private ArrayList<ServerHandler> m_annexeServers = new ArrayList<ServerHandler>();
-		
+	private DataBaseManager m_db = null;
+	private String m_hostname;
+	private int m_portClient;
+	private int m_portServeur;
+	
 	public Server(){
 	}
 
 	@Override
 	public void run() {
 		//TODO read the configuration file
-		//TODO register this server in the database
-		m_serverWaiter = new ServerWaiter(4445, this);
-		new Thread(m_serverWaiter).start();
-		m_clientWaiter = new ClientWaiter(4444, this, this);
-		new Thread(m_clientWaiter).start();
-		System.out.println("Serveur en ligne");
+		String db_hostname = "192.168.56.253";
+		int db_port = 5433;
+		String db_name = "ChatDatabase";
+		m_hostname="127.0.0.1";
+		m_portClient=4444;
+		m_portServeur=4445;
+		
+		try {
+			m_db = new DataBaseManager(db_hostname, db_port, db_name);
+			for(DataBaseManager.ServerCoord server : m_db.getServerList()){
+				try {
+					this.linkServer(new ServerHandler(new Socket(server.getHostname(), server.getServerPort())));
+				} catch (IOException e) {
+					m_db.removeServer(server.getHostname(), server.getClientPort(), server.getServerPort());
+				}
+			}
+			
+			try {
+				m_serverWaiter = new ServerWaiter(m_portServeur, this);
+				new Thread(m_serverWaiter).start();
+				m_clientWaiter = new ClientWaiter(m_portClient, this, this);
+				new Thread(m_clientWaiter).start();
+				m_db.addServer(m_hostname, m_portClient, m_portServeur);
+				System.out.println("Serveur en ligne sur les ports "+m_portClient+", "+m_portServeur);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 
@@ -39,6 +71,7 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 			for(ClientHandler ch : m_clients){
 				ch.stop();
 			}
+			if(m_db != null) m_db.removeServer(m_hostname, m_portClient, m_portServeur);
 			System.exit(0);
 		}else if(trame.startsWith("-u")){
 			for(ClientHandler c : m_clients){
@@ -77,12 +110,11 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 	@Override
 	public ArrayList<String> getUserPool() {
 		ArrayList<String> userPool = new ArrayList<String>();
-		synchronized(this){
-			for(ClientHandler c : m_clients){
-				String user = c.getName();
-				if(user != null){
-					userPool.add(user);
-				}
+		for(String s : m_db.getTrameHistory()){
+			if(s.startsWith("+u")){
+				userPool.add(s.substring(2));
+			}else if(s.startsWith("-u")){
+				userPool.remove(s.substring(2));
 			}
 		}
 		return userPool;
@@ -104,6 +136,7 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 
 	@Override
 	public void clientMessaging(String trame) {
+		m_db.addTrame(trame);
 		ArrayList<ServerHandler> trash = new ArrayList<ServerHandler>();
 		for(ServerHandler sh : m_annexeServers){
 			try {
@@ -121,5 +154,18 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 	@Override
 	public void serverMessaging(String trame) {
 		interpret(trame);
+	}
+
+	@Override
+	public ArrayList<String> getMessagePool() {
+		ArrayList<String> msgPool = new ArrayList<String>();
+		for(String s : m_db.getTrameHistory()){
+			if(s.startsWith("+m")){
+				msgPool.add(s.substring(2));
+			}else if(s.startsWith("-m")){
+				msgPool.remove(s.substring(2));
+			}
+		}
+		return msgPool;
 	}
 }

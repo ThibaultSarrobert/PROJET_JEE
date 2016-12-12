@@ -44,6 +44,13 @@ public class ClientHandler implements Runnable {
 					m_quit=true;
 				}
 			}
+			for(String msg : m_dataPool.getMessagePool()){
+				try {
+					this.post("+m"+msg);
+				} catch (IOException e) {
+					m_quit=true;
+				}
+			}
 		}else{
 			this.propagate(trame);
 		}
