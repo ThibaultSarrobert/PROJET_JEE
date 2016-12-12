@@ -1,9 +1,12 @@
 package server;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import org.ini4j.Ini;
 
 public class Server implements Runnable, ClientListener, ServeurListener, IDataPool, ILinker {
 	private ClientWaiter m_clientWaiter = null;
@@ -20,15 +23,18 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 
 	@Override
 	public void run() {
-		//TODO read the configuration file
-		String db_hostname = "192.168.56.253";
-		int db_port = 5433;
-		String db_name = "ChatDatabase";
-		m_hostname="127.0.0.1";
-		m_portClient=4444;
-		m_portServeur=4445;
+		try{
+			Ini inifile = new Ini(new File("config.ini"));
+			Ini.Section dbsection = inifile.get("database");
+			String db_hostname = dbsection.get("hostname");
+			int db_port = dbsection.get("port", int.class);
+			String db_name = dbsection.get("name");
+
+			Ini.Section servsection = inifile.get("server");
+			m_hostname=servsection.get("hostname");
+			m_portClient=servsection.get("portClient", int.class);
+			m_portServeur=servsection.get("portServeur", int.class);
 		
-		try {
 			m_db = new DataBaseManager(db_hostname, db_port, db_name);
 			for(DataBaseManager.ServerCoord server : m_db.getServerList()){
 				try {
@@ -49,7 +55,7 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 				e.printStackTrace();
 			}
 			
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (ClassNotFoundException | SQLException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

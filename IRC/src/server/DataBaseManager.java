@@ -30,6 +30,11 @@ public class DataBaseManager {
 		public int getServerPort(){
 			return m_portServeur;
 		}
+		
+		@Override
+		public String toString(){
+			return m_hostname+":"+Integer.toString(m_portClient);
+		}
 	}
 	
 	public DataBaseManager(String hostname, int port, String databaseName) throws ClassNotFoundException, SQLException{
@@ -78,6 +83,7 @@ public class DataBaseManager {
 			
 			java.sql.Date validity = new java.sql.Date(new java.util.Date().getTime()+(7*24*60*60*1000));
 			
+			trame = trame.replaceAll("'", "''");
 			String query = "INSERT INTO conversation (trame, validity) VALUES ('"+trame+"', '"+validity.toString()+"')";
 			statement.executeUpdate(query);
 			
