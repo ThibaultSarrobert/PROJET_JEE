@@ -7,7 +7,16 @@ import IHMAuto.ChatListener;
 import IHMAuto.ConnexionWindow;
 import IHMAuto.InfoConnectListener;
 
+import org.apache.log4j.Logger; 
+import org.apache.log4j.Category; 
+import org.apache.log4j.PropertyConfigurator;
+import server.Server;
+
 public class Client implements StateListener, ComListener, InfoConnectListener, ChatListener {
+        //Implement of Logger and Category for log4f
+        private final static Logger logger = Logger.getLogger(Server.class); 
+        static Category category = Category.getInstance(Server.class.getName());
+        
 	private CommunicationHandler m_com=null;
 	private String m_pseudo=null;
 	private ConnexionWindow m_connectWindow = null;
@@ -116,7 +125,7 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 
 	@Override
 	public void Error(String error) {
-		JOptionPane.showMessageDialog(m_chatWindow,"Ce pseudo est atuellement utilisé par un autre utilisateur connecté!", "Erreur", 0);
+		JOptionPane.showMessageDialog(m_chatWindow,"Ce pseudo est atuellement utilisï¿½ par un autre utilisateur connectï¿½!", "Erreur", 0);
 		
 	}
 	

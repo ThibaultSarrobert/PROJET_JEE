@@ -6,9 +6,17 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger; 
+import org.apache.log4j.Category; 
+import org.apache.log4j.PropertyConfigurator;
+
 import org.ini4j.Ini;
 
 public class Server implements Runnable, ClientListener, ServeurListener, IDataPool, ILinker {
+        //Implement of Logger and Category for log4f
+        private final static Logger logger = Logger.getLogger(Server.class); 
+        static Category category = Category.getInstance(Server.class.getName()); 
+        
 	private ClientWaiter m_clientWaiter = null;
 	private ArrayList<ClientHandler> m_clients = new ArrayList<ClientHandler>();
 	private ServerWaiter m_serverWaiter = null;
@@ -62,9 +70,10 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 	}
 	
 
-	public static void main(String[] args) {
+	public static void main(String[] args) {                
 		Server s = new Server();
 		s.run();
+                logger.info("Lancement du serveur");
 	}
 
 	public void interpret(String trame) {
