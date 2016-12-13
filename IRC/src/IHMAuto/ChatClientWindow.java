@@ -222,6 +222,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		panneauChat.add(chatScrollPane, BorderLayout.CENTER);
 		
 		chatList = new JList<String>(chat);
+		chatList.setAutoscrolls(true);
 		chatList.setCellRenderer(new CustomCellRenderer());
 		chatList.setFont(fontUser);
 		chatScrollPane.setViewportView(chatList);
@@ -435,8 +436,8 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		int index = msg.indexOf(" : ");
 		String msgPseudo = msg.substring(0, index);
 		String msgMsg = msg.substring(index+3);
-		chatList.ensureIndexIsVisible(chat.size()-1);
 		chat.addElement(H+":"+M+" - "+msgPseudo+"\n"+"· "+msgMsg);
+		if(chat.size() > 100) chat.remove(0);
 	}
 	
 	private void sendMessage(String msg){
