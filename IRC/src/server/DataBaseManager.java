@@ -114,11 +114,41 @@ public class DataBaseManager {
 		return serverlist;
 	}
 	
-	public void addServer(String hostname, int portClient, int portServeur){
+	public int addServer(String hostname, int clientPort, int serverPort){
 		try {
 			Statement statement = m_conn.createStatement();
 						
-			String query = "INSERT INTO serveurs (hostname, port, link_port) VALUES ('"+hostname+"', '"+Integer.toString(portClient)+"', '"+Integer.toString(portServeur)+"')";
+			String query = "INSERT INTO serveurs (hostname, port, link_port) VALUES ('"+hostname+"', '"+Integer.toString(clientPort)+"', '"+Integer.toString(serverPort)+"')";
+			statement.executeUpdate(query);
+						
+			statement.close();
+			
+			statement = m_conn.createStatement();
+			query = "SELECT id FROM serveurs WHERE hostname='"+hostname+"' AND port="+Integer.toString(clientPort)+" AND link_port="+Integer.toString(serverPort);
+			ResultSet res = statement.executeQuery(query);
+			
+			int id = 0;
+			while(res.next()){
+				id = res.getInt("id");
+			}
+			
+			res.close();
+			statement.close();
+			
+			return id;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public void removeServer(String hostname, int clientPort, int serverPort){
+		try {
+			Statement statement = m_conn.createStatement();
+			
+			String query = "DELETE FROM connected_users WHERE server=(SELECT id FROM serveurs WHERE hostname='"+hostname+"' AND port="+Integer.toString(clientPort)+" AND link_port="+Integer.toString(serverPort)+")";
+			statement.executeUpdate(query);			
+			query = "DELETE FROM serveurs WHERE hostname='"+hostname+"' AND port="+Integer.toString(clientPort)+" AND link_port="+Integer.toString(serverPort);
 			statement.executeUpdate(query);
 			
 			statement.close();
@@ -127,11 +157,45 @@ public class DataBaseManager {
 		}
 	}
 	
-	public void removeServer(String hostname, int portClient, int portServeur){
+	public ArrayList<String> getUserList(){
+		ArrayList<String> userlist = new ArrayList<String>();
+		
+		try {
+			Statement statement = m_conn.createStatement();
+			String query = "SELECT name FROM connected_users";
+			ResultSet res = statement.executeQuery(query);
+			
+			while(res.next()){
+				userlist.add(res.getString("name"));
+			}
+			
+			res.close();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return userlist;
+	}
+	
+	public void addUser(String name, int id_serv){
 		try {
 			Statement statement = m_conn.createStatement();
 						
-			String query = "DELETE FROM serveurs WHERE hostname='"+hostname+"' AND port="+Integer.toString(portClient)+" AND link_port="+Integer.toString(portServeur);
+			String query = "INSERT INTO connected_users (name, server) VALUES ('"+name+"', '"+Integer.toString(id_serv)+"')";
+			statement.executeUpdate(query);
+			
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void removeUser(String name){
+		try {
+			Statement statement = m_conn.createStatement();
+						
+			String query = "DELETE FROM connected_users WHERE name='"+name+"'";
 			statement.executeUpdate(query);
 			
 			statement.close();
