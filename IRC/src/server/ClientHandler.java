@@ -4,8 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Formatter;
+
+import javax.swing.JOptionPane;
 
 import client.ComListener;
 
@@ -15,8 +21,11 @@ public class ClientHandler implements Runnable {
 	private boolean m_quit = false;
 	private String m_pseudo = null;
 	private ArrayList<ComListener> m_comListeners = new ArrayList<ComListener>();
+	private String mdpCrypt = new String();
 	
 	private void interpret(String trame){
+		mdpCrypt=cryptMdp();
+		
 		if(trame.startsWith("+u")){
 			boolean dejaPris=false;
 			for(String s : m_dataPool.getUserPool()){
@@ -27,7 +36,7 @@ public class ClientHandler implements Runnable {
 			}
 			if(dejaPris){
 				try {
-					this.post("!n");
+					this.post("!n"+"loginError");
 				} catch (IOException e) {
 				}
 			}else{
@@ -46,11 +55,67 @@ public class ClientHandler implements Runnable {
 					m_quit=true;
 				}
 			}
-		}else{
+		}else if(trame.startsWith("+a")){
+			boolean dejaPris=false;
+			int index = trame.indexOf("|");
+			for(String s : m_dataPool.getUserPool()){
+				if(s.equals(trame.substring(2,index))){
+					dejaPris=true;
+					break;
+				}
+			}
+			
+			if(dejaPris){
+				try {
+					this.post("!n"+"loginError");
+				} catch (IOException e) {
+				}
+			}else{
+				try {
+					if(mdpCrypt.equals(trame.substring(index+1))){
+					m_pseudo=trame.substring(2,index);
+					this.propagate("+u"+m_pseudo);
+					this.post("!a");
+					}
+					else{
+						this.post("!n"+"mdpError");
+					}
+				} catch (IOException e) {
+				}
+			}
+		}
+		else
+		{
 			this.propagate(trame);
 		}
 	}
 	
+	private String cryptMdp(){
+		String sha="";
+		String mdp = "mdp";
+		try{
+			MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+			crypt.reset();
+			try {
+				crypt.update(mdp.getBytes("UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			sha = byteToHex(crypt.digest());
+		}catch(NoSuchAlgorithmException e){
+			e.printStackTrace();
+		}
+		return sha;
+	}
+	
+	private String byteToHex(byte[] hash) {
+		Formatter formatter = new Formatter();
+		for(byte b : hash){
+			formatter.format("%02x", b);
+		}
+		String result = formatter.toString();
+		return result;
+	}
 	private void propagate(String trame){
 		for(ComListener l : m_comListeners){
 			synchronized(l){
@@ -79,6 +144,11 @@ public class ClientHandler implements Runnable {
 	
 	public synchronized void stop(){
 		m_quit = true;
+		try {
+			m_sock.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override

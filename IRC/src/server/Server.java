@@ -2,6 +2,7 @@ package server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 
 import client.ComListener;
@@ -28,7 +29,9 @@ public class Server implements Runnable, ComListener, IDataPool {
 
 	@Override
 	public void run() {
+		
 		try {
+			
 			m_sock=new ServerSocket(m_port);
 			System.out.println("Serveur en ligne");
 		} catch (IOException e) {
@@ -36,13 +39,19 @@ public class Server implements Runnable, ComListener, IDataPool {
 		}
 		while(!m_quit){
 			ClientHandler h = null;
+			
 			try {
-				h=new ClientHandler(m_sock.accept(), this);
-				h.addListener(this);
-				synchronized(this){
-					m_clients.add(h);
+				Socket sock_cpt=m_sock.accept();
+				if(this.getUserPool().size() < 100){
+					h=new ClientHandler(sock_cpt, this);
+					h.addListener(this);
+					synchronized(this){
+						m_clients.add(h);
+					}
+					new Thread(h).start();
+				}else{
+					sock_cpt.close();	
 				}
-				new Thread(h).start();
 			} catch (IOException e) {
 				m_quit = true;
 			}

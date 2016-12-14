@@ -141,8 +141,8 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 			else if(ID.length()<3||ID.length()>15){
 				JOptionPane.showMessageDialog(null,"Votre ID doit etre compris entre 3 et 15 caractères","Erreur",JOptionPane.ERROR_MESSAGE);
 			}
-			else if(ID.contains(" ")||ID.contains("!")){
-				JOptionPane.showMessageDialog(null,"Votre ID ne doit pas contenir d'espaces","Erreur",JOptionPane.ERROR_MESSAGE);
+			else if(ID.contains(" ")||ID.contains("!")||ID.contains("|")){
+				JOptionPane.showMessageDialog(null,"Votre ID ne doit pas contenir d'espaces, de ! ou de | ","Erreur",JOptionPane.ERROR_MESSAGE);
 			}
 			else{
 				for(InfoConnectListener l : m_infoListeners){
@@ -166,7 +166,11 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 				else{
 					
 				this.setFocusableWindowState(false);
-				new ConnexionAdminWindow(ID);
+				ConnexionAdminWindow CAW = new ConnexionAdminWindow(ID);
+					
+				for(InfoConnectListener l : m_infoListeners){
+						CAW.addInfoListener(l);
+				}
 				}
 			}
 			}
