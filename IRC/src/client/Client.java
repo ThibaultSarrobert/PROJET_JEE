@@ -1,6 +1,5 @@
 package client;
 
-import java.awt.GraphicsConfiguration;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -18,7 +17,6 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 	private String m_pseudo=null;
 	private ConnexionWindow m_connectWindow = null;
 	private ChatClientWindow m_chatWindow = null;
-	private boolean isAdmin = false;
 	
 	public Client(){
 		m_com = new CommunicationHandler();
@@ -80,7 +78,6 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 			m_chatWindow.addListener(this);
 			m_chatWindow.setVisible(true);
 			m_connectWindow.setVisible(false);	
-			isAdmin=false;
 		}else{
 			if(m_chatWindow!=null){
 				m_chatWindow.dispose();
@@ -153,6 +150,7 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 			formatter.format("%02x", b);
 		}
 		String result = formatter.toString();
+		formatter.close();
 		return result;
 	}
 

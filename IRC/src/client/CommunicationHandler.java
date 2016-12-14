@@ -159,7 +159,6 @@ public class CommunicationHandler implements Runnable {
 						if(line==null){
 							this.disconnect();
 						}else{
-							System.out.println(line);
 							this.interpret(line);
 						}
 					}catch (IOException e) {
