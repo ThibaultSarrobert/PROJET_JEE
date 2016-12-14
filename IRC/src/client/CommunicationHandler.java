@@ -14,17 +14,35 @@ public class CommunicationHandler implements Runnable {
 	private ArrayList<StateListener> m_stateListeners = new ArrayList<StateListener>();
 	private ArrayList<ComListener> m_comListeners = new ArrayList<ComListener>();
 	private boolean m_quit = false;
+	private boolean m_isAdmin=false;
 	
+	public boolean get_isAdmin() {
+		return m_isAdmin;
+	}
+
 	private void interpret(String trame){
 		if(this.getState()==StateListener.State.CONNECTING){
 			if(trame.startsWith("!n")){
-				this.disconnect();
-				for(ComListener l : m_comListeners){
-					synchronized(l){
-						l.Error("pseudo déjà pris");
+				if(trame.contains("loginError")){
+					this.disconnect();
+					for(ComListener l : m_comListeners){
+						synchronized(l){
+							l.Error("Ce pseudo est déjà pris par un utilisateur connecté");
+						}
+					}
+				}
+				else if(trame.contains("mdpError")){
+					this.disconnect();
+					for(ComListener l : m_comListeners){
+						synchronized(l){
+							l.Error("Le mot de passe entré est erroné");
+						}
 					}
 				}
 			}else if(trame.startsWith("!o")){
+				this.changeState(StateListener.State.CONNECTED);
+			}else if(trame.startsWith("!a")){
+				m_isAdmin=true;
 				this.changeState(StateListener.State.CONNECTED);
 			}
 		}else if(this.getState()==StateListener.State.CONNECTED){
@@ -89,6 +107,7 @@ public class CommunicationHandler implements Runnable {
 	
 	public synchronized void disconnect(){
 		this.changeState(StateListener.State.DISCONNECTING);
+		m_isAdmin=false;
 		try {
 			this.m_sock.close();
 		} catch (IOException e) {
@@ -113,6 +132,15 @@ public class CommunicationHandler implements Runnable {
 		}
 	}
 	
+	public synchronized void connexionAdmin(String pseudo, String mdp){
+		this.post("+a"+pseudo+"|"+mdp);
+		
+	}
+	
+	
+	
+	
+	
 	@Override
 	public void run() {
 		while(!m_quit){
@@ -128,7 +156,12 @@ public class CommunicationHandler implements Runnable {
 				while(this.getState() != StateListener.State.INITIAL){
 					try{
 						line = in.readLine();
-						this.interpret(line);
+						if(line==null){
+							this.disconnect();
+						}else{
+							System.out.println(line);
+							this.interpret(line);
+						}
 					}catch (IOException e) {
 						this.disconnect();
 					}
@@ -146,4 +179,6 @@ public class CommunicationHandler implements Runnable {
 		} catch (IOException e) {
 		}
 	}
+	
+	
 }

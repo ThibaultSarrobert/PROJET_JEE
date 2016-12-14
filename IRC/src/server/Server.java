@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 
 import org.ini4j.Ini;
@@ -24,6 +25,33 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 
 	@Override
 	public void run() {
+/*
+		
+		try {
+			
+			m_sock=new ServerSocket(m_port);
+			System.out.println("Serveur en ligne");
+		} catch (IOException e) {
+			m_quit = true;
+		}
+		while(!m_quit){
+			ClientHandler h = null;
+			
+			try {
+				Socket sock_cpt=m_sock.accept();
+				if(this.getUserPool().size() < 100){
+					h=new ClientHandler(sock_cpt, this);
+					h.addListener(this);
+					synchronized(this){
+						m_clients.add(h);
+					}
+					new Thread(h).start();
+				}else{
+					sock_cpt.close();	
+				}
+			} catch (IOException e) {
+				m_quit = true;
+*/
 		try{
 			Ini inifile = new Ini(new File("config.ini"));
 			Ini.Section dbsection = inifile.get("database");
@@ -43,6 +71,7 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 				} catch (IOException e) {
 					m_db.removeServer(server.getHostname(), server.getClientPort(), server.getServerPort());
 				}
+
 			}
 			
 			try {
