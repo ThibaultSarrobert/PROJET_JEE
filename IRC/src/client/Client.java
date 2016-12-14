@@ -1,5 +1,10 @@
 package client;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Formatter;
+
 import javax.swing.JOptionPane;
 
 import IHMAuto.ChatClientWindow;
@@ -7,16 +12,7 @@ import IHMAuto.ChatListener;
 import IHMAuto.ConnexionWindow;
 import IHMAuto.InfoConnectListener;
 
-import org.apache.log4j.Logger; 
-import org.apache.log4j.Category; 
-import org.apache.log4j.PropertyConfigurator;
-import server.Server;
-
 public class Client implements StateListener, ComListener, InfoConnectListener, ChatListener {
-        //Implement of Logger and Category for log4f
-        private final static Logger logger = Logger.getLogger(Server.class); 
-        static Category category = Category.getInstance(Server.class.getName());
-        
 	private CommunicationHandler m_com=null;
 	private String m_pseudo=null;
 	private ConnexionWindow m_connectWindow = null;
@@ -43,6 +39,7 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 	public void askForConnect(String pseudo, String ipaddr, int port) {
 		m_pseudo=pseudo;
 		m_com.configure(ipaddr, port);
+		m_com.post("+u"+m_pseudo);
 	}
 	
 	@Override
@@ -77,12 +74,10 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 	@Override
 	public void onStateChanged(State new_state) {
 		if(new_state==StateListener.State.CONNECTED){
-			m_chatWindow=new ChatClientWindow(m_pseudo);
+			m_chatWindow=new ChatClientWindow(m_pseudo,m_com.get_isAdmin());
 			m_chatWindow.addListener(this);
 			m_chatWindow.setVisible(true);
-			m_connectWindow.setVisible(false);
-		}else if(new_state==StateListener.State.CONNECTING){
-			m_com.post("+u"+m_pseudo);
+			m_connectWindow.setVisible(false);	
 		}else{
 			if(m_chatWindow!=null){
 				m_chatWindow.dispose();
@@ -125,9 +120,45 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 
 	@Override
 	public void Error(String error) {
-		JOptionPane.showMessageDialog(m_chatWindow,"Ce pseudo est atuellement utilis� par un autre utilisateur connect�!", "Erreur", 0);
-		
+		JOptionPane.showMessageDialog(m_chatWindow, error, "Erreur", 0);
 	}
+
+
+	@Override
+	public void askForAdminConnect(String pseudo, String mdp, String ipaddr, int port) {
+		m_pseudo=pseudo;
+		m_com.configure(ipaddr, port);
+		String sha="";
+		try{
+			MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+			crypt.reset();
+			try {
+				crypt.update(mdp.getBytes("UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			sha = byteToHex(crypt.digest());
+		}catch(NoSuchAlgorithmException e){
+			e.printStackTrace();
+		}
+		m_com.connexionAdmin(m_pseudo,sha);
+	}
+
+	private String byteToHex(byte[] hash) {
+		Formatter formatter = new Formatter();
+		for(byte b : hash){
+			formatter.format("%02x", b);
+		}
+		String result = formatter.toString();
+		formatter.close();
+		return result;
+	}
+
+	@Override
+	public void KickUser(String pseudo) {
+		m_com.post("-u"+pseudo);
+	}
+
 	
 	public ConnexionWindow getConnexionWindow()
 	{
@@ -137,5 +168,6 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 	public ChatClientWindow getChatClientWindow()
 	{
 		return m_chatWindow;
+
 	}
 }
