@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -20,6 +21,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+
+import org.ini4j.Ini;
+
+import server.DataBaseManager;
 
 
 public class ConnexionWindow extends JFrame implements ActionListener, FocusListener{
@@ -123,6 +128,28 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 	setVisible(true);//On le rend visible
 	}
 	
+	private DataBaseManager.ServerCoord choisirServeur(){
+		try {
+			Ini inifile = new Ini(new File("config.ini"));
+			Ini.Section dbsection = inifile.get("database");
+			String db_hostname = dbsection.get("hostname");
+			int db_port = dbsection.get("port", int.class);
+			String db_name = dbsection.get("name");
+			
+			DataBaseManager db = new DataBaseManager(db_hostname, db_port, db_name);
+			ArrayList<DataBaseManager.ServerCoord> serverlist = db.getServerList();
+			return (DataBaseManager.ServerCoord) JOptionPane.showInputDialog(this, 
+			        "A quel serveur voulez-vous vous connecter ?",
+			        "Choix du serveur",
+			        JOptionPane.QUESTION_MESSAGE, 
+			        null, 
+			        serverlist.toArray(), 
+				    serverlist.get(0));
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
 	public void addInfoListener(InfoConnectListener listener){
 		m_infoListeners.add(listener);
 	}
@@ -145,8 +172,13 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 				JOptionPane.showMessageDialog(null,"Votre ID ne doit pas contenir d'espaces, de ! ou de | ","Erreur",JOptionPane.ERROR_MESSAGE);
 			}
 			else{
-				for(InfoConnectListener l : m_infoListeners){
-					l.askForConnect(ID, "127.0.0.1", 4444);
+				DataBaseManager.ServerCoord choix = choisirServeur();
+				if(choix != null){
+					for(InfoConnectListener l : m_infoListeners){
+						l.askForConnect(ID, choix.getHostname(), choix.getClientPort());
+					}
+				}else{
+					JOptionPane.showMessageDialog(this, "Erreur lors de l'acquisition de la liste des serveurs");
 				}
 			}
 		}
@@ -199,5 +231,10 @@ public void focusGained(FocusEvent e) {
 public void focusLost(FocusEvent e) {
 	// TODO Auto-generated method stub
 	
+}
+
+public JTextField getIDField()
+{
+	return IDField;
 }
 }

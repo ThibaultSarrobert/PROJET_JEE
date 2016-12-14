@@ -88,12 +88,32 @@ package server {
 			+ ArrayList<String> getUserPool()
 			+ ArrayList<String> getMessagePool()
         }
+        
+        interface ILinker {
+			+ linkClient(ClientHandler)
+			+ linkServer(ServerHandler)
+        }
 
         class Server {
-                - m_conversation : ArrayList<String>
-                - m_userList : ArrayList<String>
-                - m_adminList : ArrayList<String>
                 - void interpret(String)
+        }
+        
+        interface ClientListener {
+        	+ clientMessaging(String)
+        }
+        
+        class ClientWaiter {
+        	- m_sock : ServerSocket
+        	+ stop()
+        }
+        
+        interface ServeurListener {
+        	+ serverMessaging(String)
+        }
+        
+        class ServerWaiter {
+        	- m_sock : ServerSocket
+        	+ stop()
         }
 
         class ClientHandler {
@@ -103,6 +123,26 @@ package server {
 				- void interpret(String)
 				+ void post(String)
         }
+        
+        class ServerHandler {
+        		- m_sock : Socket
+				+ void post(String)
+        }
+        
+        class DataBaseManager {
+        	- m_conn : Connection
+        	+ getTrameHistory() : ArrayList<String>
+        	+ addTrame(String)
+        	+ getServerList() : ArrayList<ServerCoord>
+        	+ addServer(ServerCoord)
+        	+ removeServer(ServerCoord)
+        }
+        
+        class DataBaseManager.ServerCoord {
+    		+ getHostname() : String
+    		+ getClientPort() : int
+    		+ getServerPort() : int
+    	}
 }
 'Fin package server'
 
@@ -114,16 +154,27 @@ Runnable<|--CommunicationHandler
 Client"1"*--CommunicationHandler
 Client"1"*--ConnexionWindow
 Client"1"*--ChatClientWindow
-Client"1"*--ConnexionAdminWindow
+ConnexionWindow"1"*--ConnexionAdminWindow
 Client"1"*--ChatAdminWindow
 CommunicationHandler"1"*--"n"ComListener
 ChatClientWindow"1"*--"n"ChatListener
 ConnexionWindow"1"*--"n"InfoConnectListener
 
+Runnable<|--ClientWaiter
+ClientWaiter"1"*--"1"ILinker
+Runnable<|--ServerWaiter
+ServerWaiter"1"*--"1"ILinker
 IDataPool<|--Server
-ComListener<|--Server
+ILinker<|--Server
+ClientListener<|--Server
+ServeurListener<|--Server
+Runnable<|--Server
+Server"1"*--"1"DataBaseManager
 Server"1"*--"n"ClientHandler
+Server"1"*--"n"ServerHandler
 Runnable<|--ClientHandler
-ClientHandler"1"*--"n"ComListener
+Runnable<|--ServerHandler
+ClientHandler"1"*--"n"ClientListener
+ServerHandler"1"*--"n"ServeurListener
 
 @enduml

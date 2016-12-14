@@ -1,0 +1,12 @@
+2016-12-03 13:43:48 INFO  Server:68 - Start Server
+2016-12-03 13:56:43 INFO  Server:69 - Start Server
+2016-12-03 14:08:03 INFO  Server:72 - Start Server
+2016-12-03 14:12:10 INFO  Server:77 - Start Server
+2016-12-03 14:12:10 INFO  Server:43 - Creation of a socket, server oline
+2016-12-05 22:37:08 INFO  Server:81 - Start Server
+2016-12-05 22:37:08 INFO  Server:45 - Creation of a socket
+2016-12-05 22:37:08 INFO  Server:46 - Server is online
+2016-12-05 22:41:30 INFO  Server:82 - Start Server
+2016-12-05 22:41:30 INFO  Server:45 - Creation of a socket
+2016-12-05 22:41:30 INFO  Server:46 - Server is online
+2016-12-05 22:41:30 ERROR Server:47 - The socket couldn't be created

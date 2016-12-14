@@ -252,8 +252,9 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		chatScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		panneauChat.add(chatScrollPane, BorderLayout.CENTER);
 		
-		
-		
+
+		chatList = new JList<String>(chat);
+		chatList.setAutoscrolls(true);
 		chatList.setCellRenderer(new CustomCellRenderer());
 		chatList.setFont(fontUser);
 		chatScrollPane.setViewportView(chatList);
@@ -491,7 +492,29 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 			JOptionPane.showMessageDialog(getParent(), "En cours de dev");
 		}
 		else if(STOPSERVER.equals(cmd)){
-			JOptionPane.showMessageDialog(getParent(), "En cours de dev");
+			ArrayList<String> listeMsg = new ArrayList<String>();
+			for(int i=0; i<chat.size(); ++i){
+				String[] parseMsg = chat.get(i).split(" · ");
+				String msg = parseMsg[0].substring(1);
+				listeMsg.add(msg);
+				
+			}
+			if(listeMsg.isEmpty()){
+				listeMsg.add("Il n'y a pas de messages dans le chat");
+			}
+			String msgSuppr = (String) JOptionPane.showInputDialog(this, 
+			        "Qu'elle message voulez-vous supprimer ? ",
+			        "Suppression de message",
+			        JOptionPane.QUESTION_MESSAGE, 
+			        null, 
+			        listeMsg.toArray(), 
+			        listeMsg.get(0));
+			
+				for(ChatListener l : m_listeners){
+					l.KickUser(msgSuppr);
+				
+			}
+			System.out.println(msgSuppr);
 		}
 	}
 	
@@ -504,11 +527,16 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		int index = msg.indexOf(" : ");
 		String msgPseudo = msg.substring(0, index);
 		String msgMsg = msg.substring(index+3);
+
 		
 		chatList.ensureIndexIsVisible(chat.size()-1);
-		chat.addElement("  "+H+":"+M+" - "+msgPseudo+"\n"+"    · "+msgMsg);
+		//chat.addElement("  "+H+":"+M+" - "+msgPseudo+"\n"+"    · "+msgMsg);
 		
 		
+
+		chat.addElement(H+":"+M+" - "+msgPseudo+"\n"+" · "+msgMsg);
+		if(chat.size() > 100) chat.remove(0);
+
 	}
 	
 	private void sendMessage(String msg){

@@ -1,34 +1,31 @@
 package server;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
+
 import java.util.ArrayList;
 
-import client.ComListener;
+import org.ini4j.Ini;
 
-public class Server implements Runnable, ComListener, IDataPool {
-	private ServerSocket m_sock=null;
+public class Server implements Runnable, ClientListener, ServeurListener, IDataPool, ILinker {
+	private ClientWaiter m_clientWaiter = null;
 	private ArrayList<ClientHandler> m_clients = new ArrayList<ClientHandler>();
-	private boolean m_quit = false;
-	private int m_port;
-		
-	public Server(int port){
-		m_port = port;
-	}
+	private ServerWaiter m_serverWaiter = null;
+	private ArrayList<ServerHandler> m_annexeServers = new ArrayList<ServerHandler>();
+	private DataBaseManager m_db = null;
+	private String m_hostname;
+	private int m_portClient;
+	private int m_portServeur;
+	private int m_id = 0;
 	
-	protected void finalize(){
-		try{
-			if(m_sock != null){
-				m_sock.close();
-			}
-		} catch (IOException e) {
-			System.out.println("Could not close socket");
-		}
+	public Server(){
 	}
 
 	@Override
 	public void run() {
+/*
 		
 		try {
 			
@@ -54,29 +51,83 @@ public class Server implements Runnable, ComListener, IDataPool {
 				}
 			} catch (IOException e) {
 				m_quit = true;
+*/
+		try{
+			Ini inifile = new Ini(new File("config.ini"));
+			Ini.Section dbsection = inifile.get("database");
+			String db_hostname = dbsection.get("hostname");
+			int db_port = dbsection.get("port", int.class);
+			String db_name = dbsection.get("name");
+
+			Ini.Section servsection = inifile.get("server");
+			m_hostname=servsection.get("hostname");
+			m_portClient=servsection.get("portClient", int.class);
+			m_portServeur=servsection.get("portServeur", int.class);
+		
+			m_db = new DataBaseManager(db_hostname, db_port, db_name);
+			for(DataBaseManager.ServerCoord server : m_db.getServerList()){
+				try {
+					this.linkServer(new ServerHandler(new Socket(server.getHostname(), server.getServerPort())));
+				} catch (IOException e) {
+					m_db.removeServer(server.getHostname(), server.getClientPort(), server.getServerPort());
+				}
+
 			}
-		}
-		try {
-			if(m_sock!=null){
-				m_sock.close();
+			
+			try {
+				m_serverWaiter = new ServerWaiter(m_portServeur, this);
+				new Thread(m_serverWaiter).start();
+				m_clientWaiter = new ClientWaiter(m_portClient, this, this);
+				new Thread(m_clientWaiter).start();
+				m_id = m_db.addServer(m_hostname, m_portClient, m_portServeur);
+				System.out.println("Serveur en ligne sur les ports "+m_portClient+", "+m_portServeur);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
+			
+		} catch (ClassNotFoundException | SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
 
 	public static void main(String[] args) {
-		Server s = new Server(4444);
+		Server s = new Server();
 		s.run();
 	}
-
-	@Override
-	public void onTrameReceived(String trame) {
-		if(trame.startsWith("!q")){
-			synchronized(this){
-				this.m_quit=true;
+	
+	private void propagate(String trame){
+		ArrayList<ClientHandler> trash = new ArrayList<ClientHandler>();
+		for(ClientHandler c : m_clients){
+			try {
+				c.post(trame);
+			} catch (IOException e) {
+				trash.add(c);
 			}
+		}
+		for(ClientHandler h : trash){
+			m_clients.remove(h);
+		}
+	}
+
+	public void interpret(String trame) {
+		if(trame.startsWith("!q")){
+			m_serverWaiter.stop();
+			m_clientWaiter.stop();
+			for(ServerHandler sh : m_annexeServers){
+				sh.stop();
+			}
+			for(ClientHandler ch : m_clients){
+				ch.stop();
+			}
+			if(m_db != null) m_db.removeServer(m_hostname, m_portClient, m_portServeur);
+			System.exit(0);
+		}else if(trame.startsWith("+u")){
+			m_db.addUser(trame.substring(2), m_id);
+			propagate(trame);
 		}else if(trame.startsWith("-u")){
+			m_db.removeUser(trame.substring(2));
 			for(ClientHandler c : m_clients){
 				if(trame.substring(2).equals(c.getName())){
 					c.stop();
@@ -84,44 +135,80 @@ public class Server implements Runnable, ComListener, IDataPool {
 					break;
 				}
 			}
-			for(ClientHandler c : m_clients){
-				try {
-					c.post(trame);
-				} catch (IOException e) {
-				}
-			}
+			propagate(trame);
 		}else{
-			ArrayList<ClientHandler> trash = new ArrayList<ClientHandler>();
-			for(ClientHandler c : m_clients){
-				try {
-					c.post(trame);
-				} catch (IOException e) {
-					trash.add(c);
-				}
-			}
-			for(ClientHandler h : trash){
-				m_clients.remove(h);
-			}
+			propagate(trame);
 		}
 	}
 
 	@Override
 	public ArrayList<String> getUserPool() {
-		ArrayList<String> userPool = new ArrayList<String>();
-		synchronized(this){
-			for(ClientHandler c : m_clients){
-				String user = c.getName();
-				if(user != null){
-					userPool.add(user);
-				}
-			}
-		}
-		return userPool;
+		return m_db.getUserList();
 	}
 
 	@Override
-	public void Error(String error) {
-		// TODO Auto-generated method stub
+	public void linkClient(ClientHandler client) {
+		client.addListener(this);
+		m_clients.add(client);
+		new Thread(client).start();
+	}
+
+	@Override
+	public void linkServer(ServerHandler serv) {
+		serv.addListener(this);
+		m_annexeServers.add(serv);
+		new Thread(serv).start();
+	}
+
+	@Override
+	public void clientMessaging(String trame) {
+		m_db.addTrame(trame);
+		ArrayList<ServerHandler> trash = new ArrayList<ServerHandler>();
+		for(ServerHandler sh : m_annexeServers){
+			try {
+				sh.post(trame);
+			} catch (IOException e) {
+				trash.add(sh);
+			}
+		}
+		for(ServerHandler sh : trash){
+			m_annexeServers.remove(sh);
+		}
+		interpret(trame);
+	}
+
+	@Override
+	public void serverMessaging(String trame) {
+		propagate(trame);
+	}
+
+	@Override
+	public ArrayList<String> getMessagePool() {
+		ArrayList<String> msgPool = new ArrayList<String>();
+		for(String s : m_db.getTrameHistory()){
+			if(s.startsWith("+m")){
+				msgPool.add(s.substring(2));
+			}else if(s.startsWith("-m")){
+				msgPool.remove(s.substring(2));
+			}
+		}
 		
+		return msgPool;
+	}
+
+	@Override
+	public void linkClosing() {
+		ArrayList<String> userdeleted = m_db.getUserList();
+		for(DataBaseManager.ServerCoord server : m_db.getServerList()){
+			try {
+				this.linkServer(new ServerHandler(new Socket(server.getHostname(), server.getClientPort())));
+			} catch (IOException e) {
+				m_db.removeServer(server.getHostname(), server.getClientPort(), server.getServerPort());
+			}
+		}
+		userdeleted.removeAll(m_db.getUserList());
+		for(String name : userdeleted){
+			clientMessaging("-u"+name);
+		}
 	}
 }

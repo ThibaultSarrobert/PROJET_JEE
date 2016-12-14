@@ -127,6 +127,7 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 		
 	}
 
+
 	@Override
 	public void askForAdminConnect(String pseudo, String mdp, String ipaddr, int port) {
 		m_pseudo=pseudo;
@@ -159,5 +160,17 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 	@Override
 	public void KickUser(String pseudo) {
 		m_com.post("-u"+pseudo);
+	}
+
+	
+	public ConnexionWindow getConnexionWindow()
+	{
+		return m_connectWindow;
+	}
+	
+	public ChatClientWindow getChatClientWindow()
+	{
+		return m_chatWindow;
+
 	}
 }

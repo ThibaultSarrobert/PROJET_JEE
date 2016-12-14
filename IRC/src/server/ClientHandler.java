@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Formatter;
 
-import javax.swing.JOptionPane;
+
 
 import client.ComListener;
 
@@ -20,8 +20,12 @@ public class ClientHandler implements Runnable {
 	private IDataPool m_dataPool = null;
 	private boolean m_quit = false;
 	private String m_pseudo = null;
+
 	private ArrayList<ComListener> m_comListeners = new ArrayList<ComListener>();
 	private String mdpCrypt = new String();
+
+	private ArrayList<ClientListener> m_listeners = new ArrayList<ClientListener>();
+
 	
 	private void interpret(String trame){
 		mdpCrypt=cryptMdp();
@@ -55,6 +59,7 @@ public class ClientHandler implements Runnable {
 					m_quit=true;
 				}
 			}
+
 		}else if(trame.startsWith("+a")){
 			boolean dejaPris=false;
 			int index = trame.indexOf("|");
@@ -86,8 +91,18 @@ public class ClientHandler implements Runnable {
 		}
 		else
 		{
-			this.propagate(trame);
-		}
+
+			for(String msg : m_dataPool.getMessagePool()){
+				try {
+					this.post("+m"+msg);
+				} catch (IOException e) {
+					m_quit=true;
+				}
+			}
+		}/*else{
+
+			this.propagate(trame);*/
+		//}
 	}
 	
 	private String cryptMdp(){
@@ -117,9 +132,9 @@ public class ClientHandler implements Runnable {
 		return result;
 	}
 	private void propagate(String trame){
-		for(ComListener l : m_comListeners){
+		for(ClientListener l : m_listeners){
 			synchronized(l){
-				l.onTrameReceived(trame);
+				l.clientMessaging(trame);
 			}
 		}
 	}
@@ -133,8 +148,8 @@ public class ClientHandler implements Runnable {
 		m_dataPool=datas;
 	}
 	
-	public synchronized void addListener(ComListener listener){
-		m_comListeners.add(listener);
+	public synchronized void addListener(ClientListener listener){
+		m_listeners.add(listener);
 	}
 	
 	public synchronized void post(String msg) throws IOException{
@@ -147,12 +162,14 @@ public class ClientHandler implements Runnable {
 		try {
 			m_sock.close();
 		} catch (IOException e) {
+
 			e.printStackTrace();
 		}
 	}
 	
 	@Override
 	public void run() {
+		//TODO récupérer l'historique des messages et le transmettre
 		String line;
 		BufferedReader in=null;
 		try {
