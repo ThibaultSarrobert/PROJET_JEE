@@ -39,6 +39,7 @@ public class CommunicationHandler implements Runnable {
 	
 	public synchronized void stop(){
 		m_quit=true;
+		disconnect();
 	}
 	
 	private void changeState(StateListener.State new_state){
@@ -76,7 +77,11 @@ public class CommunicationHandler implements Runnable {
 			this.m_sock=new Socket(ipaddr, port);
 			this.changeState(StateListener.State.CONNECTING);
 		} catch (IOException e) {
-			System.out.println("Couldn't create socket");
+			for(ComListener l : m_comListeners){
+				synchronized(l){
+					l.Error("La connexion a échoué");
+				}
+			}
 			this.m_sock=new Socket();
 			this.changeState(StateListener.State.INITIAL);
 		}
@@ -100,7 +105,11 @@ public class CommunicationHandler implements Runnable {
 			out = new PrintWriter(m_sock.getOutputStream(), true);
 			out.println(msg);
 		} catch (IOException e) {
-			System.out.println("Cannot get output stream");
+			for(ComListener l : m_comListeners){
+				synchronized(l){
+					l.Error("L'envoi n'a pas pu s'effectuer");
+				}
+			}
 		}
 	}
 	
@@ -135,8 +144,6 @@ public class CommunicationHandler implements Runnable {
 				m_sock.close();
 			}
 		} catch (IOException e) {
-			System.out.println("Could not close socket");
-			System.exit(-1);
 		}
 	}
 }

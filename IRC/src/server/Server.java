@@ -56,9 +56,10 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 				e.printStackTrace();
 			}
 			
-		} catch (ClassNotFoundException | SQLException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (ClassNotFoundException | SQLException e) {
+			System.out.println("problème de base de donnée");
+		}catch (IOException e){
+			System.out.println("config.ini absent");
 		}
 	}
 	
@@ -179,7 +180,7 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 		}
 		userdeleted.removeAll(m_db.getUserList());
 		for(String name : userdeleted){
-			clientMessaging("-u"+name);
+			propagate("-u"+name);
 		}
 	}
 }

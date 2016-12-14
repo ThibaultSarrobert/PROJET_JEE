@@ -116,8 +116,7 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 
 	@Override
 	public void Error(String error) {
-		JOptionPane.showMessageDialog(m_chatWindow,"Ce pseudo est atuellement utilisé par un autre utilisateur connecté!", "Erreur", 0);
-		
+		JOptionPane.showMessageDialog(m_chatWindow, error, "Erreur", 0);
 	}
 	
 	public ConnexionWindow getConnexionWindow()

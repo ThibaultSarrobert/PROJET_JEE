@@ -146,6 +146,7 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 			        serverlist.toArray(), 
 				    serverlist.get(0));
 		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Erreur lors de l'acquisition de la liste des serveurs");
 			return null;
 		}
 	}
@@ -177,8 +178,6 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 					for(InfoConnectListener l : m_infoListeners){
 						l.askForConnect(ID, choix.getHostname(), choix.getClientPort());
 					}
-				}else{
-					JOptionPane.showMessageDialog(this, "Erreur lors de l'acquisition de la liste des serveurs");
 				}
 			}
 		}
