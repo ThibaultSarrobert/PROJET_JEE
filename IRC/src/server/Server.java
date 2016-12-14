@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger; 
@@ -25,12 +26,40 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 	private String m_hostname;
 	private int m_portClient;
 	private int m_portServeur;
+	private int m_id = 0;
 	
 	public Server(){
 	}
 
 	@Override
 	public void run() {
+/*
+		
+		try {
+			
+			m_sock=new ServerSocket(m_port);
+			System.out.println("Serveur en ligne");
+		} catch (IOException e) {
+			m_quit = true;
+		}
+		while(!m_quit){
+			ClientHandler h = null;
+			
+			try {
+				Socket sock_cpt=m_sock.accept();
+				if(this.getUserPool().size() < 100){
+					h=new ClientHandler(sock_cpt, this);
+					h.addListener(this);
+					synchronized(this){
+						m_clients.add(h);
+					}
+					new Thread(h).start();
+				}else{
+					sock_cpt.close();	
+				}
+			} catch (IOException e) {
+				m_quit = true;
+*/
 		try{
 			Ini inifile = new Ini(new File("config.ini"));
 			Ini.Section dbsection = inifile.get("database");
@@ -50,6 +79,7 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 				} catch (IOException e) {
 					m_db.removeServer(server.getHostname(), server.getClientPort(), server.getServerPort());
 				}
+
 			}
 			
 			try {
@@ -57,15 +87,16 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 				new Thread(m_serverWaiter).start();
 				m_clientWaiter = new ClientWaiter(m_portClient, this, this);
 				new Thread(m_clientWaiter).start();
-				m_db.addServer(m_hostname, m_portClient, m_portServeur);
+				m_id = m_db.addServer(m_hostname, m_portClient, m_portServeur);
 				System.out.println("Serveur en ligne sur les ports "+m_portClient+", "+m_portServeur);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
-		} catch (ClassNotFoundException | SQLException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (ClassNotFoundException | SQLException e) {
+			System.out.println("problème de base de donnée");
+		}catch (IOException e){
+			System.out.println("config.ini absent");
 		}
 	}
 	
@@ -74,6 +105,20 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 		Server s = new Server();
 		s.run();
                 logger.info("Lancement du serveur");
+	}
+	
+	private void propagate(String trame){
+		ArrayList<ClientHandler> trash = new ArrayList<ClientHandler>();
+		for(ClientHandler c : m_clients){
+			try {
+				c.post(trame);
+			} catch (IOException e) {
+				trash.add(c);
+			}
+		}
+		for(ClientHandler h : trash){
+			m_clients.remove(h);
+		}
 	}
 
 	public void interpret(String trame) {
@@ -88,7 +133,11 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 			}
 			if(m_db != null) m_db.removeServer(m_hostname, m_portClient, m_portServeur);
 			System.exit(0);
+		}else if(trame.startsWith("+u")){
+			m_db.addUser(trame.substring(2), m_id);
+			propagate(trame);
 		}else if(trame.startsWith("-u")){
+			m_db.removeUser(trame.substring(2));
 			for(ClientHandler c : m_clients){
 				if(trame.substring(2).equals(c.getName())){
 					c.stop();
@@ -96,43 +145,15 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 					break;
 				}
 			}
-			ArrayList<ClientHandler> trash = new ArrayList<ClientHandler>();
-			for(ClientHandler c : m_clients){
-				try {
-					c.post(trame);
-				} catch (IOException e) {
-					trash.add(c);
-				}
-			}
-			for(ClientHandler h : trash){
-				m_clients.remove(h);
-			}
+			propagate(trame);
 		}else{
-			ArrayList<ClientHandler> trash = new ArrayList<ClientHandler>();
-			for(ClientHandler c : m_clients){
-				try {
-					c.post(trame);
-				} catch (IOException e) {
-					trash.add(c);
-				}
-			}
-			for(ClientHandler h : trash){
-				m_clients.remove(h);
-			}
+			propagate(trame);
 		}
 	}
 
 	@Override
 	public ArrayList<String> getUserPool() {
-		ArrayList<String> userPool = new ArrayList<String>();
-		for(String s : m_db.getTrameHistory()){
-			if(s.startsWith("+u")){
-				userPool.add(s.substring(2));
-			}else if(s.startsWith("-u")){
-				userPool.remove(s.substring(2));
-			}
-		}
-		return userPool;
+		return m_db.getUserList();
 	}
 
 	@Override
@@ -168,7 +189,7 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 
 	@Override
 	public void serverMessaging(String trame) {
-		interpret(trame);
+		propagate(trame);
 	}
 
 	@Override
@@ -181,6 +202,23 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 				msgPool.remove(s.substring(2));
 			}
 		}
+		
 		return msgPool;
+	}
+
+	@Override
+	public void linkClosing() {
+		ArrayList<String> userdeleted = m_db.getUserList();
+		for(DataBaseManager.ServerCoord server : m_db.getServerList()){
+			try {
+				this.linkServer(new ServerHandler(new Socket(server.getHostname(), server.getClientPort())));
+			} catch (IOException e) {
+				m_db.removeServer(server.getHostname(), server.getClientPort(), server.getServerPort());
+			}
+		}
+		userdeleted.removeAll(m_db.getUserList());
+		for(String name : userdeleted){
+			propagate("-u"+name);
+		}
 	}
 }

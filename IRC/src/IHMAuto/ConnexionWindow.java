@@ -4,14 +4,11 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -149,6 +146,7 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 			        serverlist.toArray(), 
 				    serverlist.get(0));
 		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Erreur lors de l'acquisition de la liste des serveurs");
 			return null;
 		}
 	}
@@ -171,8 +169,8 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 			else if(ID.length()<3||ID.length()>15){
 				JOptionPane.showMessageDialog(null,"Votre ID doit etre compris entre 3 et 15 caractères","Erreur",JOptionPane.ERROR_MESSAGE);
 			}
-			else if(ID.contains(" ")||ID.contains("!")){
-				JOptionPane.showMessageDialog(null,"Votre ID ne doit pas contenir d'espaces","Erreur",JOptionPane.ERROR_MESSAGE);
+			else if(ID.contains(" ")||ID.contains("!")||ID.contains("|")){
+				JOptionPane.showMessageDialog(null,"Votre ID ne doit pas contenir d'espaces, de ! ou de | ","Erreur",JOptionPane.ERROR_MESSAGE);
 			}
 			else{
 				DataBaseManager.ServerCoord choix = choisirServeur();
@@ -180,8 +178,6 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 					for(InfoConnectListener l : m_infoListeners){
 						l.askForConnect(ID, choix.getHostname(), choix.getClientPort());
 					}
-				}else{
-					JOptionPane.showMessageDialog(this, "Erreur lors de l'acquisition de la liste des serveurs");
 				}
 			}
 		}
@@ -201,7 +197,11 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 				else{
 					
 				this.setFocusableWindowState(false);
-				new ConnexionAdminWindow(ID);
+				ConnexionAdminWindow CAW = new ConnexionAdminWindow(ID);
+					
+				for(InfoConnectListener l : m_infoListeners){
+						CAW.addInfoListener(l);
+				}
 				}
 			}
 			}

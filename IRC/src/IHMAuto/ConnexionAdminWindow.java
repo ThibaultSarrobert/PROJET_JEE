@@ -16,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
@@ -111,20 +110,13 @@ public void actionPerformed(ActionEvent e)
 		String cmd = e.getActionCommand();
 		char[] mdp = passwordField.getPassword();
 		String s = new String(mdp);
-		System.out.println(pseudo);
 		if (OK.equals(cmd)) 
 		{
-			if(s.equals("mdp")){
-				System.out.println("mdp ok");
 				for(InfoConnectListener l : m_infoListeners){
-				l.askForConnect(pseudo, "127.0.0.1", 4444);
+					l.askForAdminConnect(pseudo, s, "127.0.0.1", 4444);
 				}
-			}
-			else{
 				passwordField.setText("");
-				JOptionPane.showMessageDialog(null, "Mauvais Mot de Passe","Erreur",JOptionPane.ERROR_MESSAGE);
-			}
-			
+				this.setVisible(false);
 		}
 		else if(EXIT.equals(cmd))
 		{

@@ -61,6 +61,11 @@ public class ServerHandler implements Runnable {
 				m_quit=true;
 			}
 		}
+		for(ServeurListener l : m_listeners){
+			synchronized (l) {
+				l.linkClosing();
+			}
+		}
 		try {
 			m_sock.close();
 		} catch (IOException e) {

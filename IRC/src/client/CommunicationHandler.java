@@ -14,17 +14,35 @@ public class CommunicationHandler implements Runnable {
 	private ArrayList<StateListener> m_stateListeners = new ArrayList<StateListener>();
 	private ArrayList<ComListener> m_comListeners = new ArrayList<ComListener>();
 	private boolean m_quit = false;
+	private boolean m_isAdmin=false;
 	
+	public boolean get_isAdmin() {
+		return m_isAdmin;
+	}
+
 	private void interpret(String trame){
 		if(this.getState()==StateListener.State.CONNECTING){
 			if(trame.startsWith("!n")){
-				this.disconnect();
-				for(ComListener l : m_comListeners){
-					synchronized(l){
-						l.Error("pseudo déjà pris");
+				if(trame.contains("loginError")){
+					this.disconnect();
+					for(ComListener l : m_comListeners){
+						synchronized(l){
+							l.Error("Ce pseudo est déjà pris par un utilisateur connecté");
+						}
+					}
+				}
+				else if(trame.contains("mdpError")){
+					this.disconnect();
+					for(ComListener l : m_comListeners){
+						synchronized(l){
+							l.Error("Le mot de passe entré est erroné");
+						}
 					}
 				}
 			}else if(trame.startsWith("!o")){
+				this.changeState(StateListener.State.CONNECTED);
+			}else if(trame.startsWith("!a")){
+				m_isAdmin=true;
 				this.changeState(StateListener.State.CONNECTED);
 			}
 		}else if(this.getState()==StateListener.State.CONNECTED){
@@ -39,6 +57,7 @@ public class CommunicationHandler implements Runnable {
 	
 	public synchronized void stop(){
 		m_quit=true;
+		disconnect();
 	}
 	
 	private void changeState(StateListener.State new_state){
@@ -76,7 +95,11 @@ public class CommunicationHandler implements Runnable {
 			this.m_sock=new Socket(ipaddr, port);
 			this.changeState(StateListener.State.CONNECTING);
 		} catch (IOException e) {
-			System.out.println("Couldn't create socket");
+			for(ComListener l : m_comListeners){
+				synchronized(l){
+					l.Error("La connexion a échoué");
+				}
+			}
 			this.m_sock=new Socket();
 			this.changeState(StateListener.State.INITIAL);
 		}
@@ -84,6 +107,7 @@ public class CommunicationHandler implements Runnable {
 	
 	public synchronized void disconnect(){
 		this.changeState(StateListener.State.DISCONNECTING);
+		m_isAdmin=false;
 		try {
 			this.m_sock.close();
 		} catch (IOException e) {
@@ -100,9 +124,22 @@ public class CommunicationHandler implements Runnable {
 			out = new PrintWriter(m_sock.getOutputStream(), true);
 			out.println(msg);
 		} catch (IOException e) {
-			System.out.println("Cannot get output stream");
+			for(ComListener l : m_comListeners){
+				synchronized(l){
+					l.Error("L'envoi n'a pas pu s'effectuer");
+				}
+			}
 		}
 	}
+	
+	public synchronized void connexionAdmin(String pseudo, String mdp){
+		this.post("+a"+pseudo+"|"+mdp);
+		
+	}
+	
+	
+	
+	
 	
 	@Override
 	public void run() {
@@ -119,7 +156,11 @@ public class CommunicationHandler implements Runnable {
 				while(this.getState() != StateListener.State.INITIAL){
 					try{
 						line = in.readLine();
-						this.interpret(line);
+						if(line==null){
+							this.disconnect();
+						}else{
+							this.interpret(line);
+						}
 					}catch (IOException e) {
 						this.disconnect();
 					}
@@ -135,8 +176,8 @@ public class CommunicationHandler implements Runnable {
 				m_sock.close();
 			}
 		} catch (IOException e) {
-			System.out.println("Could not close socket");
-			System.exit(-1);
 		}
 	}
+	
+	
 }
