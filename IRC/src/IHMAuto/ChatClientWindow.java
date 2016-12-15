@@ -57,7 +57,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	private ArrayList<ChatListener> m_listeners = new ArrayList<ChatListener>();
 	JMenu menuStatut;
 	private String statutLogo = "▶";
-	private String statut = "En Ligne";
+	private String statut = "Online";
 	private JTextField TextUtilisateur;
 	private DefaultListModel<String> chat = new DefaultListModel<String>();
 	private JList<String> chatList = null;
