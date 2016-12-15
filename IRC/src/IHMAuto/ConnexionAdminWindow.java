@@ -116,7 +116,7 @@ public void actionPerformed(ActionEvent e)
 					l.askForAdminConnect(pseudo, s, "127.0.0.1", 4444);
 				}
 				passwordField.setText("");
-				//this.setVisible(false);
+				this.setVisible(false);
 		}
 		else if(EXIT.equals(cmd))
 		{
