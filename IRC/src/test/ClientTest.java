@@ -67,7 +67,7 @@ public class ClientTest extends TestCase{
 		c.getConnexionWindow().getIDField().setText("ClientTest");
 		c.getConnexionWindow().actionPerformed(actevent);
 		
-		for (int i = 0; i< 100000; i++)
+		for (int i = 0; i< 10000; i++)
 		{
 
 			c.sendMessage(Integer.toString(i));
