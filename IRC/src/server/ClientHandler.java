@@ -11,24 +11,18 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Formatter;
 
-
-
-import client.ComListener;
-
 public class ClientHandler implements Runnable {
 	private Socket m_sock = null;
 	private IDataPool m_dataPool = null;
 	private boolean m_quit = false;
 	private String m_pseudo = null;
 
-	private ArrayList<ComListener> m_comListeners = new ArrayList<ComListener>();
 	private String mdpCrypt = new String();
 
 	private ArrayList<ClientListener> m_listeners = new ArrayList<ClientListener>();
-
 	
 	private void interpret(String trame){
-		mdpCrypt=cryptMdp();
+		mdpCrypt=cryptMdp(mdpCrypt);
 		
 		if(trame.startsWith("+u")){
 			boolean dejaPris=false;
@@ -59,7 +53,13 @@ public class ClientHandler implements Runnable {
 					m_quit=true;
 				}
 			}
-
+			for(String msg : m_dataPool.getMessagePool()){
+				try {
+					this.post("+m"+msg);
+				} catch (IOException e) {
+					m_quit=true;
+				}
+			}
 		}else if(trame.startsWith("+a")){
 			boolean dejaPris=false;
 			int index = trame.indexOf("|");
@@ -89,25 +89,14 @@ public class ClientHandler implements Runnable {
 				}
 			}
 		}
-		else
-		{
-
-			for(String msg : m_dataPool.getMessagePool()){
-				try {
-					this.post("+m"+msg);
-				} catch (IOException e) {
-					m_quit=true;
-				}
-			}
-		}/*else{
-
-			this.propagate(trame);*/
-		//}
+		else{
+			this.propagate(trame);
+		}
 	}
 	
-	private String cryptMdp(){
+	private String cryptMdp(String mdp){
 		String sha="";
-		String mdp = "mdp";
+		mdp = "mdp";
 		try{
 			MessageDigest crypt = MessageDigest.getInstance("SHA-1");
 			crypt.reset();
@@ -129,8 +118,10 @@ public class ClientHandler implements Runnable {
 			formatter.format("%02x", b);
 		}
 		String result = formatter.toString();
+		formatter.close();
 		return result;
 	}
+	
 	private void propagate(String trame){
 		for(ClientListener l : m_listeners){
 			synchronized(l){

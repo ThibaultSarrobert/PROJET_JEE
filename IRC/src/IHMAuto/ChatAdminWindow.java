@@ -110,7 +110,7 @@ public class ChatAdminWindow extends JFrame implements ActionListener, FocusList
 		
 		setIconImage(new ImageIcon(this.getClass().getResource("/logo_appli.jpg")).getImage());
 		
-		setTitle("Connecté en tant que Admin - ");
+		setTitle("Connected as Admin - ");
 		setBackground(Color.BLACK);
 		getContentPane().setBackground(Color.BLUE);
 		
@@ -130,7 +130,7 @@ public class ChatAdminWindow extends JFrame implements ActionListener, FocusList
 		panelVide1.setMaximumSize(new Dimension(600, 0));
 		menuBar.add(panelVide1);
 		//On creer un label pour le texte 
-		JLabel pseudoLabelBar = new JLabel("Chat General");//Label pour le texte dans la bar
+		JLabel pseudoLabelBar = new JLabel("General Chat");//Label pour le texte dans la bar
 		pseudoLabelBar.setFont(font);//On met la font defini par font
 		pseudoLabelBar.setForeground(buttBlue);//On met le texte en couleur buttBlue
 		menuBar.add(pseudoLabelBar);//On l'insere dans la barre 
@@ -141,21 +141,21 @@ public class ChatAdminWindow extends JFrame implements ActionListener, FocusList
 		menuStatut.setForeground(Color.GREEN);
 		menuStatut.setFont(font2);
 			//Premier Item du menuStatut
-			JMenuItem itemEnLigne = new JMenuItem("En Ligne");//Item Deconnecter
+			JMenuItem itemEnLigne = new JMenuItem("Online");//Item Deconnecter
 			menuStatut.add(itemEnLigne);//On l'ajoute a l'onglet menuOutils
 			itemEnLigne.setActionCommand(LIGNE);//On set la commande l'action DECO
 			itemEnLigne.addActionListener(this);//On ecoute cet item
 			//SEPARATION
 			menuStatut.addSeparator();// separe d'un trait les deux items du menuStatut
 			//2nd Item du menuStatut
-			JMenuItem itemAbsent = new JMenuItem("Absent");//Item Deconnecter
+			JMenuItem itemAbsent = new JMenuItem("Away");//Item Deconnecter
 			menuStatut.add(itemAbsent);//On l'ajoute a l'onglet menuOutils
 			itemAbsent.setActionCommand(ABSENT);//On set la commande l'action DECO
 			itemAbsent.addActionListener(this);//On ecoute cet item	
 			//SEPARATION
 			menuStatut.addSeparator();// separe d'un trait les deux items du menuStatut
 			//3eme Item du menuStatut
-			JMenuItem itemOccupe = new JMenuItem("Occupé");//Item Deconnecter
+			JMenuItem itemOccupe = new JMenuItem("Busy");//Item Deconnecter
 			menuStatut.add(itemOccupe);//On l'ajoute a l'onglet menuOutils
 			itemOccupe.setActionCommand(OCCUPE);//On set la commande l'action DECO
 			itemOccupe.addActionListener(this);//On ecoute cet item	
@@ -165,14 +165,14 @@ public class ChatAdminWindow extends JFrame implements ActionListener, FocusList
 		menuOutils.setForeground(buttBlue);//Texte de couleur buttBlue
 		menuOutils.setFont(font);//On met la font defini par font
 			//Premier Item du menu1
-			JMenuItem itemDeco = new JMenuItem("Se Deconnecter");//Item Deconnecter
+			JMenuItem itemDeco = new JMenuItem("Deconnection");//Item Deconnecter
 			menuOutils.add(itemDeco);//On l'ajoute a l'onglet menuOutils
 			itemDeco.setActionCommand(DECO);//On set la commande l'action DECO
 			itemDeco.addActionListener(this);//On ecoute cet item
 			//SEPARATION
 			menuOutils.addSeparator();// separe d'un trait les deux items du menuOutils
 			//Deuxieme item du menu
-			JMenuItem quitter = new JMenuItem("Quitter");//Item quitter
+			JMenuItem quitter = new JMenuItem("Quit");//Item quitter
 			menuOutils.add(quitter);//On ajoute a l'onglet menuOutils
 			quitter.setActionCommand(QUITTER);//On set la commande l'action QUITTER
 			quitter.addActionListener(this);//On ecoute cet item
@@ -182,14 +182,14 @@ public class ChatAdminWindow extends JFrame implements ActionListener, FocusList
 		menuHelp.setFont(font);
 		menuHelp.setForeground(buttBlue);
 			//Premier item aide
-			JMenuItem aide = new JMenuItem("Aide");
+			JMenuItem aide = new JMenuItem("Help");
 			menuHelp.add(aide);
 			//SEPARATION
 			menuHelp.addSeparator();// separe d'un trait les deux items du menuStatut
 			aide.setActionCommand(AIDE);
 			aide.addActionListener(this);
 			//2nd item apropos
-			JMenuItem apropos = new JMenuItem("A Propos");
+			JMenuItem apropos = new JMenuItem("About");
 			menuHelp.add(apropos);
 			apropos.setActionCommand(APROPOS);
 			apropos.addActionListener(this);
@@ -212,7 +212,7 @@ public class ChatAdminWindow extends JFrame implements ActionListener, FocusList
 		@SuppressWarnings("deprecation")
 		int M = new Date().getMinutes();
 		
-		chat.addElement(H+":"+M+" - "+ "Bienvenu ");
+		chat.addElement(H+":"+M+" - "+ "Welcome ");
 
 		panneauChat.setLayout(new BorderLayout(0, 0));
 		

@@ -33,9 +33,9 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 	private static final long serialVersionUID = 1L;
 	private static  String FB = "Facebook";
 	private static String OK = "OK";
-	private static String HELP = "AIDE";
+	private static String HELP = "HELP";
 	private static String ADMIN = "ADMIN";
-	private String titreFenetre = "Connexion";
+	private String titreFenetre = "Connection";
 	private JTextField IDField;
 	private Color backBlue = new Color(29,34,44);
 	private Color buttBlue = new Color(10,129,183);
@@ -152,13 +152,14 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 			DataBaseManager db = new DataBaseManager(db_hostname, db_port, db_name);
 			ArrayList<DataBaseManager.ServerCoord> serverlist = db.getServerList();
 			return (DataBaseManager.ServerCoord) JOptionPane.showInputDialog(this, 
-			        "A quel serveur voulez-vous vous connecter ?",
-			        "Choix du serveur",
+			        "Which server do you want to connect to ?",
+			        "Server Choices",
 			        JOptionPane.QUESTION_MESSAGE, 
 			        null, 
 			        serverlist.toArray(), 
 				    serverlist.get(0));
 		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Error Acquiring the List of Servers","Error",JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 	}
@@ -175,14 +176,14 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 			String ID = IDField.getText();
 			if("".equals(ID)){				
 
-				 JOptionPane.showMessageDialog(null,"Veuillez entrer un ID","Erreur",JOptionPane.ERROR_MESSAGE);
+				 JOptionPane.showMessageDialog(null,"Please enter an ID","Error",JOptionPane.ERROR_MESSAGE);
 			}
 			
 			else if(ID.length()<3||ID.length()>15){
-				JOptionPane.showMessageDialog(null,"Votre ID doit etre compris entre 3 et 15 caractères","Erreur",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Your ID must be between 3 and 15 characters","Error",JOptionPane.ERROR_MESSAGE);
 			}
 			else if(ID.contains(" ")||ID.contains("!")||ID.contains("|")){
-				JOptionPane.showMessageDialog(null,"Votre ID ne doit pas contenir d'espaces, de ! ou de | ","Erreur",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Your ID must not contain spaces, ! or | ","Errorr",JOptionPane.ERROR_MESSAGE);
 			}
 			else{
 				DataBaseManager.ServerCoord choix = choisirServeur();
@@ -190,23 +191,21 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 					for(InfoConnectListener l : m_infoListeners){
 						l.askForConnect(ID, choix.getHostname(), choix.getClientPort());
 					}
-				}else{
-					JOptionPane.showMessageDialog(this, "Erreur lors de l'acquisition de la liste des serveurs");
 				}
 			}
 		}
 		else if(HELP.equals(cmd))
 		{
-			JOptionPane.showMessageDialog(null,"Votre pseudo doit étre compris entre 3 et  15 caractères\n "
-					+ "Si il n'est pas accepté : c'est qu'il est deja utilisé\n", "Aide",JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Your ID must be between 3 and 15 characters\n "
+					+ "If it is not accepted: it is already used\n", "Help",JOptionPane.INFORMATION_MESSAGE);
 		}
 		else{
 				String ID = IDField.getText();
 				if("".equals(ID)){
-					JOptionPane.showMessageDialog(null, "Veuillez entrer un ID pour l'admin","Erreur",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Please enter an ID","Error",JOptionPane.ERROR_MESSAGE);
 				}
 				else if(ID.length()<3||ID.length()>15){
-					JOptionPane.showMessageDialog(null,"Votre ID doit etre compris entre 3 et 15 charactères","Erreur",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,"Your ID must be between 3 and 15 characters","Error",JOptionPane.ERROR_MESSAGE);
 				}
 				else{
 					

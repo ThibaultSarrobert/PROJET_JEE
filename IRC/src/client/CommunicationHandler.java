@@ -27,7 +27,7 @@ public class CommunicationHandler implements Runnable {
 					this.disconnect();
 					for(ComListener l : m_comListeners){
 						synchronized(l){
-							l.Error("Ce pseudo est déjà pris par un utilisateur connecté");
+							l.Error("This nickname is already taken by a logged-in user");
 						}
 					}
 				}
@@ -35,7 +35,7 @@ public class CommunicationHandler implements Runnable {
 					this.disconnect();
 					for(ComListener l : m_comListeners){
 						synchronized(l){
-							l.Error("Le mot de passe entré est erroné");
+							l.Error("Wrong password");
 						}
 					}
 				}
@@ -57,6 +57,7 @@ public class CommunicationHandler implements Runnable {
 	
 	public synchronized void stop(){
 		m_quit=true;
+		disconnect();
 	}
 	
 	private void changeState(StateListener.State new_state){
@@ -94,7 +95,11 @@ public class CommunicationHandler implements Runnable {
 			this.m_sock=new Socket(ipaddr, port);
 			this.changeState(StateListener.State.CONNECTING);
 		} catch (IOException e) {
-			System.out.println("Couldn't create socket");
+			for(ComListener l : m_comListeners){
+				synchronized(l){
+					l.Error("Connection failed");
+				}
+			}
 			this.m_sock=new Socket();
 			this.changeState(StateListener.State.INITIAL);
 		}
@@ -119,7 +124,11 @@ public class CommunicationHandler implements Runnable {
 			out = new PrintWriter(m_sock.getOutputStream(), true);
 			out.println(msg);
 		} catch (IOException e) {
-			System.out.println("Cannot get output stream");
+			for(ComListener l : m_comListeners){
+				synchronized(l){
+					l.Error("Sending could not be done");
+				}
+			}
 		}
 	}
 	
@@ -150,7 +159,6 @@ public class CommunicationHandler implements Runnable {
 						if(line==null){
 							this.disconnect();
 						}else{
-							System.out.println(line);
 							this.interpret(line);
 						}
 					}catch (IOException e) {
@@ -168,8 +176,6 @@ public class CommunicationHandler implements Runnable {
 				m_sock.close();
 			}
 		} catch (IOException e) {
-			System.out.println("Could not close socket");
-			System.exit(-1);
 		}
 	}
 	

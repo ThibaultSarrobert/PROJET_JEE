@@ -16,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
@@ -24,7 +23,7 @@ public class ConnexionAdminWindow extends JFrame implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	private static String OK = "OK";
 	private static String EXIT = "EXIT";
-	private String titreFenetre = "Connexion en tant qu'admin";
+	private String titreFenetre = "Admin Connection";
 	private JPasswordField passwordField;
 	private Color backBlue = new Color(29,34,44);
 	private Color buttBlue = new Color(10,129,183);
@@ -59,7 +58,7 @@ public class ConnexionAdminWindow extends JFrame implements ActionListener{
 	passwordField.setBackground(backField);
 	passwordField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, borderBlue));
 	
-	JLabel labelPWD = new JLabel("Mot de Passe : ");
+	JLabel labelPWD = new JLabel("Password : ");
 	labelPWD.setForeground(Color.WHITE);
 	labelPWD.setLabelFor(passwordField);
 	
@@ -117,7 +116,7 @@ public void actionPerformed(ActionEvent e)
 					l.askForAdminConnect(pseudo, s, "127.0.0.1", 4444);
 				}
 				passwordField.setText("");
-				this.setVisible(false);
+				//this.setVisible(false);
 		}
 		else if(EXIT.equals(cmd))
 		{

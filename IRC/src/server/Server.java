@@ -4,12 +4,17 @@ import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
-
 import java.util.ArrayList;
 
+import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.ini4j.Ini;
 
 public class Server implements Runnable, ClientListener, ServeurListener, IDataPool, ILinker {
+        //Implement of Logger and Category for log4f
+        private final static Logger logger = Logger.getLogger(Server.class); 
+		static Category category = Category.getInstance(Server.class.getName()); 
+        
 	private ClientWaiter m_clientWaiter = null;
 	private ArrayList<ClientHandler> m_clients = new ArrayList<ClientHandler>();
 	private ServerWaiter m_serverWaiter = null;
@@ -25,8 +30,9 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 
 	@Override
 	public void run() {
+            System.out.println(System.getProperty("user.dir"));
 /*
-		
+            
 		try {
 			
 			m_sock=new ServerSocket(m_port);
@@ -80,21 +86,24 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 				m_clientWaiter = new ClientWaiter(m_portClient, this, this);
 				new Thread(m_clientWaiter).start();
 				m_id = m_db.addServer(m_hostname, m_portClient, m_portServeur);
-				System.out.println("Serveur en ligne sur les ports "+m_portClient+", "+m_portServeur);
+				System.out.println("Online port server "+m_portClient+", "+m_portServeur);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
-		} catch (ClassNotFoundException | SQLException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (ClassNotFoundException | SQLException e) {
+			System.out.println("Database trouble");
+                        e.printStackTrace();
+		}catch (IOException e){
+			System.out.println("config.ini missing");
 		}
 	}
 	
 
-	public static void main(String[] args) {
+	public static void main(String[] args) {                
 		Server s = new Server();
 		s.run();
+                logger.info("Lancement du serveur");
 	}
 	
 	private void propagate(String trame){
@@ -208,7 +217,7 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 		}
 		userdeleted.removeAll(m_db.getUserList());
 		for(String name : userdeleted){
-			clientMessaging("-u"+name);
+			propagate("-u"+name);
 		}
 	}
 }

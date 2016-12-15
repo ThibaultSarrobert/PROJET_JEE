@@ -65,7 +65,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	public static final Color backField = new Color(20,25,34);
 	public static final Color backBlueLight = new Color(40,50,68);
 	JScrollPane chatScrollPane;
-	Font font = new Font("Serial", Font.BOLD, 22);
+	Font font = new Font("Monospaced", Font.BOLD, 22);
 	Font font2 = new Font("Serial", Font.BOLD, 18);
 	Font fontChat = new Font("Serial", Font.PLAIN, 16);
 	Font fontUser = new Font("Serial", Font.PLAIN, 20);
@@ -113,9 +113,9 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		pseudoAcces = pseudo;
 		setIconImage(new ImageIcon(this.getClass().getResource("/logo_appli.jpg")).getImage());
 		if(isAdmin==false)
-			setTitle("Connecté en tant que Client - "+pseudo);
+			setTitle("Connected as Client - "+pseudo);
 		else
-			setTitle("Connecté en tant qu' Admin - "+pseudo);
+			setTitle("Connected as Admin - "+pseudo);
 		
 		setBackground(Color.BLACK);
 		getContentPane().setBackground(Color.BLUE);
@@ -136,7 +136,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		panelVide1.setMaximumSize(new Dimension(600, 0));
 		menuBar.add(panelVide1);
 		//On creer un label pour le texte 
-		JLabel pseudoLabelBar = new JLabel("Chat General");//Label pour le texte dans la bar
+		JLabel pseudoLabelBar = new JLabel("General Chat");//Label pour le texte dans la bar
 		pseudoLabelBar.setFont(font);//On met la font defini par font
 		pseudoLabelBar.setForeground(buttBlue);//On met le texte en couleur buttBlue
 		menuBar.add(pseudoLabelBar);//On l'insere dans la barre 
@@ -159,7 +159,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 				stopServer.setActionCommand(STOPSERVER);
 				stopServer.addActionListener(this);
 				//Item Supprimer un message
-				JMenuItem supprMsg = new JMenuItem("Supprimer un message");
+				JMenuItem supprMsg = new JMenuItem("Delete Message");
 				menuAdmin.add(supprMsg);
 				supprMsg.setActionCommand(SUPPRMSG);
 				supprMsg.addActionListener(this);
@@ -171,21 +171,21 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		menuStatut.setForeground(Color.GREEN);
 		menuStatut.setFont(font2);
 				//Premier Item du menuStatut
-				JMenuItem itemEnLigne = new JMenuItem("En Ligne");//Item Deconnecter
+				JMenuItem itemEnLigne = new JMenuItem("Online");//Item Deconnecter
 				menuStatut.add(itemEnLigne);//On l'ajoute a l'onglet menuOutils
 				itemEnLigne.setActionCommand(LIGNE);//On set la commande l'action DECO
 				itemEnLigne.addActionListener(this);//On ecoute cet item
 				//SEPARATION
 				menuStatut.addSeparator();// separe d'un trait les deux items du menuStatut
 				//2nd Item du menuStatut
-				JMenuItem itemAbsent = new JMenuItem("Absent");//Item Deconnecter
+				JMenuItem itemAbsent = new JMenuItem("Away");//Item Deconnecter
 				menuStatut.add(itemAbsent);//On l'ajoute a l'onglet menuOutils
 				itemAbsent.setActionCommand(ABSENT);//On set la commande l'action DECO
 				itemAbsent.addActionListener(this);//On ecoute cet item	
 				//SEPARATION
 				menuStatut.addSeparator();// separe d'un trait les deux items du menuStatut
 				//3eme Item du menuStatut
-				JMenuItem itemOccupe = new JMenuItem("Occupé");//Item Deconnecter
+				JMenuItem itemOccupe = new JMenuItem("Busy");//Item Deconnecter
 				menuStatut.add(itemOccupe);//On l'ajoute a l'onglet menuOutils
 				itemOccupe.setActionCommand(OCCUPE);//On set la commande l'action DECO
 				itemOccupe.addActionListener(this);//On ecoute cet item	
@@ -195,14 +195,14 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		menuOutils.setForeground(buttBlue);//Texte de couleur buttBlue
 		menuOutils.setFont(font);//On met la font defini par font
 				//Premier Item du menu1
-				JMenuItem itemDeco = new JMenuItem("Se Deconnecter");//Item Deconnecter
+				JMenuItem itemDeco = new JMenuItem("Deconnection");//Item Deconnecter
 				menuOutils.add(itemDeco);//On l'ajoute a l'onglet menuOutils
 				itemDeco.setActionCommand(DECO);//On set la commande l'action DECO
 				itemDeco.addActionListener(this);//On ecoute cet item
 				//SEPARATION
 				menuOutils.addSeparator();// separe d'un trait les deux items du menuOutils
 				//Deuxieme item du menu
-				JMenuItem quitter = new JMenuItem("Quitter");//Item quitter
+				JMenuItem quitter = new JMenuItem("Quit");//Item quitter
 				menuOutils.add(quitter);//On ajoute a l'onglet menuOutils
 				quitter.setActionCommand(QUITTER);//On set la commande l'action QUITTER
 				quitter.addActionListener(this);//On ecoute cet item
@@ -212,14 +212,14 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		menuHelp.setFont(font);
 		menuHelp.setForeground(buttBlue);
 				//Premier item aide
-				JMenuItem aide = new JMenuItem("Aide");
+				JMenuItem aide = new JMenuItem("Help");
 				menuHelp.add(aide);
 				//SEPARATION
 				menuHelp.addSeparator();// separe d'un trait les deux items du menuStatut
 				aide.setActionCommand(AIDE);
 				aide.addActionListener(this);
 				//2nd item apropos
-				JMenuItem apropos = new JMenuItem("A Propos");
+				JMenuItem apropos = new JMenuItem("About");
 				menuHelp.add(apropos);
 				apropos.setActionCommand(APROPOS);
 				apropos.addActionListener(this);
@@ -242,7 +242,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		@SuppressWarnings("deprecation")
 		int M = new Date().getMinutes();
 		
-		chat.addElement("   "+H+":"+M+" - "+ "Bienvenue sur notre serveur "+pseudo);
+		chat.addElement("   "+H+":"+M+" - "+ "Welcome in to our server "+pseudo);
 		
 		panneauChat.setLayout(new BorderLayout(0, 0));
 		
@@ -382,7 +382,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		String cmd = e.getActionCommand();
 		if(QUITTER.equals(cmd))
 		{
-			int retour = JOptionPane.showConfirmDialog(getParent(), "Etes vous sur de vouloir quitter ?");
+			int retour = JOptionPane.showConfirmDialog(getParent(), "Are you sure to exit ?");
 			if(retour==0){System.exit(0);}
 			else if(retour==1){}
 			else{}
@@ -390,7 +390,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		}
 		else if(DECO.equals(cmd))
 		{
-			int retour = JOptionPane.showConfirmDialog(getParent(), "Etes vous sur de vouloir vous deconecter ?");
+			int retour = JOptionPane.showConfirmDialog(getParent(), "Are you sure to disconnect ?");
 			if(retour==0){
 				for(ChatListener l : m_listeners){
 					l.askDeconnection();
@@ -404,22 +404,24 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 			ImageIcon icon = new ImageIcon(ConnexionWindow.class.getResource("/logo_isen.png"));
 			JOptionPane.showMessageDialog(
                     null,
-                    "Version de l'IHM 1.0 \n"
-        					+ "Chef de projet : Thibault SAROBERT\n"
-        					+ "Architecte : Olivier ROMAN\n"
-        					+ "Testeur/Valideur : Maxime MORREAU\n"
-        					+ "Developeur : Pablo ORTEGA",
-                    "A Propos", JOptionPane.INFORMATION_MESSAGE,
+                    "IHM Version 2.0 \n"
+        					+ "Project Leader : Thibault SAROBERT\n"
+        					+ "Architect : Olivier ROMAN\n"
+        					+ "Testing/Validation : Maxime MORREAU\n"
+        					+ "Developer : Pablo ORTEGA",
+                    "About", JOptionPane.INFORMATION_MESSAGE,
                     icon);
 		}
 		else if(AIDE.equals(cmd))
 		{
-			
-			JOptionPane.showMessageDialog(getParent(), "Version de l'IHM 1.0 \n"
-					+ "Chef de projet : Thibault SAROBERT\n"
-					+ "Architecte : Olivier ROMAN\n"
-					+ "Testeur/Valideur : Maxime MORREAU\n"
-					+ "Developeur : Pablo ORTEGA");
+			ImageIcon icon = new ImageIcon(ConnexionWindow.class.getResource("/logo_isen.png"));
+			JOptionPane.showMessageDialog(getParent(), "IHM Version 2.0 \n"
+					+ "Project Leader : Thibault SAROBERT\n"
+					+ "Architect : Olivier ROMAN\n"
+					+ "Testing/Validation : Maxime MORREAU\n"
+					+ "Developer : Pablo ORTEGA",
+            "Help", JOptionPane.INFORMATION_MESSAGE,
+            icon);
 		}
 		else if(CHAT.equals(cmd))
 		{
@@ -432,16 +434,21 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 					}
 			}
 			if(listeChat.isEmpty()){
-				listeChat.add("Vous n'avez pas d'amis");
+				listeChat.add("You have no friends");
 			}
 			String quiChat = (String) JOptionPane.showInputDialog(this, 
-			        "Avec qui voulez-vous lancer une conversation privée ?",
-			        "Chat Perso",
+			        "Who do you want to start a private conversation with ?",
+			        "Private Conversation",
 			        JOptionPane.QUESTION_MESSAGE, 
 			        null, 
 			        listeChat.toArray(), 
 				    listeChat.get(0));
-			System.out.println(quiChat);	       
+			System.out.println(quiChat);
+			if(quiChat=="You have no friends"){}
+			else if(quiChat==null){}
+			else{
+				ChatPersoWindow cp = new ChatPersoWindow(quiChat);
+			}
 		}
 		else if(LIGNE.equals(cmd)){
 			menuStatut.setForeground(Color.GREEN);
@@ -472,16 +479,16 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 				
 			}
 			if(listeKick.isEmpty()){
-				listeKick.add("Vous n'avez pas d'amis");
+				listeKick.add("You have no friends");
 			}
 			String quiKick = (String) JOptionPane.showInputDialog(this, 
-			        "Qui voulez vous expulser ?",
+			        "Who do you want to expluse ?",
 			        "Expulsion",
 			        JOptionPane.QUESTION_MESSAGE, 
 			        null, 
 			        listeKick.toArray(), 
 			        listeKick.get(0));
-			if(!quiKick.equals("Vous n'avez pas d'amis")){
+			if(!quiKick.equals("You have no friends")){
 				for(ChatListener l : m_listeners){
 					l.KickUser(quiKick);
 				}
@@ -489,28 +496,14 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 			System.out.println(quiKick);
 		}
 		else if(SUPPRMSG.equals(cmd)){
-			ArrayList<String> listeMsg = new ArrayList<String>();
-			for(int i=0; i<chat.size(); ++i){
-				String[] parseMsg = chat.get(i).split(" · ");
-				String msg = parseMsg[0].substring(1);
-				listeMsg.add(msg);
-				
+			int reponse = JOptionPane.showConfirmDialog(getParent(), "Are you sure to delete this message :\n"
+			+chatList.getSelectedValue()+" ?",
+			"Message Suppresion",JOptionPane.CANCEL_OPTION);
+			if(reponse == 0){
+				System.out.println("En cours de dev");
 			}
-			if(listeMsg.isEmpty()){
-				listeMsg.add("Il n'y a pas de messages dans le chat");
-			}
-			String msgSuppr = (String) JOptionPane.showInputDialog(this, 
-			        "Qu'elle message voulez-vous supprimer ? ",
-			        "Suppression de message",
-			        JOptionPane.QUESTION_MESSAGE, 
-			        null, 
-			        listeMsg.toArray(), 
-			        listeMsg.get(0));
+			System.out.println(reponse);
 			
-				for(ChatListener l : m_listeners){
-					chat.removeElement(msgSuppr);
-				}
-				System.out.println(msgSuppr);
 			
 		}
 		else if(STOPSERVER.equals(cmd)){
@@ -528,13 +521,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		
 		int index = msg.indexOf(" : ");
 		String msgPseudo = msg.substring(0, index);
-		String msgMsg = msg.substring(index+3);
-
-		
-		chatList.ensureIndexIsVisible(chat.size()-1);
-		//chat.addElement("  "+H+":"+M+" - "+msgPseudo+"\n"+"    · "+msgMsg);
-		
-		
+		String msgMsg = msg.substring(index+3);		
 
 		chat.addElement(H+":"+M+" - "+msgPseudo+"\n"+" · "+msgMsg);
 		if(chat.size() > 100) chat.remove(0);
@@ -567,13 +554,13 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 				String[] tmp  = users.get(i).split(" - ");
 				switch(status){
 				case 0:
-					users.set(i, tmp[0]+" - Absent");
+					users.set(i, tmp[0]+" - Away");
 					break;
 				case 1:
-					users.set(i, tmp[0]+" - Occupé");
+					users.set(i, tmp[0]+" - Busy");
 					break;
 				case 2:
-					users.set(i, tmp[0]+" - En Ligne");
+					users.set(i, tmp[0]+" - Online");
 					break;
 				}
 			}
@@ -598,7 +585,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		if (e.getKeyCode()==KeyEvent.VK_ENTER){
 			if(TextUtilisateur.getText().isEmpty()){}
 			else if(TextUtilisateur.getText().length()>255){
-				JOptionPane.showMessageDialog(getParent(), "Taille maximum atteinte (255 caractères)","Erreur",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(getParent(), "Maximum size reached (255 characters)","Error",JOptionPane.ERROR_MESSAGE);
 			}
 			else{
 				this.sendMessage(TextUtilisateur.getText());
