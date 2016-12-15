@@ -67,6 +67,7 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 			int db_port = dbsection.get("port", int.class);
 			String db_name = dbsection.get("name");
 
+                        logger.info("Loading of file config.ini");
 			Ini.Section servsection = inifile.get("server");
 			m_hostname=servsection.get("hostname");
 			m_portClient=servsection.get("portClient", int.class);
@@ -102,6 +103,7 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
                         e.printStackTrace();
 		}catch (IOException e){
 			System.out.println("config.ini absent");
+                        logger.fatal("The fille config.ini is absent or badly configured");
 		}
 	}
 	
@@ -112,6 +114,7 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 	}
 	
 	private void propagate(String trame){
+            logger.trace("Enter in the method propagate");
 		ArrayList<ClientHandler> trash = new ArrayList<ClientHandler>();
 		for(ClientHandler c : m_clients){
 			try {
