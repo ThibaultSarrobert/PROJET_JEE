@@ -51,7 +51,7 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 		setTitle(titreFenetre);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(200,200);
-		setSize(400,120);
+		setSize(500,120);
 		setResizable(false);
 		setVisible(true);
 		
@@ -199,7 +199,7 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 			JOptionPane.showMessageDialog(null,"Your ID must be between 3 and 15 characters\n "
 					+ "If it is not accepted: it is already used\n", "Help",JOptionPane.INFORMATION_MESSAGE);
 		}
-		else{
+		else if(ADMIN.equals(cmd)){
 				String ID = IDField.getText();
 				if("".equals(ID)){
 					JOptionPane.showMessageDialog(null, "Please enter an ID","Error",JOptionPane.ERROR_MESSAGE);
@@ -214,10 +214,13 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 					
 				for(InfoConnectListener l : m_infoListeners){
 						CAW.addInfoListener(l);
-				}
+					}
 				}
 			}
+		else if(FB.equals(cmd)){
+				//API Facebook
 			}
+	}
 		
 	
 FocusListener listenerID = new FocusListener() {

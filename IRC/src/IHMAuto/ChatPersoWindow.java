@@ -21,6 +21,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -42,7 +43,8 @@ public class ChatPersoWindow extends JFrame implements ActionListener, FocusList
 	public static final Color buttBlue = new Color(15,114,176);
 	public static final Color backField = new Color(20,25,34);
 	public static final Color backBlueLight = new Color(40,50,68);
-	private static String BAN = "BAN";
+	private static final String BAN = "BAN";
+	private static final String SEND = "SEND";
 	private DefaultListModel<String> chat = new DefaultListModel<String>();
 	private JList<String> chatList = null;
 	JScrollPane chatScrollPane;
@@ -179,8 +181,8 @@ public class ChatPersoWindow extends JFrame implements ActionListener, FocusList
 			@SuppressWarnings("deprecation")
 			int M = new Date().getMinutes();
 			
-			chat.addElement("   "+H+":"+M+" - "+ "You are chating with "+pseudo+
-					" you can banish him in the menu above");
+			chat.addElement("   "+H+":"+M+" - "+ "You are chating with "+pseudo);
+			chat.addElement(" you can banish him in the red menu above");
 			// PANNEAU ZONE DE TEXT
 			JPanel panneauTextUtilisateur = new JPanel(); //Panneau pour que l'utilisateur tape son texte
 			panneauTextUtilisateur.setLayout(new BorderLayout(0, 0));
@@ -201,8 +203,16 @@ public class ChatPersoWindow extends JFrame implements ActionListener, FocusList
 					JPanel panelSUD = new JPanel();
 					panelSUD.setBackground(backBlueLight);
 					panneauTextUtilisateur.add(panelSUD, BorderLayout.SOUTH);		
-					JPanel panelEST = new JPanel();
+					JPanel panelEST = new JPanel(new BorderLayout());
 					panelEST.setBackground(backBlueLight);
+					JButton butSend = new JButton("SEND");
+					butSend.setActionCommand(SEND);
+					butSend.addActionListener(this);
+					butSend.setForeground(Color.WHITE);
+					butSend.setBackground(buttBlue);
+					butSend.setFocusPainted(false);
+					butSend.setBorderPainted(false);
+					panelEST.add(butSend,BorderLayout.CENTER);
 					panneauTextUtilisateur.add(panelEST, BorderLayout.EAST);		
 					JPanel panelOUEST = new JPanel();
 					panelOUEST.setBackground(backBlueLight);
@@ -281,6 +291,19 @@ public class ChatPersoWindow extends JFrame implements ActionListener, FocusList
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		String cmd = e.getActionCommand();
+		if(SEND.equals(cmd)){
+				if(TextUtilisateur.getText().isEmpty()){}
+				else if(TextUtilisateur.getText().length()>255){
+					JOptionPane.showMessageDialog(getParent(), "Maximum size reached (255 characters)","Error",JOptionPane.ERROR_MESSAGE);
+				}
+				else{
+					
+					chat.addElement("  coucou");
+					//this.sendMessage(TextUtilisateur.getText());
+					TextUtilisateur.setText("");
+				}
+		}
 	}
 
 }

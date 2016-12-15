@@ -36,6 +36,7 @@ import javax.swing.ListCellRenderer;
 
 import java.awt.Component;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 
 public class ChatClientWindow extends JFrame implements ActionListener, FocusListener,KeyListener {
 
@@ -51,6 +52,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	private static final String LIGNE = "LIGNE";
 	private static final String ABSENT = "ABSENT";
 	private static final String OCCUPE = "OCCUPE";
+	private static final String SEND = "SEND";
 	private String pseudoAcces = null;
 	private ArrayList<ChatListener> m_listeners = new ArrayList<ChatListener>();
 	JMenu menuStatut;
@@ -64,6 +66,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	public static final Color buttBlue = new Color(15,114,176);
 	public static final Color backField = new Color(20,25,34);
 	public static final Color backBlueLight = new Color(40,50,68);
+	
 	JScrollPane chatScrollPane;
 	Font font = new Font("Monospaced", Font.BOLD, 22);
 	Font font2 = new Font("Serial", Font.BOLD, 18);
@@ -284,9 +287,18 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 				JPanel panelSUD = new JPanel();
 				panelSUD.setBackground(backBlueLight);
 				panneauTextUtilisateur.add(panelSUD, BorderLayout.SOUTH);		
-				JPanel panelEST = new JPanel();
+				JPanel panelEST = new JPanel(new BorderLayout());
 				panelEST.setBackground(backBlueLight);
 				panneauTextUtilisateur.add(panelEST, BorderLayout.EAST);		
+				
+				JButton butSend = new JButton("SEND");
+				butSend.setActionCommand(SEND);
+				butSend.addActionListener(this);
+				butSend.setForeground(Color.WHITE);
+				butSend.setBackground(buttBlue);
+				butSend.setFocusPainted(false);
+				butSend.setBorderPainted(false);
+				panelEST.add(butSend,BorderLayout.CENTER);
 				JPanel panelOUEST = new JPanel();
 				panelOUEST.setBackground(backBlueLight);
 				panneauTextUtilisateur.add(panelOUEST, BorderLayout.WEST);		
@@ -301,6 +313,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		
 		//Panneau avec la liste des connectes
 		JList<String> usersJList = new JList<String>(users);
+		users.addElement(" Users Connected :");
 		usersJList.setSelectionBackground(backField);
 		usersJList.setSelectionForeground(buttBlue);
 		usersJList.setFont(fontChat);
@@ -429,7 +442,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 			for(int i=0; i<users.size(); ++i){
 				String[] parseNom = users.get(i).split(" - ");
 				String pseudoChat = parseNom[0].substring(2);
-				if(!pseudoChat.equals(pseudoAcces)){
+				if(!pseudoChat.equals(pseudoAcces)&&!pseudoChat.equals("sers Connected :")){
 					listeChat.add(pseudoChat);
 					}
 			}
@@ -511,6 +524,18 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 			JOptionPane.showMessageDialog(getParent(), "En cours de dev");
 			
 		}
+		else if(SEND.equals(cmd)){
+			
+				if(TextUtilisateur.getText().isEmpty()){}
+				else if(TextUtilisateur.getText().length()>255){
+					JOptionPane.showMessageDialog(getParent(), "Maximum size reached (255 characters)","Error",JOptionPane.ERROR_MESSAGE);
+				}
+				else{
+					this.sendMessage(TextUtilisateur.getText());
+					TextUtilisateur.setText("");
+				
+	        }
+		}
 	}
 	
 	public void addMessage(String msg){
@@ -521,10 +546,13 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		
 		int index = msg.indexOf(" : ");
 		String msgPseudo = msg.substring(0, index);
-		String msgMsg = msg.substring(index+3);		
-
+		String msgMsg = msg.substring(index+3);	
+		
+		chatList.ensureIndexIsVisible(chat.getSize()-1);
 		chat.addElement(H+":"+M+" - "+msgPseudo+"\n"+" · "+msgMsg);
+		
 		if(chat.size() > 100) chat.remove(0);
+		
 
 	}
 	
