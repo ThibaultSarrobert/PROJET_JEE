@@ -67,7 +67,7 @@ public class ClientTest extends TestCase{
 		c.getConnexionWindow().getIDField().setText("ClientTest");
 		c.getConnexionWindow().actionPerformed(actevent);
 		
-		for (int i = 0; i< 100000; i++)
+		for (int i = 0; i< 10000; i++)
 		{
 
 			c.sendMessage(Integer.toString(i));
@@ -99,6 +99,29 @@ public class ClientTest extends TestCase{
 		c.getConnexionWindow().getIDField().setText("ClientTest&$%");
 		c.getConnexionWindow().actionPerformed(actevent);
 	}
+	
+	public void TestSpecialCharactersPseudoRejected()
+	{
+		JButton butTest = new JButton();
+		ActionEvent actevent = new ActionEvent(butTest, 0,"OK");
+		Client c = new Client();
+		c.getConnexionWindow().getIDField().setText("Client !|");
+		c.getConnexionWindow().actionPerformed(actevent);
+	}
+	
+	public void TestBasicScenario()
+	{
+		JButton butTest = new JButton();
+		ActionEvent actevent = new ActionEvent(butTest, 0,"OK");
+		Client c = new Client();
+		c.getConnexionWindow().getIDField().setText("ClientTest");
+		c.getConnexionWindow().actionPerformed(actevent);
+		
+		for( int i = 1; i < 11 ; i++)
+		{
+			c.sendMessage("Hello ! This is the message number "+i);
+		}
+	}
 
 	
 	public static void main(String[] args) {
@@ -106,7 +129,7 @@ public class ClientTest extends TestCase{
 		int test;
 		Scanner sc = new Scanner(System.in);
 		ClientTest t = new ClientTest();
-		System.out.println("Welcome to the Test Board\n0- Quit\n1- Test Same Pseudo\n2- Test restrictions on number characters pseudo\n3- Test Number max client\n4- Test Number Max Message\n5- Test Number Max Characters per Message\n6- Test Special characters on pseudo");
+		System.out.println("Welcome to the Test Board\n0- Quit\n1- Test Same Pseudo\n2- Test restrictions on number characters pseudo\n3- Test Number max client\n4- Test Number Max Message\n5- Test Number Max Characters per Message\n6- Test Special characters on pseudo\n7- Test Special characters rejected on pseudo\n8- Test basic scenario\n");
 		test = sc.nextInt();
 		switch(test)
 		{
@@ -123,6 +146,10 @@ public class ClientTest extends TestCase{
 		case 5 : t.TestNumberMaxCharacters();
 				 break;
 		case 6 : t.TestSpecialCharactersPseudo();
+				 break;
+		case 7 : t.TestSpecialCharactersPseudoRejected();
+				 break;
+		case 8 : t.TestBasicScenario();
 				 break;
 				 
 		default: System.exit(0);

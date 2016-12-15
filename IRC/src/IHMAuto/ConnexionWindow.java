@@ -156,6 +156,9 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 			
 			DataBaseManager db = new DataBaseManager(db_hostname, db_port, db_name);
 			ArrayList<DataBaseManager.ServerCoord> serverlist = db.getServerList();
+			if(serverlist.size() == 1){
+				return serverlist.get(0);
+			}else{
 			return (DataBaseManager.ServerCoord) JOptionPane.showInputDialog(this, 
 			        "Which server do you want to connect to ?",
 			        "Server Choices",
@@ -163,6 +166,7 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 			        null, 
 			        serverlist.toArray(), 
 				    serverlist.get(0));
+			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "Error Acquiring the List of Servers","Error",JOptionPane.ERROR_MESSAGE);
 			return null;
