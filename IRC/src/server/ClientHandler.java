@@ -97,6 +97,7 @@ public class ClientHandler implements Runnable {
 	private String cryptMdp(String mdp){
 		String sha="";
 		mdp = "mdp";
+
 		try{
 			MessageDigest crypt = MessageDigest.getInstance("SHA-1");
 			crypt.reset();
@@ -160,7 +161,7 @@ public class ClientHandler implements Runnable {
 	
 	@Override
 	public void run() {
-		//TODO récupérer l'historique des messages et le transmettre
+		//TODO rï¿½cupï¿½rer l'historique des messages et le transmettre
 		String line;
 		BufferedReader in=null;
 		try {

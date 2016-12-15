@@ -30,7 +30,9 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 
 	@Override
 	public void run() {
-            System.out.println(System.getProperty("user.dir"));
+            logger.trace("Launching of method run()");
+            logger.info("Lanching of the serveur");
+            
 /*
             
 		try {
@@ -65,6 +67,7 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 			int db_port = dbsection.get("port", int.class);
 			String db_name = dbsection.get("name");
 
+                        logger.info("Loading of file config.ini");
 			Ini.Section servsection = inifile.get("server");
 			m_hostname=servsection.get("hostname");
 			m_portClient=servsection.get("portClient", int.class);
@@ -76,6 +79,7 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 					this.linkServer(new ServerHandler(new Socket(server.getHostname(), server.getServerPort())));
 				} catch (IOException e) {
 					m_db.removeServer(server.getHostname(), server.getClientPort(), server.getServerPort());
+                                        logger.fatal("Server removed");
 				}
 
 			}
@@ -86,16 +90,25 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 				m_clientWaiter = new ClientWaiter(m_portClient, this, this);
 				new Thread(m_clientWaiter).start();
 				m_id = m_db.addServer(m_hostname, m_portClient, m_portServeur);
+
 				System.out.println("Online port server "+m_portClient+", "+m_portServeur);
+                logger.trace("Serveur online on the ports "+m_portClient+", "+m_portServeur);
+                                
 			} catch (IOException e) {
 				e.printStackTrace();
+                                logger.fatal("Problem of lauching of the server");
 			}
 			
 		} catch (ClassNotFoundException | SQLException e) {
+
 			System.out.println("Database trouble");
-                        e.printStackTrace();
+			logger.fatal("Error : access to the database wrong");
+            e.printStackTrace();
 		}catch (IOException e){
 			System.out.println("config.ini missing");
+			logger.fatal("The fille config.ini is absent or badly configured");
+
+			
 		}
 	}
 	
@@ -103,10 +116,10 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 	public static void main(String[] args) {                
 		Server s = new Server();
 		s.run();
-                logger.info("Lancement du serveur");
 	}
 	
 	private void propagate(String trame){
+            logger.trace("Enter in the method propagate");
 		ArrayList<ClientHandler> trash = new ArrayList<ClientHandler>();
 		for(ClientHandler c : m_clients){
 			try {
