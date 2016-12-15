@@ -79,7 +79,7 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 					this.linkServer(new ServerHandler(new Socket(server.getHostname(), server.getServerPort())));
 				} catch (IOException e) {
 					m_db.removeServer(server.getHostname(), server.getClientPort(), server.getServerPort());
-                                        logger.fatal("Server removed");
+                                        logger.fatal("Explication Olivier");
 				}
 
 			}
@@ -92,7 +92,7 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 				m_id = m_db.addServer(m_hostname, m_portClient, m_portServeur);
 
 				System.out.println("Online port server "+m_portClient+", "+m_portServeur);
-                logger.trace("Serveur online on the ports "+m_portClient+", "+m_portServeur);
+                logger.trace("Server online on the ports "+m_portClient+", "+m_portServeur);
                                 
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -113,7 +113,7 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 	}
 	
 
-	public static void main(String[] args) {                
+	public static void main(String[] args) { 
 		Server s = new Server();
 		s.run();
 	}
