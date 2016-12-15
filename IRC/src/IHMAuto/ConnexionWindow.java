@@ -12,6 +12,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -30,6 +31,7 @@ import server.DataBaseManager;
 public class ConnexionWindow extends JFrame implements ActionListener, FocusListener{
 	// Initialisation de nos variables 
 	private static final long serialVersionUID = 1L;
+	private static  String FB = "Facebook";
 	private static String OK = "OK";
 	private static String HELP = "AIDE";
 	private static String ADMIN = "ADMIN";
@@ -98,7 +100,14 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 	butAdmin.addActionListener(this);
 	butAdmin.setBackground(buttBlue);
 	butAdmin.setForeground(Color.white);
-	
+	//Bouton FACEBOOK
+	JButton butFB = new JButton(FB);
+	butFB.setFocusPainted(false);
+	butFB.setBorderPainted(false);
+	butFB.setActionCommand(FB);
+	butFB.addActionListener(this);
+	butFB.setBackground(buttBlue);
+	butFB.setForeground(Color.white);
 	
 	
 	//PANNEAU TEXTE
@@ -112,17 +121,21 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 	buttonPane.add(butOk); //On insere le button ok 
 	buttonPane.add(butAide); //" " aide
 	buttonPane.add(butAdmin);//" " admin
-	
+	//PANNEAU Facebook
+	JComponent fbPane = new JPanel(new GridLayout(1,1,0,3)); //Creation du FlowLayout
+	fbPane.add(butFB);
 	
 	//Initi des couleurs de fond
 	textPane.setBackground(backBlue);
 	buttonPane.setBackground(backBlue);
+	fbPane.setBackground(backBlue);
 	
 	//PANNEAU FINAL
 	JPanel finalPane = new JPanel(); //Creation du panneau final
 	finalPane.setBackground(backBlue); //Couleur du fond backBlue
 	finalPane.add(textPane); //On ajoute le panneau texte
 	finalPane.add(buttonPane); //On ajoute le panneau bouton 
+	finalPane.add(fbPane);
 	
 	contentPane.add(finalPane);//On ajoute le tout dans le contentPane
 	setVisible(true);//On le rend visible

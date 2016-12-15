@@ -489,9 +489,6 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 			System.out.println(quiKick);
 		}
 		else if(SUPPRMSG.equals(cmd)){
-			JOptionPane.showMessageDialog(getParent(), "En cours de dev");
-		}
-		else if(STOPSERVER.equals(cmd)){
 			ArrayList<String> listeMsg = new ArrayList<String>();
 			for(int i=0; i<chat.size(); ++i){
 				String[] parseMsg = chat.get(i).split(" · ");
@@ -511,10 +508,15 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 			        listeMsg.get(0));
 			
 				for(ChatListener l : m_listeners){
-					l.KickUser(msgSuppr);
-				
-			}
-			System.out.println(msgSuppr);
+					chat.removeElement(msgSuppr);
+				}
+				System.out.println(msgSuppr);
+			
+		}
+		else if(STOPSERVER.equals(cmd)){
+			
+			JOptionPane.showMessageDialog(getParent(), "En cours de dev");
+			
 		}
 	}
 	
