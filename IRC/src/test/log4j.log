@@ -10,3 +10,9 @@
 2016-12-05 22:41:30 INFO  Server:45 - Creation of a socket
 2016-12-05 22:41:30 INFO  Server:46 - Server is online
 2016-12-05 22:41:30 ERROR Server:47 - The socket couldn't be created
+2016-12-15 17:17:11 INFO  Server:35 - Lanching of the serveur
+2016-12-15 17:17:11 INFO  Server:71 - Loading of file config.ini
+2016-12-15 17:17:11 FATAL Server:100 - Problem of lauching of the server
+2016-12-15 17:17:46 INFO  Server:35 - Lanching of the serveur
+2016-12-15 17:17:46 INFO  Server:71 - Loading of file config.ini
+2016-12-15 17:17:48 FATAL Server:83 - Server removed

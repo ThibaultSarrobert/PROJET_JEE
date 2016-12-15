@@ -92,6 +92,20 @@ public class DataBaseManager {
 			e.printStackTrace();
 		}
 	}
+        
+        public void removeTrame(String trame) {
+            try{
+                Statement statement = m_conn.createStatement();
+                String query = "DELETE FROM conversation WHERE trame ='"+trame+"'";
+                statement.executeUpdate(query);
+                
+                statement.close();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+            
+            
+        }
 	
 	public ArrayList<ServerCoord> getServerList(){
 		ArrayList<ServerCoord> serverlist = new ArrayList<ServerCoord>();
