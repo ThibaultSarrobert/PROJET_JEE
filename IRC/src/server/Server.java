@@ -33,8 +33,9 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 
 	@Override
 	public void run() {
+            System.out.println(System.getProperty("user.dir"));
 /*
-		
+            
 		try {
 			
 			m_sock=new ServerSocket(m_port);
@@ -94,7 +95,8 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 			}
 			
 		} catch (ClassNotFoundException | SQLException e) {
-			System.out.println("problème de base de donnée");
+			System.out.println("problï¿½me de base de donnï¿½e");
+                        e.printStackTrace();
 		}catch (IOException e){
 			System.out.println("config.ini absent");
 		}
