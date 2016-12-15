@@ -100,7 +100,7 @@ public class ChatPersoWindow extends JFrame implements ActionListener, FocusList
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);//Action lorsque l'on ferme la fenetre
 		setLocation(600,100); //Localisation sur l'ecran a l'ouverture
 		setSize(400,700); //Taille de la fenetre
-		setResizable(false);//Ne peut être ajuster sur la taille
+		setResizable(false);//Ne peut etre ajuster sur la taille
 				
 		Container contentPane = getContentPane();// COntainer qui contient le BorderLayout
 		
@@ -123,7 +123,7 @@ public class ChatPersoWindow extends JFrame implements ActionListener, FocusList
 		menuBar.add(statutLabelBar);//On l'insere dans la barre 
 		//AJOUT DE LA GLUE
 		menuBar.add(Box.createHorizontalGlue());//On met de la glue pour que les menus soient a droite
-		JMenu banMenu = new JMenu("Ø  ");
+		JMenu banMenu = new JMenu("*  ");
 		banMenu.addMenuListener(new MenuListener() {
 
             @Override

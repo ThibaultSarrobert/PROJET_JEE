@@ -96,7 +96,7 @@ public class ClientTest extends TestCase{
 		JButton butTest = new JButton();
 		ActionEvent actevent = new ActionEvent(butTest, 0,"OK");
 		Client c = new Client();
-		c.getConnexionWindow().getIDField().setText("ClîentTést&$%");
+		c.getConnexionWindow().getIDField().setText("ClientTest&$%");
 		c.getConnexionWindow().actionPerformed(actevent);
 	}
 

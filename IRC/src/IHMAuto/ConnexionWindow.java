@@ -1,5 +1,8 @@
 package IHMAuto;
 
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.types.User;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -24,6 +27,8 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import org.ini4j.Ini;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import server.DataBaseManager;
 
@@ -218,7 +223,7 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 				}
 			}
 		else if(FB.equals(cmd)){
-				//API Facebook
+				IDField.setText(facebookConnection());
 			}
 	}
 		
@@ -252,4 +257,46 @@ public JTextField getIDField()
 {
 	return IDField;
 }
+
+public String facebookConnection(){
+            boolean endOfWhile = true;
+            String name="";
+            String domain = "http://www.google.fr";
+            String appID = "580495938817741";
+            String authUrl = "https://graph.facebook.com/oauth/authorize?type=user_agent&client_id="+appID+"&redirect_uri="+domain+"&scope=user_about_me,"
+                + "user_actions.books,user_actions.fitness,user_actions.music,user_actions.news,user_actions.video,user_birthday,user_education_history,"
+                + "user_events,user_photos,user_friends,user_games_activity,user_hometown,user_likes,user_location,user_photos,user_relationship_details,"
+                + "user_relationships,user_religion_politics,user_status,user_tagged_places,user_videos,user_website,user_work_history,ads_management,ads_read,email,"
+                + "manage_pages,publish_actions,read_insights,read_page_mailboxes,rsvp_event";           
+            String accessToken;
+
+            System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+            
+            WebDriver driver = new ChromeDriver();
+            driver.get(authUrl);
+
+            while(endOfWhile==true){
+                if(!driver.getCurrentUrl().contains("facebook.com")){
+                    String url = driver.getCurrentUrl();
+                    accessToken = url.replaceAll(".*#access_token=(.+)&.*", "$1");
+                    
+                    driver.quit();
+
+                    FacebookClient fbClient = new DefaultFacebookClient(accessToken);
+                    User me = fbClient.fetchObject("me", User.class);
+
+                    name=me.getName();
+                    endOfWhile = false;
+                }
+            }
+            if(name.contains("")){
+                name=name.replace(" ", "");
+            }
+           
+            if(name.length()>15){
+                name=name.substring(0, 15);
+            }
+            return name;
+    }
 }
+
