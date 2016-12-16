@@ -51,6 +51,7 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 	//Fin de l'initialisation de nos variables
 	
 	public ConnexionWindow() {
+		this.setVisible(true);
 		setIconImage(new ImageIcon(this.getClass().getResource("/logo_appli.jpg")).getImage());
 		Container contentPane = getContentPane();
 		setTitle(titreFenetre);
@@ -220,10 +221,9 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 				else{
 					
 				this.setFocusableWindowState(false);
-				ConnexionAdminWindow CAW = new ConnexionAdminWindow(ID);
 					
 				for(InfoConnectListener l : m_infoListeners){
-						CAW.addInfoListener(l);
+						l.askForAdminWindow(ID,l);
 					}
 				}
 			}
@@ -287,7 +287,8 @@ public String facebookConnection(){
                     
                     driver.quit();
 
-                    FacebookClient fbClient = new DefaultFacebookClient(accessToken);
+                    @SuppressWarnings("deprecation")
+					FacebookClient fbClient = new DefaultFacebookClient(accessToken);
                     User me = fbClient.fetchObject("me", User.class);
 
                     name=me.getName();

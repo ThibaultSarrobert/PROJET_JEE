@@ -460,6 +460,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 			if(quiChat=="You have no friends"){}
 			else if(quiChat==null){}
 			else{
+				@SuppressWarnings("unused")
 				ChatPersoWindow cp = new ChatPersoWindow(quiChat);
 			}
 		}
@@ -509,6 +510,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 			System.out.println(quiKick);
 		}
 		else if(SUPPRMSG.equals(cmd)){
+			if(chatList.getSelectedIndex()!=0){
 			int reponse = JOptionPane.showConfirmDialog(getParent(), "Are you sure to delete this message :\n"
 			+chatList.getSelectedValue()+" ?",
 			"Message Suppresion",JOptionPane.CANCEL_OPTION);
@@ -520,8 +522,8 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 				for(ChatListener l : m_listeners){
 					l.hideMessage(msg);
 				}
-			}			
-			
+				}			
+			}
 		}
 		else if(STOPSERVER.equals(cmd)){
 			int reponse = JOptionPane.showConfirmDialog(getParent(), "Are you sure to want to stop the server ?",

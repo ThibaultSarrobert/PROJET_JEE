@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import IHMAuto.ChatClientWindow;
 import IHMAuto.ChatListener;
+import IHMAuto.ConnexionAdminWindow;
 import IHMAuto.ConnexionWindow;
 import IHMAuto.InfoConnectListener;
 
@@ -17,6 +18,7 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 	private String m_pseudo=null;
 	private ConnexionWindow m_connectWindow = null;
 	private ChatClientWindow m_chatWindow = null;
+	private ConnexionAdminWindow m_connectAdminWindow = null;
 	
 	public Client(){
 		m_com = new CommunicationHandler();
@@ -83,7 +85,7 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 			m_chatWindow.addListener(this);
 			m_chatWindow.setVisible(true);
 			m_connectWindow.setVisible(false);
-			
+			m_connectAdminWindow.setVisible(false);
 		}else if(new_state==StateListener.State.RECONNECTING){
 			m_com.tryRecon(m_pseudo);
 		}else{
@@ -198,5 +200,12 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 	@Override
 	public void askShutdown() {
 		m_com.post("!q");
+	}
+
+	@Override
+	public void askForAdminWindow(String pseudo,InfoConnectListener l) {
+		m_connectAdminWindow=new ConnexionAdminWindow(pseudo);
+		m_connectAdminWindow.addInfoListener(l);
+		
 	}
 }
