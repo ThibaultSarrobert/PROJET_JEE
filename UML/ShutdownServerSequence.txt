@@ -1,0 +1,15 @@
+@startuml
+title UML Diagram Sequence\nclose server
+actor user
+boundary client
+entity server
+entity otherServers
+database database
+
+user->client:choose "shutdown server"
+client->server:send shutdown signal
+server->server:shutdown
+server->otherServers:break connection
+otherServers->database:purge online server list
+client->user:back to connexion window
+@enduml

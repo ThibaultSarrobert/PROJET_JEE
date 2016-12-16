@@ -1,14 +1,16 @@
 @startuml
 title UML Diagram Sequence\nUser connexion
 actor user
-entity client
+boundary client
 entity server
-
+database database
 
 client->user:print connexion window
 user->client:Key-in his pseudonym
 user->client:Key-in the server coordinate
 user->client:Validation
+client->database:ask server coordinate
+database->client:return list of online servers
 client->server:try connexion
 alt server is wrong
 	alt server return error

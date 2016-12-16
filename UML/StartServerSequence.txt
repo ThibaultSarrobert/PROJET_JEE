@@ -1,0 +1,11 @@
+@startuml
+title UML Diagram Sequence\nclose server
+entity server
+entity otherServers
+database database
+
+server->database:ask server coordinate
+database->server:list of online servers
+server->otherServers:connect to each servers
+server->server:wait for connections
+@enduml
