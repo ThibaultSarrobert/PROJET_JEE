@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -16,8 +17,13 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+
+import org.ini4j.Ini;
+
+import server.DataBaseManager;
 
 public class ConnexionAdminWindow extends JFrame implements ActionListener{
 	private static final long serialVersionUID = 1L;
@@ -103,6 +109,33 @@ public class ConnexionAdminWindow extends JFrame implements ActionListener{
 	public void addInfoListener(InfoConnectListener listener){
 		m_infoListeners.add(listener);
 	}
+	
+	private DataBaseManager.ServerCoord choisirServeur(){
+		try {
+			Ini inifile = new Ini(new File("config.ini"));
+			Ini.Section dbsection = inifile.get("database");
+			String db_hostname = dbsection.get("hostname");
+			int db_port = dbsection.get("port", int.class);
+			String db_name = dbsection.get("name");
+			
+			DataBaseManager db = new DataBaseManager(db_hostname, db_port, db_name);
+			ArrayList<DataBaseManager.ServerCoord> serverlist = db.getServerList();
+			if(serverlist.size() == 1){
+				return serverlist.get(0);
+			}else{
+			return (DataBaseManager.ServerCoord) JOptionPane.showInputDialog(this, 
+			        "Which server do you want to connect to ?",
+			        "Server Choices",
+			        JOptionPane.QUESTION_MESSAGE, 
+			        null, 
+			        serverlist.toArray(), 
+				    serverlist.get(0));
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Error Acquiring the List of Servers","Error",JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+	}
 
 	@Override
 public void actionPerformed(ActionEvent e) 
@@ -112,11 +145,14 @@ public void actionPerformed(ActionEvent e)
 		String s = new String(mdp);
 		if (OK.equals(cmd)) 
 		{
+			DataBaseManager.ServerCoord choix = choisirServeur();
+			if(choix != null){
 				for(InfoConnectListener l : m_infoListeners){
-					l.askForAdminConnect(pseudo, s, "127.0.0.1", 4444);
+					l.askForAdminConnect(pseudo, s, choix.getHostname(), choix.getClientPort());
 				}
-				passwordField.setText("");
-				this.setVisible(false);
+			}
+			passwordField.setText("");
+			this.setVisible(false);
 		}
 		else if(EXIT.equals(cmd))
 		{
