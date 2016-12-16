@@ -85,7 +85,9 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 			m_chatWindow.addListener(this);
 			m_chatWindow.setVisible(true);
 			m_connectWindow.setVisible(false);
-			m_connectAdminWindow.setVisible(false);
+			if(m_connectAdminWindow!=null){
+				m_connectAdminWindow.setVisible(false);
+			}
 		}else if(new_state==StateListener.State.RECONNECTING){
 			m_com.tryRecon(m_pseudo);
 		}else{
@@ -162,6 +164,7 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 			e.printStackTrace();
 		}
 		m_com.connexionAdmin(m_pseudo,sha);
+		
 	}
 
 	private String byteToHex(byte[] hash) {
