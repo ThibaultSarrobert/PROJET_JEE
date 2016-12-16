@@ -1,8 +1,9 @@
 @startuml
 title UML Diagram Sequence\nAdmin connexion
 actor admin
-entity client
+boundary client
 entity server
+database database
 
 client->admin:print connexion window
 admin->client:Key-in his pseudonym
@@ -11,6 +12,8 @@ admin->client:Validation
 client->admin:print connexion window admin
 admin->client:Key-in admin password
 admin->client:Validation
+client->database:ask server coordinate
+database->client:return list of online servers
 client->server:try connexion
 alt server is wrong
 	alt server return error
