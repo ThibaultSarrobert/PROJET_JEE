@@ -56,7 +56,7 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 		setTitle(titreFenetre);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(200,200);
-		setSize(500,120);
+		setSize(470,120);
 		setResizable(false);
 		setVisible(true);
 		
@@ -139,8 +139,9 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 	JPanel finalPane = new JPanel(); //Creation du panneau final
 	finalPane.setBackground(backBlue); //Couleur du fond backBlue
 	finalPane.add(textPane); //On ajoute le panneau texte
-	finalPane.add(buttonPane); //On ajoute le panneau bouton 
 	finalPane.add(fbPane);
+	finalPane.add(buttonPane); //On ajoute le panneau bouton 
+	
 	
 	contentPane.add(finalPane);//On ajoute le tout dans le contentPane
 	setVisible(true);//On le rend visible
@@ -227,7 +228,15 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 				}
 			}
 		else if(FB.equals(cmd)){
-				IDField.setText(facebookConnection());
+
+				int reponse = JOptionPane.showConfirmDialog(getParent(), "You can log in with facebook by clicking ok",
+						"Facebook Connection",JOptionPane.CANCEL_OPTION);
+				System.out.println(reponse);
+				if(reponse==0){
+					IDField.setText(facebookConnection());
+				}
+				else{}
+
 			}
 	}
 		
