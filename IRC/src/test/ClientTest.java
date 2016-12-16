@@ -82,8 +82,9 @@ public class ClientTest extends TestCase{
 		Client c = new Client();
 		c.getConnexionWindow().getIDField().setText("ClientTest");
 		c.getConnexionWindow().actionPerformed(actevent);
+
 		
-		for(int i = 0; i< 256;i++)
+		for(int i = 0; i< 500;i++)
 		{
 			tobesend = tobesend.concat("a");
 		}

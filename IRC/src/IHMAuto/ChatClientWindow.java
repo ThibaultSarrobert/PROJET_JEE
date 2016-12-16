@@ -634,9 +634,6 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode()==KeyEvent.VK_ENTER){
 			if(TextUtilisateur.getText().isEmpty()){}
-			else if(TextUtilisateur.getText().length()>255){
-				JOptionPane.showMessageDialog(getParent(), "Maximum size reached (255 characters)","Error",JOptionPane.ERROR_MESSAGE);
-			}
 			else{
 				this.sendMessage(TextUtilisateur.getText());
 				TextUtilisateur.setText("");
@@ -655,4 +652,11 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public JTextField Textuser()
+	{
+		return TextUtilisateur;
+		
+	}
+	
 }

@@ -103,7 +103,14 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 
 	@Override
 	public void sendMessage(String msg) {
-		m_com.post("+m"+m_pseudo+"|"+msg);
+		if(msg.length() > 255)
+		{
+			JOptionPane.showMessageDialog(m_chatWindow, "Maximum size reached (255 characters)","Error",JOptionPane.ERROR_MESSAGE);
+		}
+		else
+		{
+			m_com.post("+m"+m_pseudo+"|"+msg);
+		}
 	}
 
 	@Override
