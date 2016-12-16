@@ -150,13 +150,14 @@ public void actionPerformed(ActionEvent e)
 				for(InfoConnectListener l : m_infoListeners){
 					l.askForAdminConnect(pseudo, s, choix.getHostname(), choix.getClientPort());
 				}
+				setVisible(false);
 			}
 			passwordField.setText("");
-			//setVisible(false);
+			
 		}
 		else if(EXIT.equals(cmd))
 		{
-			this.setVisible(false);
+			setVisible(false);
 		}
 	}
 	

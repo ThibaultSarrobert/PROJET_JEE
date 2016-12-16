@@ -82,7 +82,8 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 			m_chatWindow=new ChatClientWindow(m_pseudo,m_com.get_isAdmin());
 			m_chatWindow.addListener(this);
 			m_chatWindow.setVisible(true);
-			m_connectWindow.setVisible(false);	
+			m_connectWindow.setVisible(false);
+			
 		}else if(new_state==StateListener.State.RECONNECTING){
 			m_com.tryRecon(m_pseudo);
 		}else{
