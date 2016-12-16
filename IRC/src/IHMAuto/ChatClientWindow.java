@@ -524,10 +524,13 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 			
 		}
 		else if(STOPSERVER.equals(cmd)){
-			
-			for(ChatListener l : m_listeners){
-				l.askShutdown();
-			}
+			int reponse = JOptionPane.showConfirmDialog(getParent(), "Are you sure to want to stop the server ?",
+					"Crashing server",JOptionPane.CANCEL_OPTION);
+			if(reponse==0){
+				for(ChatListener l : m_listeners){
+					l.askShutdown();
+					}
+				}
 			
 		}
 		else if(SEND.equals(cmd)){
