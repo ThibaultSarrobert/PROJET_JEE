@@ -52,7 +52,7 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 					this.linkServer(new ServerHandler(new Socket(server.getHostname(), server.getServerPort())));
 				} catch (IOException e) {
 					m_db.removeServer(server.getHostname(), server.getClientPort(), server.getServerPort());
-                                        logger.fatal("Explication Olivier");
+                                       
 				}
 
 			}
