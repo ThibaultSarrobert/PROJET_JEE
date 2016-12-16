@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -14,6 +15,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -243,7 +246,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		@SuppressWarnings("deprecation")
 		int M = new Date().getMinutes();
 		
-		chat.addElement("   "+H+":"+M+" - "+ "Welcome in to our server "+pseudo);
+		chat.addElement("   "+H+":"+M+" - "+ "Welcome into our server "+pseudo);
 		
 		panneauChat.setLayout(new BorderLayout(0, 0));
 		
@@ -425,14 +428,13 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		}
 		else if(AIDE.equals(cmd))
 		{
-			ImageIcon icon = new ImageIcon(ConnexionWindow.class.getResource("/logo_isen.png"));
-			JOptionPane.showMessageDialog(getParent(), "IHM Version 2.0 \n"
-					+ "Project Leader : Thibault SAROBERT\n"
-					+ "Architect : Olivier ROMAN\n"
-					+ "Testing/Validation : Maxime MORREAU\n"
-					+ "Developer : Pablo ORTEGA",
-            "Help", JOptionPane.INFORMATION_MESSAGE,
-            icon);
+			File f = new File("user_manual.docx");
+			Desktop desk = Desktop.getDesktop();
+			try {
+				desk.open(f);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 		else if(CHAT.equals(cmd))
 		{
@@ -484,7 +486,7 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 			for(int i=0; i<users.size(); ++i){
 				String[] parseNom = users.get(i).split(" - ");
 				String pseudoChat = parseNom[0].substring(2);
-				if(!pseudoChat.equals(pseudoAcces)){
+				if(!pseudoChat.equals(pseudoAcces)&&!pseudoChat.equals("sers Connected :")){
 					listeKick.add(pseudoChat);
 					}
 				
