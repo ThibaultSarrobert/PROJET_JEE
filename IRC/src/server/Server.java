@@ -33,33 +33,6 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
             logger.trace("Launching of method run()");
             logger.info("Lanching of the serveur");
             
-/*
-            
-		try {
-			
-			m_sock=new ServerSocket(m_port);
-			System.out.println("Serveur en ligne");
-		} catch (IOException e) {
-			m_quit = true;
-		}
-		while(!m_quit){
-			ClientHandler h = null;
-			
-			try {
-				Socket sock_cpt=m_sock.accept();
-				if(this.getUserPool().size() < 100){
-					h=new ClientHandler(sock_cpt, this);
-					h.addListener(this);
-					synchronized(this){
-						m_clients.add(h);
-					}
-					new Thread(h).start();
-				}else{
-					sock_cpt.close();	
-				}
-			} catch (IOException e) {
-				m_quit = true;
-*/
 		try{
 			Ini inifile = new Ini(new File("config.ini"));
 			Ini.Section dbsection = inifile.get("database");
@@ -157,6 +130,9 @@ public class Server implements Runnable, ClientListener, ServeurListener, IDataP
 					break;
 				}
 			}
+			propagate(trame);
+		}else if(trame.startsWith("-m")){
+			m_db.removeTrame("+"+trame.substring(1));
 			propagate(trame);
 		}else{
 			propagate(trame);

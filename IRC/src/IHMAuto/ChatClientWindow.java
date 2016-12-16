@@ -2,6 +2,7 @@ package IHMAuto;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -33,10 +34,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
-
-import java.awt.Component;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
 
 public class ChatClientWindow extends JFrame implements ActionListener, FocusListener,KeyListener {
 
@@ -513,15 +511,21 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 			+chatList.getSelectedValue()+" ?",
 			"Message Suppresion",JOptionPane.CANCEL_OPTION);
 			if(reponse == 0){
-				System.out.println("En cours de dev");
-			}
-			System.out.println(reponse);
-			
+				String chaine = chatList.getSelectedValue();
+				int index = chaine.indexOf(" - ");
+				String msg = chaine.substring(index+3);
+				msg = msg.replace("\n · ", "|");
+				for(ChatListener l : m_listeners){
+					l.hideMessage(msg);
+				}
+			}			
 			
 		}
 		else if(STOPSERVER.equals(cmd)){
 			
-			JOptionPane.showMessageDialog(getParent(), "En cours de dev");
+			for(ChatListener l : m_listeners){
+				l.askShutdown();
+			}
 			
 		}
 		else if(SEND.equals(cmd)){
@@ -544,16 +548,29 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		@SuppressWarnings("deprecation")
 		int M = new Date().getMinutes();
 		
-		int index = msg.indexOf(" : ");
+		int index = msg.indexOf("|");
 		String msgPseudo = msg.substring(0, index);
-		String msgMsg = msg.substring(index+3);	
+		String msgMsg = msg.substring(index+1);	
 		
 		chatList.ensureIndexIsVisible(chat.getSize()-1);
 		chat.addElement(H+":"+M+" - "+msgPseudo+"\n"+" · "+msgMsg);
 		
 		if(chat.size() > 100) chat.remove(0);
 		
-
+	}
+	
+	public void supprMessage(String msg){
+		ArrayList<String> supprIndex = new ArrayList<String>();
+		int index = msg.indexOf("|");
+		String msgMsg = msg.substring(index+1);
+		for(int i=0; i<chat.size(); ++i){
+			if(chat.get(i).contains(msgMsg)){
+				supprIndex.add(chat.get(i));
+			}
+		}
+		for(String s : supprIndex){
+			chat.removeElement(s);
+		}
 	}
 	
 	private void sendMessage(String msg){

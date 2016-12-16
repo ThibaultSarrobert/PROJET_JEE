@@ -1,8 +1,5 @@
 package IHMAuto;
 
-import com.restfb.DefaultFacebookClient;
-import com.restfb.FacebookClient;
-import com.restfb.types.User;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -15,7 +12,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -29,6 +25,10 @@ import javax.swing.UIManager;
 import org.ini4j.Ini;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.types.User;
 
 import server.DataBaseManager;
 

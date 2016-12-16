@@ -48,6 +48,10 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 			if(m_chatWindow != null){
 				m_chatWindow.addMessage(trame.substring(2));
 			}
+		}else if(trame.startsWith("-m")){
+			if(m_chatWindow != null){
+				m_chatWindow.supprMessage(trame.substring(2));
+			}
 		}else if(trame.startsWith("+u")){
 			if(m_chatWindow!=null){
 				m_chatWindow.addUser(trame.substring(2));
@@ -95,7 +99,7 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 
 	@Override
 	public void sendMessage(String msg) {
-		m_com.post("+m"+m_pseudo+" : "+msg);
+		m_com.post("+m"+m_pseudo+"|"+msg);
 	}
 
 	@Override
@@ -169,5 +173,16 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 	{
 		return m_chatWindow;
 
+	}
+
+	@Override
+	public void hideMessage(String msg) {
+		m_com.post("-m"+msg);
+		
+	}
+
+	@Override
+	public void askShutdown() {
+		m_com.post("!q");
 	}
 }
