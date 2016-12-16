@@ -29,3 +29,9 @@
 2016-12-16 02:44:10 INFO  Server:34 - Lanching of the serveur
 2016-12-16 02:44:10 INFO  Server:43 - Loading of file config.ini
 2016-12-16 02:44:11 FATAL Server:55 - Explication Olivier
+2016-12-16 11:16:50 INFO  Server:34 - Lanching of the serveur
+2016-12-16 11:16:50 INFO  Server:43 - Loading of file config.ini
+2016-12-16 11:17:00 FATAL Server:78 - Error : access to the database wrong
+2016-12-16 11:17:28 INFO  Server:34 - Lanching of the serveur
+2016-12-16 11:17:28 INFO  Server:43 - Loading of file config.ini
+2016-12-16 11:17:29 FATAL Server:55 - Explication Olivier
