@@ -39,7 +39,8 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 	public void askForConnect(String pseudo, String ipaddr, int port) {
 		m_pseudo=pseudo;
 		m_com.configure(ipaddr, port);
-		m_com.post("+u"+m_pseudo);
+		if(m_com.getState() == StateListener.State.CONNECTING)
+			m_com.post("+u"+m_pseudo);
 	}
 	
 	@Override
@@ -82,6 +83,8 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 			m_chatWindow.addListener(this);
 			m_chatWindow.setVisible(true);
 			m_connectWindow.setVisible(false);	
+		}else if(new_state==StateListener.State.RECONNECTING){
+			m_com.tryRecon(m_pseudo);
 		}else{
 			if(m_chatWindow!=null){
 				m_chatWindow.dispose();
@@ -124,7 +127,10 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 
 	@Override
 	public void Error(String error) {
-		JOptionPane.showMessageDialog(m_chatWindow, error, "Error", 0);
+		if(m_com.getState() != StateListener.State.RECONNECTING)
+		{
+			JOptionPane.showMessageDialog(m_chatWindow, error, "Error", 0);
+		}
 	}
 
 

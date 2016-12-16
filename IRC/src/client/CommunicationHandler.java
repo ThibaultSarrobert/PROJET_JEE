@@ -1,11 +1,17 @@
 package client;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import org.ini4j.Ini;
+
+import server.DataBaseManager;
 
 public class CommunicationHandler implements Runnable {
 	private Socket m_sock = null;
@@ -15,9 +21,15 @@ public class CommunicationHandler implements Runnable {
 	private ArrayList<ComListener> m_comListeners = new ArrayList<ComListener>();
 	private boolean m_quit = false;
 	private boolean m_isAdmin=false;
+	private int m_reconIndex = 0;
+	private String m_reconPseudo;
 	
 	public boolean get_isAdmin() {
 		return m_isAdmin;
+	}
+	
+	public void tryRecon(String pseudo){
+		m_reconPseudo = pseudo;
 	}
 
 	private void interpret(String trame){
@@ -87,7 +99,7 @@ public class CommunicationHandler implements Runnable {
 	}
 	
 	public synchronized void configure(String ipaddr, int port){
-		if(this.getState()!=StateListener.State.INITIAL)
+		if(this.getState()==StateListener.State.CONNECTED)
 		{
 			this.disconnect();
 		}
@@ -101,7 +113,9 @@ public class CommunicationHandler implements Runnable {
 				}
 			}
 			this.m_sock=new Socket();
-			this.changeState(StateListener.State.INITIAL);
+			if(m_state != StateListener.State.RECONNECTING){
+				this.changeState(StateListener.State.INITIAL);
+			}
 		}
 	}
 	
@@ -144,8 +158,8 @@ public class CommunicationHandler implements Runnable {
 	@Override
 	public void run() {
 		while(!m_quit){
-			if(this.getState() != StateListener.State.INITIAL){
-				String line;
+			if(this.getState() == StateListener.State.CONNECTING || this.getState() == StateListener.State.CONNECTED || this.getState() == StateListener.State.DISCONNECTING){
+				String line = null;
 				BufferedReader in = null;
 				try{
 					in = new BufferedReader(new InputStreamReader(m_sock.getInputStream()));
@@ -153,16 +167,40 @@ public class CommunicationHandler implements Runnable {
 					this.disconnect();
 				}
 
-				while(this.getState() != StateListener.State.INITIAL){
-					try{
+				try{
+					while(this.getState() == StateListener.State.CONNECTING || this.getState() == StateListener.State.CONNECTED || this.getState() == StateListener.State.DISCONNECTING){
 						line = in.readLine();
 						if(line==null){
 							this.disconnect();
 						}else{
 							this.interpret(line);
 						}
-					}catch (IOException e) {
-						this.disconnect();
+					}
+				}catch (IOException e) {
+					if(m_state != StateListener.State.DISCONNECTING && m_state != StateListener.State.CONNECTING){
+						changeState(StateListener.State.RECONNECTING);
+						
+						try {
+							Ini inifile = new Ini(new File("config.ini"));
+							Ini.Section dbsection = inifile.get("database");
+							String db_hostname = dbsection.get("hostname");
+							int db_port = dbsection.get("port", int.class);
+							String db_name = dbsection.get("name");
+							
+							DataBaseManager db = new DataBaseManager(db_hostname, db_port, db_name);
+							ArrayList<DataBaseManager.ServerCoord> serverlist = db.getServerList();
+							for(int i=0; i<24; ++i){
+								Thread.sleep(5000);
+								configure(serverlist.get(m_reconIndex).getHostname(), serverlist.get(m_reconIndex).getClientPort());
+								if(++m_reconIndex >= serverlist.size()) m_reconIndex=0;
+								if(m_state == StateListener.State.CONNECTING){
+									m_reconIndex = 0;
+									post("+u"+m_reconPseudo);
+									i=24;
+								}
+							}
+						} catch (ClassNotFoundException | IOException | SQLException | InterruptedException e1) {
+						}
 					}
 				}
 			}

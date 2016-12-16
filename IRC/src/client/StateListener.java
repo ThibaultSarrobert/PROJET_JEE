@@ -5,7 +5,8 @@ public interface StateListener {
 		INITIAL,
 		CONNECTING,
 		CONNECTED,
-		DISCONNECTING
+		DISCONNECTING,
+		RECONNECTING
 	}
 	
 	public void onStateChanged(State new_state);
