@@ -228,16 +228,8 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 				}
 			}
 		else if(FB.equals(cmd)){
-
-				int reponse = JOptionPane.showConfirmDialog(getParent(), "You can log in with facebook by clicking ok",
-						"Facebook Connection",JOptionPane.CANCEL_OPTION);
-				System.out.println(reponse);
-				if(reponse==0){
 					IDField.setText(facebookConnection());
 				}
-				else{}
-
-			}
 	}
 		
 	

@@ -152,7 +152,7 @@ public void actionPerformed(ActionEvent e)
 				}
 			}
 			passwordField.setText("");
-			this.setVisible(false);
+			//setVisible(false);
 		}
 		else if(EXIT.equals(cmd))
 		{
