@@ -571,7 +571,9 @@ public class ChatClientWindow extends JFrame implements ActionListener, FocusLis
 		int index = msg.indexOf("|");
 		String msgMsg = msg.substring(index+1);
 		for(int i=0; i<chat.size(); ++i){
-			if(chat.get(i).contains(msgMsg)){
+			int ind2 = chat.get(i).indexOf(" · ");
+			String M = chat.getElementAt(i).substring(ind2+3);
+			if(M.equals(msgMsg)){
 				supprIndex.add(chat.get(i));
 			}
 		}
