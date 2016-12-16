@@ -37,10 +37,11 @@ public class ConnexionAdminWindow extends JFrame implements ActionListener{
 	private Color borderBlue = new Color(53,62,80);
 	private Color borderGrey = new Color(53,62,80);
 	private String pseudo = new String(); 
+	private ConnexionWindow CWT;
 	private ArrayList<InfoConnectListener> m_infoListeners = new ArrayList<InfoConnectListener>();
 	
-	public ConnexionAdminWindow(String ID){
-		
+	public ConnexionAdminWindow(String ID,ConnexionWindow CW){
+		CWT=CW;
 		setIconImage(new ImageIcon(this.getClass().getResource("/logo_appli.jpg")).getImage());
 		//Initialisation de la JFRAME avec ses reglages - options
 		setTitle(titreFenetre);
@@ -143,13 +144,12 @@ public void actionPerformed(ActionEvent e)
 		String cmd = e.getActionCommand();
 		char[] mdp = passwordField.getPassword();
 		String s = new String(mdp);
-		if (OK.equals(cmd)) 
+		if(OK.equals(cmd)) 
 		{
 			DataBaseManager.ServerCoord choix = choisirServeur();
 			if(choix != null){
 				for(InfoConnectListener l : m_infoListeners){
 					l.askForAdminConnect(pseudo, s, choix.getHostname(), choix.getClientPort());
-					this.setVisible(true);
 				}
 				
 			}
@@ -159,7 +159,9 @@ public void actionPerformed(ActionEvent e)
 		}
 		else if(EXIT.equals(cmd))
 		{
-			this.setVisible(false);
+			this.dispose();
+			CWT.setVisible(true);
+			
 		}
 	}
 	

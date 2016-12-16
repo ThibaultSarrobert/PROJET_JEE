@@ -51,7 +51,6 @@ public class ConnexionWindow extends JFrame implements ActionListener, FocusList
 	//Fin de l'initialisation de nos variables
 	
 	public ConnexionWindow() {
-		this.setVisible(true);
 		setIconImage(new ImageIcon(this.getClass().getResource("/logo_appli.jpg")).getImage());
 		Container contentPane = getContentPane();
 		setTitle(titreFenetre);

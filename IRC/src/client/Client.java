@@ -204,8 +204,7 @@ public class Client implements StateListener, ComListener, InfoConnectListener, 
 
 	@Override
 	public void askForAdminWindow(String pseudo,InfoConnectListener l) {
-		m_connectAdminWindow=new ConnexionAdminWindow(pseudo);
+		m_connectAdminWindow=new ConnexionAdminWindow(pseudo,m_connectWindow);
 		m_connectAdminWindow.addInfoListener(l);
-		
 	}
 }
